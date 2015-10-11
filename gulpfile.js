@@ -12,8 +12,22 @@ gulp.task('deploy', function() {
     password: args.password,
     log: gutil.log
   });
- 
-  gulp.src(['./**/*.png', './**/*.jpg', './**/*.css', './**/*.php', './**/*.html','./**/*.txt'])
+  
+	/**
+	*Example of files and folders to be uploaded.
+	* To be edited to fit the laravel structure.
+	*/
+     var globs = [
+        'src/**',
+        'css/**',
+        'js/**',
+        'fonts/**',
+        'index.html',
+		'!node_modules',
+		'!node_modules/**',
+    ];
+	
+ gulp.src( globs, { base: '.', buffer: false } )
     .pipe(conn.newer(remotePath))
     .pipe(conn.dest(remotePath));
 });
