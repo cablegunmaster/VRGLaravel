@@ -1,26 +1,31 @@
-var gulp = require('gulp');
-var ftp = require('vinyl-ftp');
-var gutil = require('gulp-util');
-var minimist = require('minimist');
-var args = minimist(process.argv.slice(2));
-// All the plugins which are necesarry 
+var gulp = require('gulp'); //the tool to add all the files and make streams.
+var ftp = require('vinyl-ftp'); // FTP upload 
+var gutil = require('gulp-util'); //extra tooling.
+var minimist = require('minimist'); //to minimize the args
+var args = minimist(process.argv.slice(2)); //to read the arguments
+var rmdir = require( 'rmdir' );
+// All the plugins which are necessary 
 
-//the path where to store it.	
-var remotePath = '/brandweer/';
+	//the path where to store it.	
+	var remotePath = '/brandweer/';
 
-//the connection where its going to be loaded.
-var conn = ftp.create({
-host: 'scrumbag.nl',
-user: args.user,
-password: args.password,
-parallel: 10,
-log: gutil.log
-});
+	//the connection where its going to be loaded.
+	var conn = ftp.create({
+	host: 'scrumbag.nl',
+	user: args.user,
+	password: args.password,
+	parallel: 10,
+	log: gutil.log
+	});
   
 gulp.task('delete', function(){
   //start the proces.	
   process.stdout.write('Start Delete files...\n'); 
-  conn.rmdir(remotePath); //actually delete the file.
+	  rmdir( remotePath, function ( err, dirs, files ){
+	  console.log( dirs );
+	  console.log( files );
+	  console.log( 'all files are removed' );
+	});
   process.stdout.write('Delete files complete...\n');
 });
 	
