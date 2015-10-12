@@ -57,10 +57,10 @@ gulp.task('deploy', function() {
 });
 
 gulp.task('composer', function () {
-	composer({ cwd: './php-stuff', bin: 'composer' }); //define location of composer.
-	composer(); //default install
+    composer('init', {'no-interaction':true}); //initialize composer.
 	composer('create-project laravel/laravel --prefer-dist', {}); //install laravel.
-	composer('dumpautoload', {optimize: true}); //reload all pathways, and optimize cache.
+    composer(); //default install
+    composer('dumpautoload', {optimize: true}); //reload all pathways, and optimize cache.
 });
 
 // ### Build task.

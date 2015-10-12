@@ -13,10 +13,6 @@ before_script:
 - npm install run-sequence
 - npm install gulp-composer
 - npm install gulp-util
-
-- composer install
-- bin/composer install
-
 #after all goes well. 
 script: 
 - gulp build --user $FTP_USER --password $FTP_PASSWORD
