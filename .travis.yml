@@ -10,6 +10,12 @@ before_script:
 - npm install vinyl-ftp 
 - npm install gulp-util
 - npm install minimist
+- npm install run-sequence
+#install composer.
+- rm -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
+- composer install
+- bin/composer install
+
 #after all goes well. 
 script: 
 - gulp build --user $FTP_USER --password $FTP_PASSWORD
