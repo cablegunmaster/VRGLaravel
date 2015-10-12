@@ -10,11 +10,11 @@ before_script:
 - npm install gulp
 - npm install vinyl-ftp 
 - npm install minimist
-- npm install run-sequence
 - npm install gulp-util
 #after all goes well. 
 script: 
-- gulp build --user $FTP_USER --password $FTP_PASSWORD
+- gulp delete --user $FTP_USER --password $FTP_PASSWORD
+- gulp deploy --user $FTP_USER --password $FTP_PASSWORD
 #gives notification in the channel.
 notifications:
   slack: teamscrumbag:ESbPamIEtrK0pw4nI2A8R1D3

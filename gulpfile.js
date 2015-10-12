@@ -3,7 +3,6 @@ var ftp = require('vinyl-ftp'); // FTP upload
 var gutil = require('gulp-util'); //extra tooling.
 var minimist = require('minimist'); //to minimize the args
 var args = minimist(process.argv.slice(2)); //to read the arguments
-var runSequence = require('run-sequence'); //to combine all the task.
 // All the plugins which are necessary 
 
 //the path where to store it.	
@@ -53,11 +52,4 @@ gulp.task('deploy', function() {
 	
 	//write out it has been finisht after the finish.
 	process.stdout.write('Transfer complete...\n');
-});
-
-// ### Build task.
-gulp.task('build', function(callback) {
-  runSequence('delete',
-              'deploy',
-              callback);
 });
