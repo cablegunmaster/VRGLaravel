@@ -17,7 +17,7 @@ var rmdir = require( 'rmdir' );
 	parallel: 10,
 	log: gutil.log
 	});
-  
+
 gulp.task('delete', function(){
   //start the proces.	
   process.stdout.write('Start Delete files...\n'); 
