@@ -4,24 +4,31 @@ var gutil = require('gulp-util');
 var minimist = require('minimist');
 var args = minimist(process.argv.slice(2));
 // All the plugins which are necesarry 
- 
+
+//the path where to store it.	
+var remotePath = '/brandweer/';
+
+//the connection where its going to be loaded.
+var conn = ftp.create({
+host: 'scrumbag.nl',
+user: args.user,
+password: args.password,
+parallel: 10,
+log: gutil.log
+});
+  
+gulp.task('delete', function(){
+  //start the proces.	
+  process.stdout.write('Start Delete files...\n'); 
+  conn.rmdir(remotePath); //actually delete the file.
+  process.stdout.write('Delete files complete...\n');
+});
+	
 gulp.task('deploy', function() {
 	
   //start the proces.	
   process.stdout.write('Transfering files...\n');
 
-  //the path where to store it.	
-  var remotePath = '/brandweer/';
-
-  //the connection where its going to be loaded.
-  var conn = ftp.create({
-    host: 'scrumbag.nl',
-    user: args.user,
-    password: args.password,
-	parallel: 10,
-    log: gutil.log
-  });
-  
 	/**
 	* Example of files and folders to be uploaded.
 	*/
@@ -39,7 +46,6 @@ gulp.task('deploy', function() {
 
   //Delete and after newer to the new destination.
   gulp.src( globs, { base: '.', buffer: false } )
-    .pipe(conn.rmdir(remotePath)) 
     .pipe(conn.newer(remotePath))
     .pipe(conn.dest(remotePath));
 	

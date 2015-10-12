@@ -1,7 +1,7 @@
 #deployment Buildscript.
 language: node_js
 node_js:
-- '0.11'
+- '0.12.7'
 #needed utilitys to launch our script.
 before_script:
 - npm install bower
@@ -10,9 +10,9 @@ before_script:
 - npm install vinyl-ftp 
 - npm install gulp-util
 - npm install minimist
-- npm install laravel-elixir
 #after all goes well. 
 script: 
+- gulp delete --user $FTP_USER --password $FTP_PASSWORD
 - gulp deploy --user $FTP_USER --password $FTP_PASSWORD
 #gives notification in the channel.
 notifications:
