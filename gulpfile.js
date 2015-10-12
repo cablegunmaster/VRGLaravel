@@ -3,16 +3,22 @@ var ftp = require('vinyl-ftp');
 var gutil = require('gulp-util');
 var minimist = require('minimist');
 var args = minimist(process.argv.slice(2));
+// All the plugins which are necesarry 
  
 gulp.task('deploy', function() {
 	
-	process.stdout.write('Transfering files...\n');
-	
+  //start the proces.	
+  process.stdout.write('Transfering files...\n');
+
+  //the path where to store it.	
   var remotePath = '/brandweer/';
+
+  //the connection where its going to be loaded.
   var conn = ftp.create({
     host: 'scrumbag.nl',
     user: args.user,
     password: args.password,
+	parallel: 10,
     log: gutil.log
   });
   
@@ -30,10 +36,15 @@ gulp.task('deploy', function() {
 		'!node_modules',
 		'!node_modules/**',
     ];
+
 	
+  gulp.pipe(conn.rmdir(remotePath)); //delete the folder.
+  
+  //creates the new files and folders.
   gulp.src( globs, { base: '.', buffer: false } )
     .pipe(conn.newer(remotePath))
     .pipe(conn.dest(remotePath));
 	
+	//write out it has been finisht after the finish.
 	process.stdout.write('Transfer complete...\n');
 });
