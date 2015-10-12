@@ -5,6 +5,9 @@ var minimist = require('minimist');
 var args = minimist(process.argv.slice(2));
  
 gulp.task('deploy', function() {
+	
+	process.stdout.write('Transfering files...\n');
+	
   var remotePath = '/brandweer/';
   var conn = ftp.create({
     host: 'scrumbag.nl',
@@ -14,20 +17,23 @@ gulp.task('deploy', function() {
   });
   
 	/**
-	*Example of files and folders to be uploaded.
-	* To be edited to fit the laravel structure.
+	* Example of files and folders to be uploaded.
 	*/
      var globs = [
-        'src/**',
-        'css/**',
-        'js/**',
-        'fonts/**',
-        'index.html',
+		'*',
+        'app/**',
+        'bootstrap/**',
+        'config/**',
+        'public/**',
+        'resources/lang/**',
+        'resources/views/**',
 		'!node_modules',
 		'!node_modules/**',
     ];
 	
- gulp.src( globs, { base: '.', buffer: false } )
+  gulp.src( globs, { base: '.', buffer: false } )
     .pipe(conn.newer(remotePath))
     .pipe(conn.dest(remotePath));
+	
+	process.stdout.write('Transfer complete...\n');
 });
