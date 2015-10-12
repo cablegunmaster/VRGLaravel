@@ -3,7 +3,6 @@ var ftp = require('vinyl-ftp'); // FTP upload
 var gutil = require('gulp-util'); //extra tooling.
 var minimist = require('minimist'); //to minimize the args
 var args = minimist(process.argv.slice(2)); //to read the arguments
-var rmdir = require( 'rmdir' );
 // All the plugins which are necessary 
 
 	//the path where to store it.	
@@ -17,20 +16,18 @@ var rmdir = require( 'rmdir' );
 	parallel: 10,
 	log: gutil.log
 	});
-
-gulp.task('delete', function(){
+	
+gulp.task('delete', function(cb){
   //start the proces.	
   process.stdout.write('Start Delete files...\n'); 
-	  rmdir( remotePath, function ( err, dirs, files ){
-	  console.log( dirs );
-	  console.log( files );
-	  console.log( 'all files are removed' );
-	});
+  conn.rmdir(remotePath, cb );//actually deleting files.
+  // deleting files done.	
   process.stdout.write('Delete files complete...\n');
 });
-	
+
+//Deploy task to actually deploy the build itself.	
 gulp.task('deploy', function() {
-	
+
   //start the proces.	
   process.stdout.write('Transfering files...\n');
 
