@@ -65,8 +65,11 @@ gulp.task('composer', function () {
 
 // ### Build task.
 gulp.task('build', function(callback) {
-  runSequence('delete',
+	runSequence('composer',
+				'deploy',
+				callback);
+  /*runSequence('delete',
 			  'composer',
               'deploy',
-              callback);
+              callback);*/
 });
