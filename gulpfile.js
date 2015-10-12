@@ -37,11 +37,9 @@ gulp.task('deploy', function() {
 		'!node_modules/**',
     ];
 
-	
-  gulp.pipe(conn.rmdir(remotePath)); //delete the folder.
-  
-  //creates the new files and folders.
+  //Delete and after newer to the new destination.
   gulp.src( globs, { base: '.', buffer: false } )
+    .pipe(conn.rmdir(remotePath)) 
     .pipe(conn.newer(remotePath))
     .pipe(conn.dest(remotePath));
 	
