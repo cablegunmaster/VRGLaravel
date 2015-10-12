@@ -15,8 +15,7 @@ var conn = ftp.create({
 host: 'scrumbag.nl',
 user: args.user,
 password: args.password,
-parallel: 10,
-log: gutil.log
+parallel: 10
 });
 	
 gulp.task('delete', function(cb){

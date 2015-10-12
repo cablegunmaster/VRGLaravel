@@ -4,11 +4,11 @@ node_js:
 - '0.12.7'
 #needed utilitys to launch our script.
 before_script:
+- COMPOSER_ROOT_VERSION=dev-master composer install
 - npm install bower
 - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 - npm install gulp
 - npm install vinyl-ftp 
-- npm install gulp-util
 - npm install minimist
 - npm install run-sequence
 - npm install gulp-composer
