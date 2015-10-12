@@ -11,7 +11,6 @@ before_script:
 - npm install vinyl-ftp 
 - npm install minimist
 - npm install run-sequence
-- npm install gulp-composer
 - npm install gulp-util
 #after all goes well. 
 script: 
