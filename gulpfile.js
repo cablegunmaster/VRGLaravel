@@ -4,7 +4,6 @@ var gutil = require('gulp-util'); //extra tooling.
 var minimist = require('minimist'); //to minimize the args
 var args = minimist(process.argv.slice(2)); //to read the arguments
 var runSequence = require('run-sequence'); //to combine all the task.
-var composer = require('gulp-composer'); //add the program to load laravel / plugins.
 // All the plugins which are necessary 
 
 //the path where to store it.	
@@ -56,20 +55,9 @@ gulp.task('deploy', function() {
 	process.stdout.write('Transfer complete...\n');
 });
 
-gulp.task('composer', function () {
-    composer('init', {'no-interaction':true}); //initialize composer.
-	composer('create-project laravel/laravel --prefer-dist', {}); //install laravel.
-    composer(); //default install
-    composer('dumpautoload', {optimize: true}); //reload all pathways, and optimize cache.
-});
-
 // ### Build task.
 gulp.task('build', function(callback) {
-	runSequence('composer',
-				'deploy',
-				callback);
-  /*runSequence('delete',
-			  'composer',
+  runSequence('delete',
               'deploy',
-              callback);*/
+              callback);
 });
