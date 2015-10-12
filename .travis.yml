@@ -2,6 +2,7 @@
 language: node_js
 node_js:
 - '0.12.7'
+
 #needed utilitys to launch our script.
 before_script:
 - npm install bower
@@ -12,6 +13,9 @@ before_script:
 - npm install run-sequence
 - npm install gulp-composer
 - npm install gulp-util
+
+- composer install
+- bin/composer install
 
 #after all goes well. 
 script: 
