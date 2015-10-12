@@ -5,24 +5,24 @@ var minimist = require('minimist'); //to minimize the args
 var args = minimist(process.argv.slice(2)); //to read the arguments
 // All the plugins which are necessary 
 
-	//the path where to store it.	
-	var remotePath = '/brandweer/';
+//the path where to store it.	
+var remotePath = '/brandweer/';
 
-	//the connection where its going to be loaded.
-	var conn = ftp.create({
-	host: 'scrumbag.nl',
-	user: args.user,
-	password: args.password,
-	parallel: 10,
-	log: gutil.log
-	});
+//the connection where its going to be loaded.
+var conn = ftp.create({
+host: 'scrumbag.nl',
+user: args.user,
+password: args.password,
+parallel: 10,
+log: gutil.log
+});
 	
 gulp.task('delete', function(cb){
   //start the proces.	
-  process.stdout.write('Start Delete files...\n'); 
+  process.stdout.write('Start cleanup remote folder...\n'); 
   conn.rmdir(remotePath, cb );//actually deleting files.
   // deleting files done.	
-  process.stdout.write('Delete files complete...\n');
+  process.stdout.write('Cleanup complete...\n');
 });
 
 //Deploy task to actually deploy the build itself.	
@@ -53,4 +53,11 @@ gulp.task('deploy', function() {
 	
 	//write out it has been finisht after the finish.
 	process.stdout.write('Transfer complete...\n');
+});
+
+// ### Build task.
+gulp.task('build', function(callback) {
+  runSequence('delete',
+              'deploy',
+              callback);
 });

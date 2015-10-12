@@ -12,8 +12,7 @@ before_script:
 - npm install minimist
 #after all goes well. 
 script: 
-- gulp delete --user $FTP_USER --password $FTP_PASSWORD
-- gulp deploy --user $FTP_USER --password $FTP_PASSWORD
+- gulp build --user $FTP_USER --password $FTP_PASSWORD
 #gives notification in the channel.
 notifications:
   slack: teamscrumbag:ESbPamIEtrK0pw4nI2A8R1D3
