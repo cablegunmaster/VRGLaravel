@@ -11,6 +11,7 @@ before_script:
 - npm install gulp-util
 - npm install minimist
 - npm install run-sequence
+- npm install gulp-composer
 
 #after all goes well. 
 script: 
