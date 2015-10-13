@@ -3,5 +3,3 @@
 Homestead.yaml
 Homestead.json
 .env
-.travis.yml
-gulpfile.js

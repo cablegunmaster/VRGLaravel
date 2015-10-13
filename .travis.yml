@@ -14,7 +14,12 @@ before_script:
 - npm install laravel-elixir
 #after all goes well. 
 script: 
-- gulp delete --user $FTP_USER --password $FTP_PASSWORD
+- gulp deleteApp --user $FTP_USER --password $FTP_PASSWORD
+- gulp deleteBootstrap --user $FTP_USER --password $FTP_PASSWORD
+- gulp deleteConfig --user $FTP_USER --password $FTP_PASSWORD
+- gulp deletePublic --user $FTP_USER --password $FTP_PASSWORD
+- gulp deleteResources --user $FTP_USER --password $FTP_PASSWORD
+- gulp deleteTests --user $FTP_USER --password $FTP_PASSWORD
 - gulp deploy --user $FTP_USER --password $FTP_PASSWORD
 #gives notification in the channel.
 notifications:
