@@ -1,4 +1,10 @@
 var elixir = require('laravel-elixir');
+var gulp = require('gulp'); //the tool to add all the files and make streams.
+var ftp = require('vinyl-ftp'); // FTP upload 
+var gutil = require('gulp-util'); //extra tooling.
+var minimist = require('minimist'); //to minimize the args
+var args = minimist(process.argv.slice(2)); //to read the arguments
+// All the plugins which are necessary 
 
 /*
  |--------------------------------------------------------------------------
@@ -14,7 +20,19 @@ var elixir = require('laravel-elixir');
 elixir(function(mix) {
     mix.sass('app.scss');
 });
-	
+
+
+//the path where to store it.	
+var remotePath = '/brandweer/';
+
+//the connection where its going to be loaded.
+var conn = ftp.create({
+host: 'scrumbag.nl',
+user: args.user,
+password: args.password,
+parallel: 10
+});
+		
 gulp.task('delete', function(){
   //start the proces.	
   process.stdout.write('Start cleanup remote folder...\n'); 
