@@ -19,12 +19,12 @@ parallel: 10
 gulp.task('delete', function(cb){
   //start the proces.	
   process.stdout.write('Start cleanup remote folder...\n'); 
-  conn.rmdir(remotePath + '/app/', cb );//actually deleting files.
-  conn.rmdir(remotePath + '/bootstrap/', cb );//actually deleting files.
-  conn.rmdir(remotePath + '/config/', cb );//actually deleting files.
-  conn.rmdir(remotePath + '/public/', cb );//actually deleting files.
-  conn.rmdir(remotePath + '/resources/', cb );//actually deleting files.
-  conn.rmdir(remotePath + '/tests/', cb );//actually deleting files.
+  conn.rmdir(remotePath + 'app/', cb );//actually deleting files.
+  conn.rmdir(remotePath + 'bootstrap/', cb );//actually deleting files.
+  conn.rmdir(remotePath + 'config/', cb );//actually deleting files.
+  conn.rmdir(remotePath + 'public/', cb );//actually deleting files.
+  conn.rmdir(remotePath + 'resources/', cb );//actually deleting files.
+  conn.rmdir(remotePath + 'tests/', cb );//actually deleting files.
   // deleting files done.	
   process.stdout.write('Cleanup complete...\n');
 });
