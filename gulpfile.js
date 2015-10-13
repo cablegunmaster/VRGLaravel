@@ -1,30 +1,31 @@
-var gulp = require('gulp'); //the tool to add all the files and make streams.
-var ftp = require('vinyl-ftp'); // FTP upload 
-var gutil = require('gulp-util'); //extra tooling.
-var minimist = require('minimist'); //to minimize the args
-var args = minimist(process.argv.slice(2)); //to read the arguments
-// All the plugins which are necessary 
+var elixir = require('laravel-elixir');
 
-//the path where to store it.	
-var remotePath = '/brandweer/';
+/*
+ |--------------------------------------------------------------------------
+ | Elixir Asset Management
+ |--------------------------------------------------------------------------
+ |
+ | Elixir provides a clean, fluent API for defining some basic Gulp tasks
+ | for your Laravel application. By default, we are compiling the Sass
+ | file for our application, as well as publishing vendor resources.
+ |
+ */
 
-//the connection where its going to be loaded.
-var conn = ftp.create({
-host: 'scrumbag.nl',
-user: args.user,
-password: args.password,
-parallel: 10
+elixir(function(mix) {
+    mix.sass('app.scss');
 });
 	
 gulp.task('delete', function(cb){
   //start the proces.	
   process.stdout.write('Start cleanup remote folder...\n'); 
-  conn.rmdir(remotePath + 'app/', cb );//actually deleting files.
-  conn.rmdir(remotePath + 'bootstrap/', cb );//actually deleting files.
-  conn.rmdir(remotePath + 'config/', cb );//actually deleting files.
-  conn.rmdir(remotePath + 'public/', cb );//actually deleting files.
-  conn.rmdir(remotePath + 'resources/', cb );//actually deleting files.
-  conn.rmdir(remotePath + 'tests/', cb );//actually deleting files.
+  
+  gulp.src(remotePath)
+  .pipe(conn.rmdir(remotePath + 'app/', cb ))//actually deleting files.
+  .pipe(conn.rmdir(remotePath + 'bootstrap/', cb ))//actually deleting files.
+  .pipe(conn.rmdir(remotePath + 'config/', cb ))//actually deleting files.
+  .pipe(conn.rmdir(remotePath + 'public/', cb ))//actually deleting files.
+  .pipe(conn.rmdir(remotePath + 'resources/', cb ))//actually deleting files.
+  .pipe(conn.rmdir(remotePath + 'tests/', cb ));//actually deleting files.
   // deleting files done.	
   process.stdout.write('Cleanup complete...\n');
 });
@@ -50,7 +51,6 @@ gulp.task('deploy', function() {
 		'!node_modules/**',
     ];
 
-  //Delete and after newer to the new destination.
   gulp.src( globs, { base: '.', buffer: false } )
     .pipe(conn.newer(remotePath))
     .pipe(conn.dest(remotePath));

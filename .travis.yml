@@ -11,6 +11,7 @@ before_script:
 - npm install vinyl-ftp 
 - npm install minimist
 - npm install gulp-util
+- npm install laravel-elixir
 #after all goes well. 
 script: 
 - gulp delete --user $FTP_USER --password $FTP_PASSWORD
