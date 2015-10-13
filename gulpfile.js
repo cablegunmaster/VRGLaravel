@@ -15,17 +15,16 @@ elixir(function(mix) {
     mix.sass('app.scss');
 });
 	
-gulp.task('delete', function(cb){
+gulp.task('delete', function(){
   //start the proces.	
   process.stdout.write('Start cleanup remote folder...\n'); 
   
-  gulp.src(remotePath)
-  .pipe(conn.rmdir(remotePath + 'app/', cb ))//actually deleting files.
-  .pipe(conn.rmdir(remotePath + 'bootstrap/', cb ))//actually deleting files.
-  .pipe(conn.rmdir(remotePath + 'config/', cb ))//actually deleting files.
-  .pipe(conn.rmdir(remotePath + 'public/', cb ))//actually deleting files.
-  .pipe(conn.rmdir(remotePath + 'resources/', cb ))//actually deleting files.
-  .pipe(conn.rmdir(remotePath + 'tests/', cb ));//actually deleting files.
+  conn.rmdir(remotePath + 'app/');//actually deleting files.
+  conn.rmdir(remotePath + 'bootstrap/');//actually deleting files.
+  conn.rmdir(remotePath + 'config/');//actually deleting files.
+  conn.rmdir(remotePath + 'public/');//actually deleting files.
+  conn.rmdir(remotePath + 'resources/');//actually deleting files.
+  conn.rmdir(remotePath + 'tests/');//actually deleting files.
   // deleting files done.	
   process.stdout.write('Cleanup complete...\n');
 });
