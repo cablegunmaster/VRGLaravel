@@ -33,24 +33,30 @@ password: args.password,
 parallel: 10
 });
 		
-gulp.task('delete', function(cb){
+gulp.task('deleteApp', function(cb){
   //start the proces.	
   process.stdout.write('Start cleanup remote folder...\n'); 
   conn.rmdir(remotePath + 'app/', cb);//actually deleting files.
 });
- gulp.task('deleteApp', function(cb){ 
-  conn.rmdir(remotePath + 'bootstrap/',cb);//actually deleting files.
-  });
+
+ gulp.task('deleteBootstrap', function(cb){ 
+  conn.rmdir(remotePath + 'bootstrap/', cb);//actually deleting files.
+});
+  
 gulp.task('deleteConfig', function(cb){  
-  conn.rmdir(remotePath + 'config/',cb);//actually deleting files.
-  });
+  conn.rmdir(remotePath + 'config/', cb);//actually deleting files.
+});
+  
 gulp.task('deletePublic', function(cb){  
-  conn.rmdir(remotePath + 'public/',cb);//actually deleting files.
-  });
+  conn.rmdir(remotePath + 'public/', cb);//actually deleting files.
+});
+  
 gulp.task('deleteResources', function(cb){  
-  conn.rmdir(remotePath + 'resources/',cb);//actually deleting files.
+  conn.rmdir(remotePath + 'resources/', cb);//actually deleting files.
+});
+  
 gulp.task('deleteTests', function(cb){  
-  conn.rmdir(remotePath + 'tests/',cb);//actually deleting files.
+  conn.rmdir(remotePath + 'tests/', cb);//actually deleting files.
   // deleting files done.	
   process.stdout.write('Cleanup complete...\n');
 });
