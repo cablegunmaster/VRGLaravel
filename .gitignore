@@ -1,3 +1,5 @@
+.travis.yml
+gulpfile.js
 /vendor
 /node_modules
 Homestead.yaml
