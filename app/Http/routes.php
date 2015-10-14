@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/brandweer/', function () {
     return view('welcome');
 });
