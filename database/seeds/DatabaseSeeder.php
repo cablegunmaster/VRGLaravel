@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use UserTable\UserTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,10 +13,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
+        Model::unguard(); //unguards all DB transactions to get a unsafe DB state.
 
-        // $this->call(UserTableSeeder::class);
+        $this->call(UserTableSeeder::class);
 
-        Model::reguard();
+        Model::reguard(); //reinstate all the guards.
     }
 }
