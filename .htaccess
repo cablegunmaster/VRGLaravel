@@ -1,0 +1,6 @@
+Options +FollowSymLinks
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^scrumbag.nl$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.scrumbag.nl$
+RewriteCond %{REQUEST_URI} !brandweer/public/
+RewriteRule (.*) /brandweer/public/$1 [L]
