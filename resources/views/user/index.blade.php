@@ -1,0 +1,15 @@
+<table>
+    <tr>
+        <th>id</th>
+        <th>gebruiker</th>
+        <th>email</th>
+    </tr>
+    @foreach( $users as $user)
+    <tr>
+
+        <td>{{ $user->id }}</td>
+        <td>{!! link_to('user/' . $user->id, $title = $user->name, $attributes = array('class' => 'link', ), $secure = null) !!}</td>
+        <td>{{ $user->email }}</td>
+    </tr>
+    @endforeach
+</table>
