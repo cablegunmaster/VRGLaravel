@@ -11,9 +11,19 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
-    public function testBasicExample()
+    /*public function testBasicExample()
     {
-        $this->visit('/')
+        /*$this->visit('/')
              ->see('Laravel 5');
+    }*/
+
+
+    public function testMinusOneIsEqualsMinusOne()
+    {
+        $this->assertEquals("-1", "-1");
+    }
+
+    public function testMinusOneNotOne(){
+        $this->assertNotEquals("-1", "1");
     }
 }
