@@ -13,14 +13,15 @@
 /**
  * Base route is '/brandweer/' ipv '/' online vanwege de mappenstructuur waarin Laravel zich nu bevind.
  */
-Route::get('/', function () {
+Route::get('/brandweer/', function () {
     //return view('welcome');
-    return view('mock.index');
+    return view('index');
 });
 
-Route::get('/user/{id}', 'UserController@show');
-Route::get('/user', 'UserController@index');
-Route::get('/user/{id}/delete', 'UserController@destroy');
+Route::get('/brandweer/user/{id}', 'UserController@show');
+Route::get('/brandweer/user', 'UserController@index');
+Route::get('/brandweer/user/{id}/delete', 'UserController@destroy');
+Route::get('/brandweer/randomadres', 'MapController@random');
 
 
 
