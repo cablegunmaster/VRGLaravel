@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -11,16 +10,18 @@
 |
 */
 
-Route::get('/', function () {
+/**
+ * Base route is '/brandweer/' ipv '/' online vanwege de mappenstructuur waarin Laravel zich nu bevind.
+ */
+Route::get('/brandweer/', function () {
     //return view('welcome');
-    return view('mock.index');
+    return view('index');
 });
 
-Route::get('/user/{id}', 'UserController@show');
-Route::get('/user', 'UserController@index');
-Route::get('/user/{id}/delete', 'UserController@destroy');
+Route::get('/brandweer/user/{id}', 'UserController@show');
+Route::get('/brandweer/user', 'UserController@index');
+Route::get('/brandweer/user/{id}/delete', 'UserController@destroy');
+Route::get('/brandweer/randomadres', 'MapController@random');
 
 
-/**
- * Base route is /brandweer/ online vanwege de mappenstructuur waarin Laravel zich nu bevind.
- */
+
