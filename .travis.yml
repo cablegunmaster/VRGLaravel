@@ -1,28 +1,31 @@
-language: php
+#deployment Buildscript.
+language: node_js
+node_js:
+- '0.12.7'
 
-php:
-  - 5.5.9
-  - 5.5
-  - 5.6
-  - 7.0
-  - hhvm
-
+#needed utilitys to launch our script.
+before_script:
+- npm install bower
+- echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+- npm install gulp
+- npm install vinyl-ftp 
+- npm install minimist
+- npm install gulp-util
+- npm install laravel-elixir
+#after all goes well. 
+script: 
+- gulp deleteApp --user $FTP_USER --password $FTP_PASSWORD
+- gulp deleteBootstrap --user $FTP_USER --password $FTP_PASSWORD
+- gulp deleteConfig --user $FTP_USER --password $FTP_PASSWORD
+- gulp deletePublic --user $FTP_USER --password $FTP_PASSWORD
+- gulp deleteResources --user $FTP_USER --password $FTP_PASSWORD
+- gulp deleteTests --user $FTP_USER --password $FTP_PASSWORD
+- gulp deploy --user $FTP_USER --password $FTP_PASSWORD
+#gives notification in the channel.
+notifications:
+  slack: teamscrumbag:ESbPamIEtrK0pw4nI2A8R1D3
+#encrypted top secret needed variables.  
 env:
   global:
-    - setup=basic
-
-matrix:
-  include:
-    - php: 5.5.9
-      env: setup=lowest
-    - php: 5.5.9
-      env: setup=stable
-
-sudo: false
-
-install:
-  - if [[ $setup = 'basic' ]]; then travis_retry composer install --no-interaction --prefer-source; fi
-  - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-stable; fi
-  - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-lowest --prefer-stable; fi
-
-script: vendor/bin/phpunit
+  - secure: WNEmktqhmfDPmBc3YCcw2SCXM2y17bjhmuO8jxsjkpmoDjx+HaSDPL6R3Ey4x3kTxDMlkt+Wis07mmGOQUi0EFEICAi5a0xm/e4Ms1YCeWJJ5YhGgE4EhVPjZHHUYNCsKMBQ50Xm+SEtI8GE4gjy5D8UJckIHKJnG9xzmzneVseLRsP/hH/b0lpiB1BT6ctBo8GzdBB64kXXjhsQuX+ikq2Yd+3dRWKe5rpAjiz0IpFBZUrVbzHCzMd6qWvDGNIclyYmebEPbyEf68JqXfZD0iQ6s56gBnH2ZNa6qLTyOqEpkfqpzgVfPn8NKTpFgtV04zt2L+3gijCsTQygBGD5MRDhj+3rThtWFxZdWl+eJWXEy9Z7nqmHtgzohZotAwOE4vHiD492apu/VnDPGvMOtQrFMp6Giw7qUlyKyp9ij1/Zs9TOUziX8kqJx5QVDmDTZa6hYz+dTRO5TatmU0Um4i2leEoeVr0NVj2V4cZo50ghzY7xRsiY2QlCT+13p1ejILvUT1k8p2ML35h2wsYc8q+LszE4GCxx5GrBUstH5tW3X+C5egZqBK0FBElRbmfw6G+kvDD2OJ/5EmygdAgchqz3liyrkL1kEXhvX9nkrbfQrTuhQojWZjGUuOF/kSDSpxuIdI2J0W0k8JWGH7gLw9SxjMn1PbzBM5d9BfKjpWk=
+  - secure: GfBqC9cSrGjBODisPJOBppe2o6i/eP9LhRgcR+nrNxC/u/C8JRoNpyeSWFqg/MxfwH0bTvPPQzVtWpkB77RrprEXBJrh8wNbr30laz1ZTYpaNGjAE/lffIkN/4dDFkWvlohK4QoPrerRd1wtVo4NoKgjtF9i3CYzQpvshk+XwTB7ivdSROK1A9DlE7TuW4EAyWnAyETqBYInM8zm9f72qz3xtIbIrjhC47pYJlyw73m36/b3/rYFa6LuNc+1NFMFdeumom7tklanhd9WC4fPAM9Wvb68WXAo4HhjXECYf7Ne/ykawVS6fAYpYrfr+0C3deFpfPny64uGaJM48fLnvrOEF+6QimBVCYYyeV4gY2iCZyhMSoxaif869LASBOMmjcSPs5VpGCoiU8UCM2AEjUo8QjSLYVAhTvusItfVTia0aHGYEe7J8HIoO04FCuKJWE0KMBTVnXEdksfN63bav38g2J6PBvHw1lbzTCMlhyehTsizNE90FaPLw2pJYMzlYBE9gZKxCltew084IRe8skF/vO9/Fn76oG4LnlQ4PlTd9ktKZNAInpIGTF+NYm2wHt1mCbFOQqI9e6Un1hJ+NxQH/xHPUkv+IgyiEr2lEFYCDFqyY/2V9iBSNoK6/4QkNfMCrOf6M8OLW672FhYX6ccmaKfHF3+PuQuJ3yKPi+s=
