@@ -5,3 +5,5 @@ gulpfile.js
 Homestead.yaml
 Homestead.json
 .env
+/.idea
+.idea/blade.xml
