@@ -23,5 +23,11 @@ Route::get('/brandweer/user', 'UserController@index');
 Route::get('/brandweer/user/{id}/delete', 'UserController@destroy');
 Route::get('/brandweer/randomadres', 'MapController@random');
 
+/**
+ * Algemene instructie
+ */
+Route::get('/brandweer/instructions', 'InstructionController@create'); // creates form crud form.
+Route::get('/brandweer/instructions', 'InstructionController@store');  // stores the form in the database.
+
 
 
