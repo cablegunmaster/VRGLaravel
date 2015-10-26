@@ -30,4 +30,10 @@ Route::get('/brandweer/instructions', 'InstructionController@create'); // create
 Route::get('/brandweer/instructions', 'InstructionController@store');  // stores the form in the database.
 
 
+/**
+ * Api calls.
+ */
+Route::post('/brandweer/api/upload_image', 'Api\ApiController@upload_image');
+Route::get('/brandweer/api/upload_image', 'Api\ApiController@CreateUpload_image');
+
 

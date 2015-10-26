@@ -80,20 +80,14 @@
     var map = L.mapbox.map('map', 'davidvisscher.nom58j6h').on('ready',function(){
         L.control.fullscreen().addTo(map);
 
-        new L.Control.MiniMap(L.mapbox.tileLayer('davidvisscher.nom58j6h'))
-            .addTo(map);
+        new L.Control.MiniMap(L.mapbox.tileLayer('davidvisscher.nom58j6h')).addTo(map);
 
         var directions = L.mapbox.directions({units:"metric"});
-        var directionsLayer = L.mapbox.directions.layer(directions)
-            .addTo(map);
-        var directionsInputControl = L.mapbox.directions.inputControl('inputs', directions)
-            .addTo(map);
-        var directionsErrorsControl = L.mapbox.directions.errorsControl('errors', directions)
-            .addTo(map);
-        var directionsRoutesControl = L.mapbox.directions.routesControl('routes', directions)
-            .addTo(map);
-        var directionsInstructionsControl = L.mapbox.directions.instructionsControl('instructions', directions)
-            .addTo(map);
+        var directionsLayer = L.mapbox.directions.layer(directions).addTo(map);
+        var directionsInputControl = L.mapbox.directions.inputControl('inputs', directions).addTo(map);
+        var directionsErrorsControl = L.mapbox.directions.errorsControl('errors', directions).addTo(map);
+        var directionsRoutesControl = L.mapbox.directions.routesControl('routes', directions).addTo(map);
+        var directionsInstructionsControl = L.mapbox.directions.instructionsControl('instructions', directions).addTo(map);
 
         var featureLayer = L.mapbox.featureLayer()
             .loadURL('/brandweer/randomadres')
