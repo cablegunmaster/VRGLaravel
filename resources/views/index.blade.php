@@ -155,10 +155,6 @@
         $('#teamsModalContent').load('brandweer/team');
     };
 
-    function teamsModal_clear(){
-
-    };
-
 </script>
 </body>
 </html>
