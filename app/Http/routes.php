@@ -23,6 +23,13 @@ Route::get('/brandweer/user', 'UserController@index');
 Route::get('/brandweer/user/{id}/delete', 'UserController@destroy');
 Route::get('/brandweer/randomadres', 'MapController@random');
 
+
+/**
+ * Team Routes
+ */
+
+Route::get('/brandweer/team', 'TeamController@index');
+
 /**
  * Algemene instructie
  */

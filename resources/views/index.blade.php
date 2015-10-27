@@ -40,12 +40,26 @@
     <div class="nav-wrapper grey darken-4">
         <a href="#" class="brand-logo white-text">&nbsp;&nbsp;Meetploeg app</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="#">Teams</a></li>
+            <li><a class="modal-trigger waves-effect waves-light" href="#teamsModal" onclick="teamsModal_open();">Teams</a></li>
             <li><a href="#">Geschiedenis</a></li>
             <li><a href="#">Instellingen</a></li>
         </ul>
     </div>
 </nav>
+
+<!-- Modal Area -->
+
+<div id="teamsModal" class="modal modal-fixed-footer">
+    <div class="modal-content black-text" id="teamsModalContent">
+        <p>Loading</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat center">Sluiten</a>
+    </div>
+</div>
+
+<!-- Map Area -->
+
 <div class="row noBottomMargin">
     <div class="col s3 black-text">
         <div class="card-panel white-text blue darken-2" style="padding-top:5px;padding-bottom:5px">
@@ -131,7 +145,15 @@
         $("#map").css("height", mapheight + "px")
     });
 
-
+    function teamsModal_open(){
+        $('#teamsModalContent').html('\
+                <h5 class="center-align">Laden...</h5>\
+                <div class="green lighten-3 progress">\
+                <div class="green indeterminate"></div>\
+                </div>');
+        $('#teamsModal').openModal();
+        $('#teamsModalContent').load('brandweer/team');
+    };
 
 </script>
 </body>
