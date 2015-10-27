@@ -40,7 +40,7 @@
     <div class="nav-wrapper grey darken-4">
         <a href="#" class="brand-logo white-text">&nbsp;&nbsp;Meetploeg app</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a class="modal-trigger waves-effect waves-light" href="#teamsModal" onclick="$('#teamsModal').openModal()">Teams</a></li>
+            <li><a class="modal-trigger waves-effect waves-light" href="#teamsModal" onclick="teamsModal();">Teams</a></li>
             <li><a href="#">Geschiedenis</a></li>
             <li><a href="#">Instellingen</a></li>
         </ul>
@@ -50,7 +50,7 @@
 <!-- Modal Area -->
 
 <div id="teamsModal" class="modal modal-fixed-footer">
-    <div class="modal-content" id="teamsModalContent">
+    <div class="modal-content black-text" id="teamsModalContent">
         <div class="green lighten-3 progress">
             <div class="green indeterminate"></div>
         </div>
@@ -147,6 +147,10 @@
         $("#map").css("height", mapheight + "px")
     });
 
+    function teamsModal(){
+        $('#teamsModal').openModal();
+        $('#teamsModalContent').load('brandweer/user');
+    };
 
 </script>
 </body>
