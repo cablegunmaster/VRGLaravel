@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\User;
 
 class TeamController extends Controller
 {
@@ -15,7 +16,8 @@ class TeamController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all()->sortBy('team_id');
+        return view('user.index')->with('users', $users);
     }
 
     /**

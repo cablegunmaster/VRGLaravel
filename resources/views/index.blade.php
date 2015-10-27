@@ -149,7 +149,7 @@
 
     function teamsModal(){
         $('#teamsModal').openModal();
-        $('#teamsModalContent').load('brandweer/user');
+        $('#teamsModalContent').load('brandweer/team');
     };
 
 </script>
