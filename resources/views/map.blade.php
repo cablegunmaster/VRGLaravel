@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html class="height:100vh">
-<head>
-    <!--Import Google Icon Font-->
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
+@extends('template')
+@section('title', 'map')
 
+<<<<<<< HEAD:resources/views/index.blade.php
     <style>
         .nopadding {
             padding: 0px 0px 0px 0px !important;
@@ -60,6 +56,9 @@
 
 <!-- Map Area -->
 
+=======
+@section('content')
+>>>>>>> add form and insert to database:resources/views/map.blade.php
 <div class="row noBottomMargin">
     <div class="col s3 black-text">
         <div class="card-panel white-text blue darken-2" style="padding-top:5px;padding-bottom:5px">
@@ -83,10 +82,6 @@
     </div>
     <div id="map" class="col s9 nopadding nomargin" style="height:93vh"></div>
 </div>
-<!--Import jQuery before materialize.js-->
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="js/materialize.min.js"></script>
-
 <script type="text/javascript">
     'use strict';
     L.mapbox.accessToken = 'pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWcwM2NpazQwMmk4dDRreDdpNGd1MXd0In0.JsRAe5r1LWPdBqlhMTOlyQ';
@@ -156,5 +151,4 @@
     };
 
 </script>
-</body>
-</html>
+@stop

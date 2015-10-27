@@ -14,7 +14,7 @@
  * Base route is '/brandweer/' ipv '/' online vanwege de mappenstructuur waarin Laravel zich nu bevind.
  */
 Route::get('/brandweer/', function () {
-    return view('index');
+    return view('map');
 });
 
 Route::get('/brandweer/user/{id}', 'UserController@show');
@@ -32,8 +32,8 @@ Route::get('/brandweer/team', 'TeamController@index');
 /**
  * Algemene instructie
  */
-Route::get('/brandweer/instructions', 'InstructionController@create'); // creates form crud form.
-Route::get('/brandweer/instructions', 'InstructionController@store');  // stores the form in the database.
+Route::get('/brandweer/instructions/create', 'InstructionController@create'); // creates form crud form.
+Route::post('/brandweer/instructions', 'InstructionController@store');  // stores the form in the database.
 
 /**
  * Api calls.
