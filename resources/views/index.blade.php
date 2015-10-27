@@ -56,7 +56,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat center">Agree</a>
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat center">Sluiten</a>
     </div>
 </div>
 
