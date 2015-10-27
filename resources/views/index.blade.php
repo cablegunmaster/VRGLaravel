@@ -40,7 +40,7 @@
     <div class="nav-wrapper grey darken-4">
         <a href="#" class="brand-logo white-text">&nbsp;&nbsp;Meetploeg app</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a class="modal-trigger waves-effect waves-light" href="#teamsModal" onclick="teamsModal();">Teams</a></li>
+            <li><a class="modal-trigger waves-effect waves-light" href="#teamsModal" onclick="teamsModal_open();">Teams</a></li>
             <li><a href="#">Geschiedenis</a></li>
             <li><a href="#">Instellingen</a></li>
         </ul>
@@ -51,9 +51,7 @@
 
 <div id="teamsModal" class="modal modal-fixed-footer">
     <div class="modal-content black-text" id="teamsModalContent">
-        <div class="green lighten-3 progress">
-            <div class="green indeterminate"></div>
-        </div>
+        <p>Loading</p>
     </div>
     <div class="modal-footer">
         <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat center">Sluiten</a>
@@ -147,9 +145,18 @@
         $("#map").css("height", mapheight + "px")
     });
 
-    function teamsModal(){
+    function teamsModal_open(){
+        $('#teamsModalContent').html('\
+                <h5 class="center-align">Laden...</h5>\
+                <div class="green lighten-3 progress">\
+                <div class="green indeterminate"></div>\
+                </div>');
         $('#teamsModal').openModal();
         $('#teamsModalContent').load('brandweer/team');
+    };
+
+    function teamsModal_clear(){
+
     };
 
 </script>
