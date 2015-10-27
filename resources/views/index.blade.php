@@ -40,12 +40,28 @@
     <div class="nav-wrapper grey darken-4">
         <a href="#" class="brand-logo white-text">&nbsp;&nbsp;Meetploeg app</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="#">Teams</a></li>
+            <li><a class="modal-trigger waves-effect waves-light" href="#teamsModal" onclick="$('#teamsModal').openModal()">Teams</a></li>
             <li><a href="#">Geschiedenis</a></li>
             <li><a href="#">Instellingen</a></li>
         </ul>
     </div>
 </nav>
+
+<!-- Modal Area -->
+
+<div id="teamsModal" class="modal modal-fixed-footer">
+    <div class="modal-content" id="teamsModalContent">
+        <div class="green lighten-3 progress">
+            <div class="green indeterminate"></div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat center">Agree</a>
+    </div>
+</div>
+
+<!-- Map Area -->
+
 <div class="row noBottomMargin">
     <div class="col s3 black-text">
         <div class="card-panel white-text blue darken-2" style="padding-top:5px;padding-bottom:5px">
@@ -130,7 +146,6 @@
         var mapheight = $(window).height() - $("#navbar").height();
         $("#map").css("height", mapheight + "px")
     });
-
 
 
 </script>
