@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Task;
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
 class InstructionController extends Controller
 {
@@ -25,7 +24,7 @@ class InstructionController extends Controller
      */
     public function create()
     {
-        //
+        return view('instruction.create');
     }
 
     /**
@@ -36,7 +35,13 @@ class InstructionController extends Controller
      */
     public function store(Request $request)
     {
+        $input = $request->all();
+        $task = new Task();
+        $task->title= $input['title'];
+        $task->description = $input['description'];
+        $task->save();
 
+        return $task . ": is saved";
     }
 
     /**
