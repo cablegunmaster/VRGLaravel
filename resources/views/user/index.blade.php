@@ -10,7 +10,7 @@
 
         <td>{{ $user->id }}</td>
         <td>{{ $user->team_id }}</td>
-        <td>{!! link_to('user/' . $user->id, $title = $user->name, $attributes = array('class' => 'link', ), $secure = null) !!}</td>
+        <td>{!! link_to('brandweer/user/' . $user->id, $title = $user->name, $attributes = array('class' => 'link', ), $secure = null) !!}</td>
         <td>{{ $user->email }}</td>
     </tr>
     @endforeach
