@@ -5,10 +5,6 @@ gulpfile.js
 Homestead.yaml
 Homestead.json
 .env
-<<<<<<< HEAD
 *.iml
 /.idea
-=======
-/.idea
-.idea/blade.xml
->>>>>>> new feature branch feat-instructies
+/.phpintel
