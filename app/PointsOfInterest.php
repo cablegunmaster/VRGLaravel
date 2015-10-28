@@ -11,7 +11,7 @@ class PointsOfInterest extends Model
      *
      * @var string
      */
-    protected $table = 'pointsOffInterest';
+    protected $table = 'pointsOfInterest';
 
     /**
      * The attributes that are mass assignable.

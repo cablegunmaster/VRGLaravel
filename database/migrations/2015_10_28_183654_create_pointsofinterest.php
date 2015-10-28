@@ -12,12 +12,12 @@ class CreatePointsofinterest extends Migration
      */
     public function up()
     {
-        Schema::create('pointsOffInterest', function(Blueprint $table) {
+        Schema::create('pointsOfInterest', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('incident_id');
             $table->integer('task_id');
-            $table->double('lat');
-            $table->double('lon');
+            $table->double('lat'); // X coordinate.
+            $table->double('lon'); // Y coordinate.
             $table->integer('poi_type');
             $table->timestamps();
         });
@@ -30,6 +30,6 @@ class CreatePointsofinterest extends Migration
      */
     public function down()
     {
-        Schema::drop('pointsOffInterest');
+        Schema::drop('pointsOfInterest');
     }
 }
