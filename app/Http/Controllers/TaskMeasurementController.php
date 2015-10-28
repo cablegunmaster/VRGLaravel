@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Team;
+use App\task;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -39,7 +40,21 @@ class TaskMeasurementController extends Controller
      */
     public function store(Request $request)
     {
-       return $request->all();
+        $input = $request->all();
+        $data = [];
+
+        $data['buisnummer'] = $input['buisnummer'];
+        $data['items'] = $input['items'];
+
+        $task = new Task();
+        $task->title= $input['title'];
+        $task->team_id = $input['teamId'];
+        $task->description = $input['description'];
+        $task->data = json_encode($data);
+
+        $task->save();
+
+        return $task ." is stored" ;
     }
 
     /**

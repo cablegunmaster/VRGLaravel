@@ -3,6 +3,13 @@
 @section('content')
 {!! Form::open(array('url' => 'brandweer/meetinstructie/store','method' => 'post')) !!}
 <div class="row">
+    <div class="input-field col s6">
+        {!! Form::label('title', 'Titel') !!}
+        {!! Form::text('title', null, ['class'=> 'form-control']) !!}
+    </div>
+</div>
+
+<div class="row">
      <div class="input-field col s6">
             <select id="team" name="teamId">
               <option value="" disabled selected>Selecteer een team</option>
@@ -68,7 +75,7 @@
 <div class="row">
     <div class="input-field col s6">
         <p>
-            <input type="checkbox" class="filled-in" id="oxygen" name="items[]" value="Oxygen"/>
+            <input type="checkbox" class="filled-in" id="oxygen" name="items[]" value="Ademlucht"/>
             <label for="oxygen">Ademlucht</label>
             <span class="badge">Ademlucht</span>
         </p>
@@ -78,8 +85,8 @@
 <div class="row">
     <div class="row">
         <div class="input-field col s6">
-            {!! Form::label('particularities', 'Bijzonderheden') !!}
-            {!! Form::textarea('particularities', null, ['class' => 'materialize-textarea']) !!}
+            {!! Form::label('description', 'Bijzonderheden') !!}
+            {!! Form::textarea('description', null, ['class' => 'materialize-textarea']) !!}
         </div>
     </div>
 </div>
