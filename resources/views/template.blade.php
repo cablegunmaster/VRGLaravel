@@ -41,7 +41,7 @@
     <div class="nav-wrapper grey darken-4">
         <a href="#" class="brand-logo white-text">&nbsp;&nbsp;Meetploeg app</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="#teamsModal">Teams</a></li>
+            <li><a class="modal-trigger waves-effect waves-light" href="#teamsModal" onclick="teamsModal_open();">Teams</a></li>
             <li><a href="#">Geschiedenis</a></li>
             <li><a href="#">Instellingen</a></li>
         </ul>
