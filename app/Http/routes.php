@@ -38,8 +38,8 @@ Route::post('/brandweer/instructions', 'InstructionController@store');  // store
 /**
  * meet instructie
  */
-Route::get('/brandweer/createmeetinstructie', 'TaskMeasurementController@create'); // crud form.
-
+Route::get('/brandweer/meetinstructie/create', 'TaskMeasurementController@create'); // crud form.
+Route::post('/brandweer/meetinstructie/store', 'TaskMeasurementController@store'); // store in db.
 /**
  * Api calls.
  */

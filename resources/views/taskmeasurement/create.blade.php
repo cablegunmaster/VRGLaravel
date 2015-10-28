@@ -1,7 +1,7 @@
 @extends('template')
 
 @section('content')
-{!! Form::open(array('url' => 'brandweer/instructions','method' => 'post')) !!}
+{!! Form::open(array('url' => 'brandweer/meetinstructie/store','method' => 'post')) !!}
 <div class="row">
     <div class="input-field col s6">
         {!! Form::label('buisnummer', 'Nummer Gasmeet buisje') !!}
@@ -10,10 +10,11 @@
     </div>
 </div>
 
+
 <div class="row">
     <div class="input-field col s6">
-    {!! Form::checkbox('explosion', 'value', false, ['class' => 'filled-in']); !!}
-        {!! Form::label('explosion', 'Explosiemeting stand LEL') !!}
+        <input type="checkbox" class="filled-in" id="explosion" name="items[]" value="Explosiemeting stand LEL"/>
+        <label for="explosion">Explosiemeting stand LEL</label>
         <span class="badge">Echo</span>
 
     </div>
@@ -21,36 +22,42 @@
 
 <div class="row">
     <div class="input-field col s6">
-    {!! Form::checkbox('automess', 'value', false, ['class' => 'filled-in']); !!}
-        {!! Form::label('automess', 'Automess') !!}
-        <span class="badge">Remeo</span>
-
+        <p>
+            <input type="checkbox" class="filled-in" id="automess" name="items[]" value="Automess"/>
+            <label for="automess">Automess</label>
+            <span class="badge">Remeo</span>
+        </p>
     </div>
 </div>
 
 <div class="row">
     <div class="input-field col s6">
-    {!! Form::checkbox('sonde', 'value', false, ['class' => 'filled-in']); !!}
-        {!! Form::label('sonde', 'Automess + sonde') !!}
-        <span class="badge">Remeo - sierra</span>
-
+        <p>
+            <input type="checkbox" class="filled-in" id="drone" name="items[]" value="Automess + sonde"/>
+            <label for="drone">Automess + sonde</label>
+            <span class="badge">Remeo - sierra</span>
+        </p>
     </div>
 </div>
 
 <div class="row">
     <div class="input-field col s6">
-        {!! Form::checkbox('dosis', 'value', false, ['class' => 'filled-in']); !!}
-        {!! Form::label('dosis', 'Persoonlijke dosismeter') !!}
-        <span class="badge">Delta</span>
+        <p>
+            <input type="checkbox" class="filled-in" id="personal" name="items[]" value="Persoonlijke dosismeter"/>
+            <label for="personal">Persoonlijke dosismeter</label>
+            <span class="badge">Delta</span>
+        </p>
     </div>
 </div>
 
+
 <div class="row">
     <div class="input-field col s6">
-
-        {!! Form::checkbox('oxygen', 'value', false, ['class' => 'filled-in']); !!}
-        {!! Form::label('oxygen', 'Ademlucht') !!}
-        <span class="badge">Ademlucht</span>
+        <p>
+            <input type="checkbox" class="filled-in" id="oxygen" name="items[]" value="Oxygen"/>
+            <label for="oxygen">Ademlucht</label>
+            <span class="badge">Ademlucht</span>
+        </p>
     </div>
 </div>
 
@@ -62,6 +69,8 @@
         </div>
     </div>
 </div>
+
+
 
 <div class="row">
     <div class="input-field col s6">
