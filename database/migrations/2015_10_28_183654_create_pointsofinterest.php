@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTeam extends Migration
+class CreatePointsofinterest extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,13 @@ class CreateTeam extends Migration
      */
     public function up()
     {
-        Schema::create('team', function (Blueprint $table) {
+        Schema::create('pointsOfInterest', function(Blueprint $table) {
             $table->increments('id');
-            $table->String('code', 32);
-            $table->String('name', 64);
-            $table->Double('lat'); //home location of the team
-            $table->Double('lon'); //home location of the team
+            $table->integer('incident_id');
+            $table->integer('task_id');
+            $table->double('lat'); // X coordinate.
+            $table->double('lon'); // Y coordinate.
+            $table->integer('poi_type');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateTeam extends Migration
      */
     public function down()
     {
-        Schema::drop('team');
+        Schema::drop('pointsOfInterest');
     }
 }

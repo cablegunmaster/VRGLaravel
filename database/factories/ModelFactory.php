@@ -1,6 +1,7 @@
 <?php
 
 use App\User;
+use App\Location;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,13 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
     ];
+});
+
+$factory->define(Location::class, function (Faker\Generator $faker) {
+   return [
+       'user_id' => $faker->numberBetween(1,20),
+       'task_id' => $faker->numberBetween(1,10),
+       'lat' => 53.195+(mt_rand() / mt_getrandmax())/15,
+       'lon'=> 6.53+(mt_rand() / mt_getrandmax())/15,
+   ];
 });

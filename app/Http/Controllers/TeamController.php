@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Task;
 use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use App\User;
 
-class InstructionController extends Controller
+class TeamController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +16,8 @@ class InstructionController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all()->sortBy('team_id');
+        return view('user.index')->with('users', $users);
     }
 
     /**
@@ -24,7 +27,7 @@ class InstructionController extends Controller
      */
     public function create()
     {
-        return view('instruction.create');
+        //
     }
 
     /**
@@ -35,13 +38,7 @@ class InstructionController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-        $task = new Task();
-        $task->title= $input['title'];
-        $task->description = $input['description'];
-        $task->save();
-
-        return $task . ": is saved";
+        //
     }
 
     /**

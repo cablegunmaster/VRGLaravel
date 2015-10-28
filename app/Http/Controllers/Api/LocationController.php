@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Task;
 use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use App\Location;
 
-class InstructionController extends Controller
+class LocationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +16,8 @@ class InstructionController extends Controller
      */
     public function index()
     {
-        //
+        $locations = Location::orderBy('created_at', 'asc')->groupBy('user_id')->get();
+        return View('api.GEOJsonLocation')->with('locations', $locations);
     }
 
     /**
@@ -24,7 +27,7 @@ class InstructionController extends Controller
      */
     public function create()
     {
-        return view('instruction.create');
+        //
     }
 
     /**
@@ -35,13 +38,7 @@ class InstructionController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-        $task = new Task();
-        $task->title= $input['title'];
-        $task->description = $input['description'];
-        $task->save();
-
-        return $task . ": is saved";
+        //
     }
 
     /**
