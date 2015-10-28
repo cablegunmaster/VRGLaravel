@@ -33,7 +33,10 @@ class ApiController extends Controller
 			$file = NULL;
 			$result = array('success' => 'true');
 			if(Input::has('image')) {
-				$path = '/public/upload/';
+				$path = 'upload/';
+                if(!file_exists($path)) {
+                    mkdir($path);
+                }
 				$file = $path.time().'.jpg';
 				$ifp = fopen($file, "wb"); 
 				fwrite($ifp, base64_decode(Input::get('image'))); 
