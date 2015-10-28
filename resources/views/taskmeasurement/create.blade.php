@@ -3,6 +3,17 @@
 @section('content')
 {!! Form::open(array('url' => 'brandweer/meetinstructie/store','method' => 'post')) !!}
 <div class="row">
+     <div class="input-field col s6">
+            <select id="team" name="teamId">
+              <option value="" disabled selected>Selecteer een team</option>
+              @foreach($teams as $team)
+                <option value="{{ $team->id }}">{{ $team->name }}</option>
+              @endforeach
+            </select>
+      </div>
+</div>
+
+<div class="row">
     <div class="input-field col s6">
         {!! Form::label('buisnummer', 'Nummer Gasmeet buisje') !!}
         <span class="badge">Bravo</span>
@@ -16,7 +27,6 @@
         <input type="checkbox" class="filled-in" id="explosion" name="items[]" value="Explosiemeting stand LEL"/>
         <label for="explosion">Explosiemeting stand LEL</label>
         <span class="badge">Echo</span>
-
     </div>
 </div>
 
@@ -79,5 +89,6 @@
          </button>
      </div>
 </div>
+
 {!! Form::close() !!}
 @stop

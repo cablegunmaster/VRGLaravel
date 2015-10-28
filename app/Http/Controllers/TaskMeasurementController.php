@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Team;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -26,7 +27,8 @@ class TaskMeasurementController extends Controller
      */
     public function create()
     {
-        return view('taskmeasurement.create');
+        $teams = Team::all();
+        return view('taskmeasurement.create', compact('teams'));
     }
 
     /**
