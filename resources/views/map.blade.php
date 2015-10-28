@@ -82,15 +82,5 @@
         $("#map").css("height", mapheight + "px")
     });
 
-    function teamsModal_open(){
-        $('#teamsModalContent').html('\
-                <h5 class="center-align">Laden...</h5>\
-                <div class="green lighten-3 progress">\
-                <div class="green indeterminate"></div>\
-                </div>');
-        $('#teamsModal').openModal();
-        $('#teamsModalContent').load('brandweer/team');
-    };
-
 </script>
 @stop
