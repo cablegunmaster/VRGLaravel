@@ -40,7 +40,7 @@ Route::get('/brandweer/instructions', 'InstructionController@store');  // stores
 /**
  * Api calls.
  */
-Route::post('/brandweer/api/upload_image', 'Api\ApiController@upload_image');
+Route::post('/brandweer/api/observation_upload', 'Api\ApiController@observation_upload');
 Route::get('/brandweer/api/upload_image', 'Api\ApiController@CreateUpload_image');
 
 

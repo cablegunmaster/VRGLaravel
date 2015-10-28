@@ -26,34 +26,28 @@ class ApiController extends Controller
      * Store a newly created resource in storage.
      * @return Response
      */
-    public function store(Response $request)
+    public function observation_upload(Response $request)
     {
-        if (Input::hasFile('image') && Input::has('observation') &&
-            (Input::file('image')->getClientOriginalExtension() == 'jpg' || Input::file('file')->getClientOriginalExtension() == 'png')) //check to see if its a image.
+        if (Input::has('observation')) //check to see if its a image.
         {
-
-            if(Input::hasFile('image')){
-
-                $file = Input::file('image');
-
-                //rename the picture to unix timestamp.
-                $imageName =  time() . '.' .
-                    Input::file('file')->getClientOriginalExtension(); //front name and last name.
-
-                Input::file('image')->move(
-                    base_path() . '/public/upload/', $imageName
-                ); //replace the picture to new spot
-            }
-
-            //create db Picture.
-            $mmeasurement = new Measurement();
-            //$pic->filename = $imageName;
-            $mmeasurement->save(); //actually create the picture object.
-
-            return "Succesfull file uploaded";
-            //return View('api.showImage')->with('image', $imageName); //show the image.
+			$file = NULL;
+			$result = array('success' => 'true');
+			if(Input::has('image')) {
+				$path = '/public/upload/';
+				$file = $path.time().'.jpg';
+				$ifp = fopen($file, "wb"); 
+				fwrite($ifp, base64_decode(Input::get('image'))); 
+				fclose($ifp); 
+			}
+			
+			// TODO: location_id, created_at, updated_at			
+            $measurement = new Measurement();
+            $measurement->message = Input::get('observation');
+            $measurement->file = $file;
+            $measurement->save();
+			$result['id'] = $measurement->id;
+            return json_encode($result);
         }else{
-
             return \Response::make('Bad request happened', 400);
         }
     }
