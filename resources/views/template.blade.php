@@ -71,7 +71,7 @@
                 <div class="green indeterminate"></div>\
                 </div>');
         $('#teamsModal').openModal();
-        $('#teamsModalContent').load('brandweer/team');
+        $('#teamsModalContent').load('team');
     };
 </script>
 
