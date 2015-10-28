@@ -6,9 +6,13 @@
      <div class="input-field col s6">
             <select id="team" name="teamId">
               <option value="" disabled selected>Selecteer een team</option>
-              @foreach($teams as $team)
-                <option value="{{ $team->id }}">{{ $team->name }}</option>
-              @endforeach
+              @if(count($teams))
+                  @foreach($teams as $team)
+                    <option value="{{ $team->id }}">{{ $team->name }}</option>
+                  @endforeach
+              @else
+                <option value="0">Team Mock-up</option>
+              @endif
             </select>
       </div>
 </div>
