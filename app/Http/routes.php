@@ -40,7 +40,7 @@ Route::post('/brandweer/instructions', 'InstructionController@store');  // store
  */
 
 //Upload a image to the server.
-Route::post('/brandweer/api/upload_image', 'Api\ApiController@upload_image');
+Route::post('/brandweer/api/observation_upload', 'Api\ApiController@observation_upload');
 Route::get('/brandweer/api/upload_image', 'Api\ApiController@CreateUpload_image');
 
 //location call. All firetruck call.
