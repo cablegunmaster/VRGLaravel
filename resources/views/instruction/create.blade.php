@@ -1,8 +1,3 @@
-@extends('template')
-
-@section('title', 'New instruction')
-
-@section('content')
 {!! Form::open(array('url' => 'brandweer/instructions','method' => 'post')) !!}
 <div class="row">
     <div class="input-field col s6">
@@ -29,4 +24,3 @@
      </div>
 </div>
 {!! Form::close() !!}
-@stop
