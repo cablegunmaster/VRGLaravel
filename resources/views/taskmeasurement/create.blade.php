@@ -1,17 +1,17 @@
-{!! Form::open(array('url' => 'brandweer/meetinstructie/store','method' => 'post')) !!}
+{!! Form::open(array('url' => 'brandweer/meetinstructie/store','method' => 'post', 'id' => 'meetinstructie_form')) !!}
 <div class="row">
-     <div class="input-field col s12">
-            <select id="team" name="teamId">
-              <option value="" disabled selected>Selecteer een team</option>
-              @if(count($teams))
-                  @foreach($teams as $team)
-                    <option value="{{ $team->id }}">{{ $team->name }}</option>
-                  @endforeach
-              @else
-                <option value="0">Team Mock-up</option>
-              @endif
-            </select>
-      </div>
+ <div class="input-field col s12">
+    <select id="team" name="teamId">
+      <option value="" disabled selected>Selecteer een team</option>
+      @if(count($teams))
+      @foreach($teams as $team)
+      <option value="{{ $team->id }}">{{ $team->name }}</option>
+      @endforeach
+      @else
+      <option value="0">Team Mock-up</option>
+      @endif
+  </select>
+</div>
 </div>
 
 <div class="row">
@@ -87,8 +87,19 @@
     <div class="input-field col s12">
         <button class="btn waves-effect waves-light col s12" type="submit">Submit
             <i class="material-icons right">send</i>
-         </button>
-     </div>
+        </button>
+    </div>
 </div>
-
 {!! Form::close() !!}
+
+<script>
+    $('#meetinstructie_form').submit( function(e) {
+        $.post($(this).attr('action'), $(this).serialize(), function(res){
+            // Do something with the response `res`
+            console.log(res);
+            // Don't forget to hide the loading indicator!
+            $('#meetinstructie_form').parent().parent().closeModal();
+        });
+        return false; // prevent default action
+    });
+</script>

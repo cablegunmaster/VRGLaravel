@@ -12,21 +12,21 @@
     <div class="modal-content black-text lighten-1">
       <div class="row">
         <a class="col s12 m6 l3 card-panel waves-effect blue-text waves-blue" onclick="LargeModal_open_meetopdracht();">
-         <i class="material-icons large">message</i>
-         <h4>Tekstbericht</h4>
-     </a>
-     <a class="col s12 m6 l3 card-panel waves-effect blue-text waves-blue" onclick="">
-         <i class="material-icons large">explore</i>
-         <h4>Rijopdracht</h4>
-     </a>
-     <a class="col s12 m6 l3 card-panel waves-effect blue-text waves-blue" onclick="LargeModal_open_textmessage();">
-         <i class="material-icons large">cloud</i>
-         <h4>Meetopdracht</h4>
-     </a>
- </div>
+           <i class="material-icons large">message</i>
+           <h4>Tekstbericht</h4>
+       </a>
+       <a class="col s12 m6 l3 card-panel grey-text " onclick="">
+           <i class="material-icons large">explore</i>
+           <h4>Rijopdracht</h4>
+       </a>
+       <a class="col s12 m6 l3 card-panel waves-effect blue-text waves-blue" onclick="LargeModal_open_textmessage();">
+           <i class="material-icons large">cloud</i>
+           <h4>Meetopdracht</h4>
+       </a>
+   </div>
 </div>
 <div class="modal-footer">
-  <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+  <a href="#!" class=" modal-action modal-close waves-effect waves-blue btn-flat">Agree</a>
 </div>
 </div>
 
@@ -92,8 +92,8 @@ $(document).ready(function()
 function LargeModal_open_meetopdracht(){
     $('#LargeModalContent').html('\
         <h5 class="center-align">Laden...</h5>\
-        <div class="green lighten-3 progress">\
-            <div class="green indeterminate"></div>\
+        <div class="blue lighten-3 progress">\
+            <div class="blue indeterminate"></div>\
         </div>');
     $('#LargeModal').openModal();
     $('#LargeModalContent').load('/brandweer/instructions/create', function()
@@ -104,8 +104,8 @@ function LargeModal_open_meetopdracht(){
         links.click(function(){
             $('#BottomSheetModalContent').html('\
                 <h5 class="center-align">Laden...</h5>\
-                <div class="green lighten-3 progress">\
-                    <div class="green indeterminate"></div>\
+                <div class="blue lighten-3 progress">\
+                    <div class="blue indeterminate"></div>\
                 </div>');
             $('#BottomSheetModal').openModal();
             $('#BottomSheetModalContent').load($(this).attr('href'));
@@ -120,8 +120,8 @@ function LargeModal_open_meetopdracht(){
 function LargeModal_open_textmessage(){
     $('#LargeModalContent').html('\
         <h5 class="center-align">Laden...</h5>\
-        <div class="green lighten-3 progress">\
-            <div class="green indeterminate"></div>\
+        <div class="blue lighten-3 progress">\
+            <div class="blue indeterminate"></div>\
         </div>');
     $('#LargeModal').openModal();
     $('#LargeModalContent').load('/brandweer/meetinstructie/create', function()
@@ -132,8 +132,8 @@ function LargeModal_open_textmessage(){
         links.click(function(){
             $('#BottomSheetModalContent').html('\
                 <h5 class="center-align">Laden...</h5>\
-                <div class="green lighten-3 progress">\
-                    <div class="green indeterminate"></div>\
+                <div class="blue lighten-3 progress">\
+                    <div class="blue indeterminate"></div>\
                 </div>');
             $('#BottomSheetModal').openModal();
             $('#BottomSheetModalContent').load($(this).attr('href'));
