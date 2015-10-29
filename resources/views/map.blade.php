@@ -91,7 +91,7 @@ function LargeModal_open_opdracht(){
                     <div class="green indeterminate"></div>\
                 </div>');
             $('#LargeModal').openModal();
-            $('#LargeModalContent').load('/brandweer/instructions/create', function()
+            $('#LargeModalContent').load('/brandweer/meetinstructie/create', function()
             {
 
                 var links = $('#LargeModalContent').find("a")
@@ -106,6 +106,8 @@ function LargeModal_open_opdracht(){
                     $('#BottomSheetModalContent').load($(this).attr('href'));
                     return false;
                 });
+
+                $('select').material_select();
 
             });
         };  
