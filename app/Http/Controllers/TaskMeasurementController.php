@@ -52,10 +52,11 @@ class TaskMeasurementController extends Controller
         $data['items'] = $input['items'];
 
         $task = new Task();
-        $task->title= "Meetopdracht voor een team ";
+        $task->title= "Meetopdracht voor team ".$input['teamId'];
         $task->team_id = $input['teamId'];
         $task->description = $input['description'];
         $task->data = json_encode($data);
+        $task->task_type_id = 2;
 
         $task->save();
 
