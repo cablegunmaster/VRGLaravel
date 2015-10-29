@@ -91,7 +91,7 @@
 					<div class="green indeterminate"></div>\
 				</div>');
 			$('#LargeModal').openModal();
-			$('#LargeModalContent').load('team', function()
+			$('#LargeModalContent').load('/brandweer/team', function()
 			{
 
 				var links = $('#LargeModalContent').find("a")
