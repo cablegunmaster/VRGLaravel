@@ -43,9 +43,9 @@ class TaskMeasurementController extends Controller
         $input = $request->all();
         $data = [];
 
-        if($input['items'] ==null)
+        if(!isset($input['items']) || $input['items'] == null)
         {
-            $input = array();
+            $input['items'] = [""];
         }
 
         $data['buisnummer'] = $input['buisnummer'];
