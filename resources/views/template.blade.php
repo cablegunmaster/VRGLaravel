@@ -40,7 +40,13 @@
 	<nav id="navbar">
 		<div class="nav-wrapper grey darken-4">
 			<a href="#" class="brand-logo white-text">&nbsp;&nbsp;Meetploeg app</a>
+			<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li><a class="modal-trigger waves-effect waves-light" href="#LargeModal" onclick="LargeModal_open_teams();">Teams</a></li>
+				<li><a href="#">Geschiedenis</a></li>
+				<li><a href="#">Instellingen</a></li>
+			</ul>
+			<ul class="side-nav" id="mobile-demo">
 				<li><a class="modal-trigger waves-effect waves-light" href="#LargeModal" onclick="LargeModal_open_teams();">Teams</a></li>
 				<li><a href="#">Geschiedenis</a></li>
 				<li><a href="#">Instellingen</a></li>
@@ -74,6 +80,10 @@
 		@yield('content')
 	</div>
 	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".button-collapse").sideNav();
+		})
+
 		function LargeModal_open_teams(){
 			$('#LargeModalContent').html('\
 				<h5 class="center-align">Laden...</h5>\
