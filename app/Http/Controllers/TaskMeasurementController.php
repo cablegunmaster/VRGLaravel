@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Team;
-use App\task;
+use App\Task;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -43,11 +43,16 @@ class TaskMeasurementController extends Controller
         $input = $request->all();
         $data = [];
 
+        if(!isset($input['items']) || $input['items'] == null)
+        {
+            $input['items'] = [""];
+        }
+
         $data['buisnummer'] = $input['buisnummer'];
         $data['items'] = $input['items'];
 
         $task = new Task();
-        $task->title= $input['title'];
+        $task->title= "Meetopdracht voor een team ";
         $task->team_id = $input['teamId'];
         $task->description = $input['description'];
         $task->data = json_encode($data);
