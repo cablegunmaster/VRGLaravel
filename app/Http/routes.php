@@ -30,6 +30,13 @@ Route::get('/brandweer/randomadres', 'MapController@random');
 Route::get('/brandweer/team', 'TeamController@index');
 
 /**
+ * Task Routes
+ */
+
+Route::get('/brandweer/task/', 'TaskController@index');
+Route::get('/brandweer/task/preformatted', 'TaskController@index_formatted');
+
+/**
  * Algemene instructie
  */
 Route::get('/brandweer/instructions/create', 'InstructionController@create'); // creates form crud form.
