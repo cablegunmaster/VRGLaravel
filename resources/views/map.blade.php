@@ -3,9 +3,12 @@
 @section('content')
 <div class="row noBottomMargin">
 	<div class="col s3 black-text" id="eventList">
-		<a class="waves-effect waves-light btn modal-trigger" href="#OpdrachtModal" onclick="$('#OpdrachtModal').openModal();">Nieuwe Opdracht</a>
+		<a class="waves-effect blue waves-light btn modal-trigger" href="#OpdrachtModal" style="width:100%" onclick="$('#OpdrachtModal').openModal();">Nieuw</a>
 		<div id = "eventHolder">
-			
+			<h5 class="center-align white-text">Laden...</h5>
+			<div class="blue lighten-3 progress">
+				<div class="blue indeterminate"></div>
+			</div>
 		</div>
 	</div>
 	<div id="map" class="col s9 nopadding nomargin" style="height:93vh"></div>
@@ -29,11 +32,12 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<a href="#!" class=" modal-action modal-close waves-effect waves-blue btn-flat">Agree</a>
+		<a href="#!" class=" modal-action modal-close waves-effect waves-blue btn-flat">Sluiten</a>
 	</div>
 </div>
 
 <script type="text/javascript">
+	currentdata = "";
 	'use strict';
 	L.mapbox.accessToken = 'pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWcwM2NpazQwMmk4dDRreDdpNGd1MXd0In0.JsRAe5r1LWPdBqlhMTOlyQ';
 
@@ -75,8 +79,18 @@
 		});
 			window.setTimeout(function() {
 				featureLayer.loadURL('/brandweer/randomadres');
-				
-				$('#eventHolder').load('/brandweer/task/preformatted');
+
+				$.get('/brandweer/task/preformatted', function(data){
+					if(!(data == currentdata))
+					{
+						currentdata = data;
+						$('#eventHolder').html(data)
+						$('.collapsible').collapsible({
+     							accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+     						});
+						console.log('update')
+					}
+				});
 			}, 4000);
 		}
 	});

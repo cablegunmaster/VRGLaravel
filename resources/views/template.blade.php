@@ -15,6 +15,11 @@
 			margin: 0px 0px 0px 0px !important;
 		}
 
+		.lowverticalpadding{
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+
 		.noBottomMargin {
 			margin-bottom: 0px !important;
 		}
