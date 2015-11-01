@@ -10,36 +10,46 @@
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Location;
+use App\PointsOfInterest;
 
 class RoadblockController extends Controller
 {
     // TODO fix database
+    // TODO how to get the incidentID?
+    // TODO how to get the current TASK ID?
 
     public function newRoadBlock() {
         $result = array();
 
-        $location = new Location;
-        $location->lat = $_POST['lat'];
-        $location->lon = $_POST['lng'];
-        $location->save();
+        $poi = new PointsOfInterest();
+        $poi->lat = $_POST['lat'];
+        $poi->lon = $_POST['lng'];
 
-        $result['loc'] = $location->toJson();
+        //TODO fix the incident ID and the TaskID. Where to get them.
+        $poi->incident_id = '1';
+        $poi->task_id = '1';
+        $poi->poi_type = '1'; //1 is obstruction.
+        $poi->save();
+
+        $result['loc'] = $poi->toJson();
         $result['success'] = true;
         return json_encode($result);
     }
 
     public function loadRoadBlock() {
-        $locations = Location::all();
-        return json_encode($locations);
+        $pois = PointsOfInterest::where('incident_id', '=', '1')
+        ->Where('poi_type','=','1')->get();
+        return json_encode($pois);
     }
 
     public function deleteRoadBlock() {
         $result = array();
 
-        $location = new Location;
-        $location->lat = $_POST['lat'];
-        $location->lon = $_POST['lng'];
+        $poi = new PointsOfInterest();
+        $poi->lat = $_POST['lat'];
+        $poi->lon = $_POST['lng'];
         // delete this bs
+        $poi->delete();
 
         $result['success'] = true;
         return json_encode($result);
