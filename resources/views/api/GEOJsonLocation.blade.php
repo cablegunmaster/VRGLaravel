@@ -3,7 +3,7 @@
      "features": [
     @for ($i = 0; $i < count($locations); $i++)
     { "type": "Feature",
-    "geometry": {"type": "Point", "coordinates": [{{$locations[$i]->lat}}, {{$location[$i]->lon}} ]},
+    "geometry": {"type": "Point", "coordinates": [{{$locations[$i]->lat}}, {{$locations[$i]->lon}} ]},
     "properties": {
         "title": "brandweerwagen"
         "icon": {
