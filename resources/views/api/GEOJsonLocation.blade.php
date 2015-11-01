@@ -1,6 +1,6 @@
 {
     "type": "FeatureCollection",
-    "features": [<br/>
+    "features": [
 @for ($i = 0; $i < count($locations); $i++)
     { "type": "Feature",
         "geometry": {

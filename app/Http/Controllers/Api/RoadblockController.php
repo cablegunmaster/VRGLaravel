@@ -26,8 +26,8 @@ class RoadblockController extends Controller
         $poi->lon = $_POST['lng'];
 
         //TODO fix the incident ID and the TaskID. Where to get them.
-        $poi->incident_id = '1';
-        $poi->task_id = '1';
+        $poi->incident_id = '1';//HARDCODED incident_id replace with SESSION later.
+        $poi->task_id = '1';//HARDCODED task_id replace with SESSION later.
         $poi->poi_type = '1'; //1 is obstruction.
         $poi->save();
 
@@ -37,6 +37,7 @@ class RoadblockController extends Controller
     }
 
     public function loadRoadBlock() {
+        //HARDCODED incident_id replace with SESSION later.
         $pois = PointsOfInterest::where('incident_id', '=', '1')
         ->Where('poi_type','=','1')->get();
         return json_encode($pois);
@@ -53,5 +54,10 @@ class RoadblockController extends Controller
 
         $result['success'] = true;
         return json_encode($result);
+    }
+
+    public function index(){
+        $roadblocks = PointsOfInterest::where('incident_id', '=', '1')->get(); //HARDCODED incident_id replace with SESSION later.
+        return View('api.GEOJsonRoadblock')->with('roadblocks', $roadblocks);
     }
 }

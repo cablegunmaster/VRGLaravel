@@ -18,8 +18,10 @@ class CreatePointsofinterest extends Migration
             $table->integer('task_id');
             $table->double('lat'); // X coordinate.
             $table->double('lon'); // Y coordinate.
-            $table->integer('poi_type');
+            $table->integer('poi_type')->nullable()->unsigned();
             $table->timestamps();
+
+            $table->foreign('poi_type')->references('id')->on('POI_Type');
         });
     }
 
@@ -30,6 +32,8 @@ class CreatePointsofinterest extends Migration
      */
     public function down()
     {
-        Schema::drop('pointsOfInterest');
+        Schema::drop('pointsOfInterest', function(Blueprint $table) {
+            $table->dropForeign('pointsofinterest_poi_type_foreign');
+        });
     }
 }
