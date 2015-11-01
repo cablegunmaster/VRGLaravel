@@ -14,7 +14,7 @@ class CreatePoiType extends Migration
     {
         Schema::create('POI_Type', function(Blueprint $table){
             $table->integer('id', 11);
-            $table->String('name', 64);
+            $table->String('name', 64)->unique();
             $table->timestamps();
         });
     }

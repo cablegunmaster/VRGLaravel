@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use UserTable\UserTableSeeder;
 use LocationTable\LocationTableSeeder;
+use PoiTypeTable\PoiTypeTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UserTableSeeder::class);
         $this->call(LocationTableSeeder::class);
+        $this->call(PoiTypeTableSeeder::class);
 
         Model::reguard(); //reinstate all the guards.
     }
