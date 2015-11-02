@@ -17,9 +17,10 @@ class LocationController extends Controller
      */
     public function index()
     {
+        //TODO only grab the last task thats ACTIVE!
         $locations = DB::table("location")
             ->leftJoin('task', 'task.id', '=', 'location.task_id')
-            ->orderBy('created_at', 'asc')
+            ->orderBy('location.created_at', 'asc')
             ->groupBy('user_id')
             ->get();
 
