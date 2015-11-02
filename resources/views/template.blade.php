@@ -50,7 +50,7 @@
 <body class="grey darken-3 white-text">
 	<nav id="navbar">
 		<div class="nav-wrapper grey darken-4">
-			<a href="#" class="brand-logo white-text">&nbsp;&nbsp;Meetploeg app</a>
+			<a href="#" id="navbar-title-text" class="brand-logo white-text">&nbsp;&nbsp;Meetploeg app</a>
 			
 			<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">

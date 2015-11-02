@@ -188,7 +188,7 @@ function LargeModal_open_textmessage(){
     function addMarker(lat, lng) {
         var marker = L.marker([lat, lng], {
             icon: L.mapbox.marker.icon({
-                'marker-color': '#AAAA00'
+                'marker-color': '#FFC107'
             }),
             title: 'Wegversperring',
             clickable: true,
@@ -245,8 +245,8 @@ function LargeModal_open_textmessage(){
         $('.nav-wrapper').removeClass('grey');
         $('.nav-wrapper').removeClass('darken-4');
 
-        $('.nav-wrapper').addClass('yellow');
-        $('.nav-wrapper').click();
+        $('.nav-wrapper').addClass('amber');
+        $('#navbar-title-text').html('&nbsp;&nbsp;Wegversperring Plaatsen');
     }
 
     function ObstructionButton_disable()
@@ -256,7 +256,8 @@ function LargeModal_open_textmessage(){
         $('.nav-wrapper').addClass('grey');
         $('.nav-wrapper').addClass('darken-4');
 
-        $('.nav-wrapper').removeClass('yellow');
+        $('.nav-wrapper').removeClass('amber');
+        $('#navbar-title-text').html('&nbsp;&nbsp;Meetploeg App');
     }
     // https://www.mapbox.com/mapbox.js/example/v1.0.0/mouse-position/
 </script>
