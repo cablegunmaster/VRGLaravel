@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Location;
 use App\PointsOfInterest;
+use DB;
 
 class RoadblockController extends Controller
 {
@@ -46,13 +47,16 @@ class RoadblockController extends Controller
     public function deleteRoadBlock() {
         $result = array();
 
-        $poi = new PointsOfInterest();
-        $poi->lat = $_POST['lat'];
-        $poi->lon = $_POST['lng'];
+        //$poi = DB::table('pointsofinterest')->where('lat', '=', $_POST['lat'])->where('long', '=', $_POST['lng'])->find();
+
+        $poi = PointsOfInterest::where('lat',$_POST['lat'])->where('lon',$_POST['lng'])->delete();
+        //$poi->lat = $_POST['lat'];
+        //$poi->lon = $_POST['lng'];
         // delete this bs
-        $poi->delete();
+        //$poi->delete();
 
         $result['success'] = true;
+        $result['roadblock'] = $poi;
         return json_encode($result);
     }
 
