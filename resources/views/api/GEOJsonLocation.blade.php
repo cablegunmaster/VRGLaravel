@@ -1,3 +1,4 @@
+{{dd($locations)}}
 {
     "type": "FeatureCollection",
     "features": [
@@ -11,7 +12,9 @@
         ]
     },
     "properties": {
-        "title": "brandweerwagen",
+        "title": "{{$locations[$i]->title}}",
+        "details": "{{$locations[$i]->details}}",
+        "type": "firetruck",
         "icon": {
         "iconUrl": "/img/firetruck.png",
         "iconSize": [35,17],

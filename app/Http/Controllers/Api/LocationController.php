@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Location;
+use DB;
 
 class LocationController extends Controller
 {
@@ -16,7 +17,11 @@ class LocationController extends Controller
      */
     public function index()
     {
-        $locations = Location::orderBy('created_at', 'asc')->groupBy('user_id')->get();
+        $locations = DB::table("location")
+            ->leftJoin('task', 'task.id', '=', 'location.task_id')
+            ->get();
+
+        //$locations = Location::orderBy('created_at', 'asc')->groupBy('user_id')->get();
         return View('api.GEOJsonLocation')->with('locations', $locations);
     }
 

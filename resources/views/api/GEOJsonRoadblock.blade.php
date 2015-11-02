@@ -6,13 +6,16 @@
         "geometry": {
         "type": "Point",
         "coordinates": [
-                        {{$roadblocks[$i]->lat}},
-                        {{$roadblocks[$i]->lon}}
+            {{$roadblocks[$i]->lat}},
+            {{$roadblocks[$i]->lon}}
         ]
     },
     "properties": {
-        {{--"title": "{{$roadblocks[$i]->poi_type}}",--}}
-        "title": "obstructie",
+        {{--"title": "{{$roadblocks[$i]->title}}",--}}
+        {{--"details": "{{$roadblocks[$i]->details}}",--}}
+        "title": "Wegversperring",
+        "details": "Bijzonder punt, vermijden",
+        "type": "obstruction",
         "icon": {
         "iconUrl": "/img/obstruction.png",
         "iconSize": [35,17],
@@ -27,4 +30,3 @@
 @endfor
 ]
 }
-{{-- Uniformen naar elke Poi type uit de database gebasseerd op de title //uitzoeken relaties poi_type -> Poi  gebasseerd op ID kan je de naam eruit trekken. --}}
