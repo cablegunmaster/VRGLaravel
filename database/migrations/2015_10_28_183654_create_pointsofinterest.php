@@ -23,6 +23,7 @@ class CreatePointsofinterest extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

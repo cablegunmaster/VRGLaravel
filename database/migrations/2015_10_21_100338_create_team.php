@@ -18,6 +18,7 @@ class CreateTeam extends Migration
             $table->String('name', 64);
             $table->Double('lat'); //home location of the team
             $table->Double('lon'); //home location of the team
+            $table->integer('leader_id');
             $table->timestamps();
         });
     }
