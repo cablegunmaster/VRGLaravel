@@ -29,6 +29,10 @@
 				<i class="material-icons large">cloud</i>
 				<h4>Meetopdracht</h4>
 			</a>
+            <a class="col s12 m6 l3 card-panel waves-effect blue-text waves-blue" id="enableMarker">
+                <i class="material-icons large">error</i>
+                <h4>Wegversperring</h4>
+            </a>
 		</div>
 	</div>
 	<div class="modal-footer">
@@ -213,7 +217,7 @@ function LargeModal_open_textmessage(){
         $.post( "/brandweer/api/roadblock/delete", { 'lat': marker.getLatLng().lat, 'lng': marker.getLatLng().lng });
     }
 
-    var markerClickEnabled = true;
+    var markerClickEnabled = false;
     map.on('click', function(e) {
         if(markerClickEnabled)
         {
@@ -221,21 +225,31 @@ function LargeModal_open_textmessage(){
             addMarker(e.latlng.lat,  e.latlng.lng);
             // API
             $.post( "/brandweer/api/roadblock/new", { 'lat': e.latlng.lat, 'lng': e.latlng.lng });
+            ObstructionButton_disable();
         }
     });
     $( "#enableMarker" ).click(function() {
-        markerClickEnabled = !markerClickEnabled;
-        var tmp = $("#enableMarker");
-        if(markerClickEnabled) {
-            tmp.html('Wegversperring uitschakelen');
-            tmp.css("background-color", "green")
+        $('#BottomSheetModal').closeModal();
+        if(markerClickEnabled)
+        {
+            ObstructionButton_disable();
         }
-        else {
-            tmp.html('Wegversperring inschakelen');
-            tmp.css("background-color", "red")
+        else
+        {
+            ObstructionButton_enable();
         }
     });
-    $( "#enableMarker").click();
+
+    function ObstructionButton_enable()
+    {
+        markerClickEnabled = true;
+        $('#OpdrachtModal').closeModal();
+    }
+
+    function ObstructionButton_disable()
+    {
+        markerClickEnabled = false;
+    }
     // https://www.mapbox.com/mapbox.js/example/v1.0.0/mouse-position/
 </script>
 @stop
