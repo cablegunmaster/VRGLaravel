@@ -5,7 +5,12 @@
 	<!--Import Google Icon Font-->
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<!--Import materialize.css-->
-	<link type="text/css" rel="stylesheet" href="{{ asset('css/materialize.min.css') }}" media="screen,projection"/>
+
+	@if($_SERVER['SERVER_NAME'] == 'scrumbag.nl')
+		<link type="text/css" rel="stylesheet" href="{{ asset('/brandweer/css/materialize.min.css') }}" media="screen,projection"/>
+	@else
+		<link type="text/css" rel="stylesheet" href="{{ asset('css/materialize.min.css') }}" media="screen,projection"/>
+	@endif
 
 	<style>
 		.nopadding {
@@ -87,7 +92,11 @@
 
 	<!--Import jQuery before materialize.js-->
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<script type="text/javascript" src="{{ asset('js/materialize.min.js') }}"></script>
+	@if($_SERVER['SERVER_NAME'] == 'scrumbag.nl')
+	<script type="text/javascript" src="{{ asset('/brandweer/js/materialize.min.js') }}"></script>
+	@else
+	<script type="text/javascript" src="{{ asset('/js/materialize.min.js') }}"></script>
+	@endif
 	<div class="content_container">
 		@yield('content')
 	</div>
