@@ -45,3 +45,9 @@ Route::get('/brandweer/api/upload_image', 'Api\ApiController@CreateUpload_image'
 
 //location call. All firetruck call.
 Route::get('/brandweer/api/getlocations', 'Api\LocationController@index');
+
+// instructions call, get instructions
+Route::post('/brandweer/api/instructions/get', 'Api\InstructionApiController@getInstruction');
+Route::post('/brandweer/api/instructions/ack', 'Api\InstructionApiController@ackInstruction');
+Route::get('/brandweer/api/instructions/ack', 'Api\InstructionApiController@ackInstruction');
+

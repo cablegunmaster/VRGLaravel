@@ -1,9 +1,10 @@
-<?php namespace LocationTable;
+<?php namespace IncidentTable;
 
+use App\Incident;
 use Illuminate\Database\Seeder;
-use App\Location;
 
-class LocationTableSeeder extends Seeder
+
+class IncidenTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +13,6 @@ class LocationTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Location::class, 20)->create();
+        factory(Incident::class, 20)->create();
     }
-
 }

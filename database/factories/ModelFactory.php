@@ -1,5 +1,7 @@
 <?php
 
+use App\Incident;
+use App\Task;
 use App\User;
 use App\Location;
 
@@ -33,4 +35,25 @@ $factory->define(Location::class, function (Faker\Generator $faker) {
        'lat' => 53.195+(mt_rand() / mt_getrandmax())/15,
        'lon'=> 6.53+(mt_rand() / mt_getrandmax())/15,
    ];
+});
+
+
+$factory->define(Incident::class, function (Faker\Generator $faker) {
+    return [
+        'code' => bcrypt(str_random(64)),
+        'information' => sprintf("%s %s", $faker->city, $faker->streetName),
+        'end_date' => $faker->dateTime,
+        'created_at' => $faker->dateTime,
+        'updated_at' => $faker->dateTime,
+    ];
+});
+
+$factory->define(Task::class, function (Faker\Generator $faker) {
+    return [
+        'code' => bcrypt(str_random(64)),
+        'information' => sprintf("%s %s", $faker->city, $faker->streetName),
+        'end_date' => $faker->dateTime,
+        'created_at' => $faker->dateTime,
+        'updated_at' => $faker->dateTime,
+    ];
 });
