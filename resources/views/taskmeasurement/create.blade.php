@@ -85,7 +85,7 @@
 
 <div class="row">
     <div class="input-field col s12">
-        <button class="btn waves-effect waves-light col s12" type="submit">Submit
+        <button class="btn blue waves-effect waves-light col s12" type="submit">Submit
             <i class="material-icons right">send</i>
         </button>
     </div>
