@@ -187,19 +187,16 @@
 					var i;
 					var json = JSON.parse(data);
 					for (i = 0; i < json.length; i++) {
-						addMarker(json[i].lat, json[i].lon);
+						addMarker(json[i].lat, json[i].lon,json[i].id);
 					}
 				},
 				error: function() {
 					console.log('roadError occured');
 				}
 			});
-
 		}
 
-
-
-		function addMarker(lat, lng) {
+		function addMarker(lat, lng,id) {
 			var marker = L.marker([lat, lng], {
 				icon: L.mapbox.marker.icon({
 					'marker-color': '#FFC107'
@@ -208,6 +205,7 @@
 				clickable: true,
 				riseOnHover: true
 			}).addTo(roadBlockLayer);
+			marker.database_identifier = id;
 			var content = $('<div></div>');
 			content.append(
 					$('<a class="waves-effect waves-light red white-text btn"></a>').text('Verwijderen').click(function() {
@@ -224,7 +222,7 @@
 			roadBlockLayer.removeLayer(marker);
 
 			// API
-			$.post( "/brandweer/api/roadblock/delete", { 'lat': marker.getLatLng().lat, 'lng': marker.getLatLng().lng },function(response){
+			$.post( "/brandweer/api/roadblock/delete", { 'lat': marker.getLatLng().lat, 'lng': marker.getLatLng().lng, "id": marker.database_identifier },function(response){
 				console.log(response);
 			});
 		}

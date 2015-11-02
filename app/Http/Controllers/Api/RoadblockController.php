@@ -49,11 +49,8 @@ class RoadblockController extends Controller
 
         //$poi = DB::table('pointsofinterest')->where('lat', '=', $_POST['lat'])->where('long', '=', $_POST['lng'])->find();
 
-        $poi = PointsOfInterest::where('lat',$_POST['lat'])->where('lon',$_POST['lng'])->delete();
-        //$poi->lat = $_POST['lat'];
-        //$poi->lon = $_POST['lng'];
-        // delete this bs
-        //$poi->delete();
+        $poi = PointsOfInterest::find($_POST['id']);
+        $poi->delete();
 
         $result['success'] = true;
         $result['roadblock'] = $poi;
