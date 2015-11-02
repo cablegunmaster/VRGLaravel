@@ -1,4 +1,3 @@
-{{dd($locations)}}
 {
     "type": "FeatureCollection",
     "features": [
