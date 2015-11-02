@@ -52,13 +52,11 @@
 			//var directionsRoutesControl = L.mapbox.directions.routesControl('routes', directions).addTo(map);
 			//var directionsInstructionsControl = L.mapbox.directions.instructionsControl('instructions', directions).addTo(map);
 
-			/**
 			var featureLayer = L.mapbox.featureLayer()
-					.loadURL('/brandweer/randomadres')
+					//.loadURL('/brandweer/randomadres')
 				// Once this layer loads, we set a timer to load it again in a few seconds.
 					.on('ready', runMap)
 					.addTo(map);
-			*/
 
 			roadBlockLayer = L.mapbox.featureLayer().addTo(map);
 
