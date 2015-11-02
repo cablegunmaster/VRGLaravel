@@ -23,6 +23,7 @@ class CreateTask extends Migration
             $table->double('dest_lat');
             $table->double('dest_lon');
             $table->String('dest_text', 128);
+            $table->timestamp('end_date');
             $table->timestamps();
         });
     }
