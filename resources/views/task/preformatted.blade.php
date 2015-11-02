@@ -1,7 +1,7 @@
 	<ul class="collapsible popout" data-collapsible="expandable">
 		@foreach( $tasks as $task)
 		<li>
-			<div class="collapsible-header"> 
+			<div class="collapsible-header truncate"> 
 				@if($task->task_type_id == 0)
 					<i class="material-icons">message</i>
 				@elseif($task->task_type_id == 2)
