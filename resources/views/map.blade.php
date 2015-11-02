@@ -35,9 +35,6 @@
 				</a>
 			</div>
 		</div>
-		<div class="modal-footer">
-			<a href="#!" class=" modal-action modal-close waves-effect waves-blue btn-flat">Sluiten</a>
-		</div>
 	</div>
 
 	<script type="text/javascript">
