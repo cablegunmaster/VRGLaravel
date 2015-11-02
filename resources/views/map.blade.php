@@ -3,7 +3,7 @@
 @section('content')
 <div class="row noBottomMargin">
 	<div class="col s3 black-text" id="eventList">
-        <a class="waves-effect blue waves-light btn modal-trigger" href="#OpdrachtModal" style="width:100%" onclick="$('#OpdrachtModal').openModal();">Nieuw</a>
+        <a class="waves-effect blue waves-light btn modal-trigger" href="#OpdrachtModal" style="width:100%; margin-top:0.5em" onclick="$('#OpdrachtModal').openModal();">Nieuw</a>
         <div id = "eventHolder">
 			<h5 class="center-align white-text">Laden...</h5>
 			<div class="blue lighten-3 progress">
