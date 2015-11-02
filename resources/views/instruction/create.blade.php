@@ -1,6 +1,6 @@
 {!! Form::open(array('url' => 'brandweer/instructions','method' => 'post', 'id'=>'instruction_form')) !!}
 <div class="row">
-    <div class="input-field col s6">
+    <div class="input-field col s12">
         {!! Form::label('title', 'Title: ') !!}
         {!! Form::text('title', null, ['class'=> 'form-control']) !!}
     </div>
@@ -9,7 +9,7 @@
 
 <div class="row">
     <div class="row">
-        <div class="input-field col s6">
+        <div class="input-field col s12">
             {!! Form::label('description', 'Description: ') !!}
             {!! Form::textarea('description', null, ['class' => 'materialize-textarea']) !!}
         </div>
@@ -17,7 +17,7 @@
 </div>
 
 <div class="row">
-    <div class="input-field col s6">
+    <div class="input-field col s12">
         <button class="btn waves-effect waves-light col s12" type="submit">Submit
             <i class="material-icons right">send</i>
          </button>
