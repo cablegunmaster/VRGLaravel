@@ -21,6 +21,9 @@ Route::get('/brandweer/user/{id}', 'UserController@show');
 Route::get('/brandweer/user', 'UserController@index');
 Route::get('/brandweer/user/{id}/delete', 'UserController@destroy');
 Route::get('/brandweer/randomadres', 'MapController@random');
+Route::post('/brandweer/api/roadblock/new', 'Api\RoadblockController@newRoadBlock');
+Route::post('/brandweer/api/roadblock/load', 'Api\RoadblockController@loadRoadBlock');
+Route::post('/brandweer/api/roadblock/delete', 'Api\RoadblockController@deleteRoadBlock');
 
 
 /**
@@ -57,3 +60,4 @@ Route::get('/brandweer/api/upload_image', 'Api\ApiController@CreateUpload_image'
 
 //location call. All firetruck call.
 Route::get('/brandweer/api/getlocations', 'Api\LocationController@index');
+Route::get('/brandweer/api/getRoadblocks', 'Api\RoadblockController@index');

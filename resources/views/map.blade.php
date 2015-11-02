@@ -164,5 +164,78 @@ function LargeModal_open_textmessage(){
 	});
 };  
 
+    // load roadBlocks
+    var roadBlockLayer = L.mapbox.featureLayer().addTo(map);
+    $.ajax({
+        type: "POST",
+        url: '/brandweer/api/roadblock/load',
+        data: '',
+        dataType: "html",
+        success: function(data) {
+            var i;
+            var json = JSON.parse(data);
+            for (i = 0; i < json.length; i++) {
+                addMarker(json[i].lat, json[i].lon);
+            }
+        },
+        error: function() {
+            console.log('roadError occured');
+        }
+    });
+
+    function addMarker(lat, lng) {
+        var marker = L.marker([lat, lng], {
+            icon: L.mapbox.marker.icon({
+                'marker-color': '#AAAA00'
+            }),
+            title: 'Wegversperring',
+            clickable: true,
+            riseOnHover: true
+        }).addTo(roadBlockLayer);
+        var content = $('<div></div>');
+        content.append($('<b></b></br>').text('Wegversperring'));
+        content.append(
+               $('<button></button>').text('Delete').click(function() {
+                   deleteMarker(marker);
+               })
+        );
+        marker.bindPopup(content[0],{
+            closeButton: false,
+            minWidth: 320
+        });
+        return marker;
+    }
+    function deleteMarker(marker) {
+        // deleteMarker
+        roadBlockLayer.removeLayer(marker);
+
+        // API
+        $.post( "/brandweer/api/roadblock/delete", { 'lat': marker.getLatLng().lat, 'lng': marker.getLatLng().lng });
+    }
+
+    var markerClickEnabled = true;
+    map.on('click', function(e) {
+        if(markerClickEnabled)
+        {
+            // addMarker
+            addMarker(e.latlng.lat,  e.latlng.lng);
+            // API
+            $.post( "/brandweer/api/roadblock/new", { 'lat': e.latlng.lat, 'lng': e.latlng.lng });
+        }
+    });
+    $( "#enableMarker" ).click(function() {
+        markerClickEnabled = !markerClickEnabled;
+        var tmp = $("#enableMarker");
+        if(markerClickEnabled) {
+            tmp.html('Wegversperring uitschakelen');
+            tmp.css("background-color", "green")
+        }
+        else {
+            tmp.html('Wegversperring inschakelen');
+            tmp.css("background-color", "red")
+        }
+    });
+    $( "#enableMarker").click();
+    // https://www.mapbox.com/mapbox.js/example/v1.0.0/mouse-position/
 </script>
 @stop

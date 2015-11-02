@@ -1,17 +1,28 @@
 {
     "type": "FeatureCollection",
-     "features": [
-    @foreach($locations as $location)
+    "features": [
+@for ($i = 0; $i < count($locations); $i++)
     { "type": "Feature",
-    "geometry": {"type": "Point", "coordinates": [{{$location->lat}}, {{$location->lon}} ]},
-    "properties": {
-        "title": "brandweerwagen"
-        "icon": {
-            "iconUrl": "/img/firetruck.png",
-            "iconSize": [35,17], // size of the icon
-            "className": "dot"
-        }
+        "geometry": {
+        "type": "Point",
+        "coordinates": [
+                        {{$locations[$i]->lat}},
+                        {{$locations[$i]->lon}}
+        ]
     },
-    @endforeach
-    ]
+    "properties": {
+        "title": "brandweerwagen",
+        "icon": {
+        "iconUrl": "/img/firetruck.png",
+        "iconSize": [35,17],
+        "className": "dot"
+        }
+    }
+@if($i == (count($locations)-1))
+    }
+@elseif($i < count($locations))
+},
+@endif
+@endfor
+]
 }

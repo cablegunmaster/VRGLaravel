@@ -13,8 +13,8 @@ class CreateTaskType extends Migration
     public function up()
     {
         Schema::create('task_type', function(Blueprint $table){
-           $table->integer('id', 11);
-           $table->String('name', 64);
+           $table->integer('id');
+           $table->String('name', 64)->unique();
            $table->timestamps();
         });
     }
