@@ -71,7 +71,7 @@
 			<p>Loading</p>
 		</div>
 		<div class="modal-footer" id="LargeModalFooter">
-			<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat center">Sluiten</a>
+			<a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat center">Sluiten</a>
 		</div>
 	</div>
 
@@ -81,7 +81,7 @@
 			<p>A bunch of text</p>
 		</div>
 		<div class="modal-footer" id="BottomSheetModalFooter">
-			<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Sluiten</a>
+			<a href="#!" class=" modal-action modal-close waves-effect waves-blue btn-flat">Sluiten</a>
 		</div>
 	</div>
 
@@ -100,8 +100,8 @@
 		function LargeModal_open_teams(){
 			$('#LargeModalContent').html('\
 				<h5 class="center-align">Laden...</h5>\
-				<div class="green lighten-3 progress">\
-					<div class="green indeterminate"></div>\
+				<div class="blue lighten-3 progress">\
+					<div class="blue indeterminate"></div>\
 				</div>');
 			$('#LargeModal').openModal();
 			$('#LargeModalContent').load('/brandweer/team', function()
@@ -112,8 +112,8 @@
 				links.click(function(){
 					$('#BottomSheetModalContent').html('\
 						<h5 class="center-align">Laden...</h5>\
-						<div class="green lighten-3 progress">\
-							<div class="green indeterminate"></div>\
+						<div class="blue lighten-3 progress">\
+							<div class="blue indeterminate"></div>\
 						</div>');
 					$('#BottomSheetModal').openModal();
 					$('#BottomSheetModalContent').load($(this).attr('href'));
