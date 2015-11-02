@@ -3,8 +3,8 @@
 @section('content')
 <div class="row noBottomMargin">
 	<div class="col s3 black-text" id="eventList">
-		<a class="waves-effect blue waves-light btn modal-trigger" href="#OpdrachtModal" style="width:100%" onclick="$('#OpdrachtModal').openModal();">Nieuw</a>
-		<div id = "eventHolder">
+        <a class="waves-effect blue waves-light btn modal-trigger" href="#OpdrachtModal" style="width:100%" onclick="$('#OpdrachtModal').openModal();">Nieuw</a>
+        <div id = "eventHolder">
 			<h5 class="center-align white-text">Laden...</h5>
 			<div class="blue lighten-3 progress">
 				<div class="blue indeterminate"></div>
@@ -47,8 +47,6 @@
 
 	var map = L.mapbox.map('map', 'davidvisscher.nom58j6h').on('ready',function(){
 		L.control.fullscreen().addTo(map);
-
-		new L.Control.MiniMap(L.mapbox.tileLayer('davidvisscher.nom58j6h')).addTo(map);
 
 		var directions = L.mapbox.directions({units:"metric"});
 		var directionsLayer = L.mapbox.directions.layer(directions).addTo(map);
@@ -244,11 +242,21 @@ function LargeModal_open_textmessage(){
     {
         markerClickEnabled = true;
         $('#OpdrachtModal').closeModal();
+        $('.nav-wrapper').removeClass('grey');
+        $('.nav-wrapper').removeClass('darken-4');
+
+        $('.nav-wrapper').addClass('yellow');
+        $('.nav-wrapper').click();
     }
 
     function ObstructionButton_disable()
     {
         markerClickEnabled = false;
+
+        $('.nav-wrapper').addClass('grey');
+        $('.nav-wrapper').addClass('darken-4');
+
+        $('.nav-wrapper').removeClass('yellow');
     }
     // https://www.mapbox.com/mapbox.js/example/v1.0.0/mouse-position/
 </script>
