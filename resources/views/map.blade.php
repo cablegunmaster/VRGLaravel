@@ -21,7 +21,7 @@
 				<i class="material-icons large">message</i>
 				<h4>Tekstbericht</h4>
 			</a>
-			<a class="col s12 m6 l3 card-panel grey-text " onclick="">
+			<a class="col s12 m6 l3 card-panel grey-text" onclick="">
 				<i class="material-icons large">explore</i>
 				<h4>Rijopdracht</h4>
 			</a>
