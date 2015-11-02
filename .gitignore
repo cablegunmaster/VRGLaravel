@@ -6,4 +6,7 @@ Homestead.yaml
 Homestead.json
 .env
 *.iml
+/.idea/*
 /.idea
+/.phpintel/*
+/.phpintel
