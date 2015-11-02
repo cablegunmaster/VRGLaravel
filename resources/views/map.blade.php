@@ -195,15 +195,13 @@ function LargeModal_open_textmessage(){
             riseOnHover: true
         }).addTo(roadBlockLayer);
         var content = $('<div></div>');
-        content.append($('<b></b></br>').text('Wegversperring'));
         content.append(
-               $('<button></button>').text('Delete').click(function() {
+               $('<a class="waves-effect waves-light red white-text btn"></a>').text('Verwijderen').click(function() {
                    deleteMarker(marker);
                })
         );
         marker.bindPopup(content[0],{
-            closeButton: false,
-            minWidth: 320
+            closeButton: false
         });
         return marker;
     }
