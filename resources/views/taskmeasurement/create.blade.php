@@ -5,7 +5,7 @@
       <option value="" disabled selected>Selecteer een team</option>
       @if(count($teams))
       @foreach($teams as $team)
-      <option value="{{ $team->id }}">{{ $team->name }}</option>
+      <option value="{{ $team->id }}">{{ $team->code." ".$team->name }}</option>
       @endforeach
       @else
       <option value="0">Team Mock-up</option>
@@ -75,6 +75,7 @@
 <div class="row">
     <div class="row">
         <div class="input-field col s12">
+            <i class="material-icons prefix">mode_edit</i>
             {!! Form::label('description', 'Bijzonderheden') !!}
             {!! Form::textarea('description', null, ['class' => 'materialize-textarea']) !!}
         </div>
