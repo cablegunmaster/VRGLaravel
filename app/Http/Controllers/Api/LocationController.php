@@ -19,6 +19,8 @@ class LocationController extends Controller
     {
         $locations = DB::table("location")
             ->leftJoin('task', 'task.id', '=', 'location.task_id')
+            ->orderBy('created_at', 'asc')
+            ->groupBy('user_id')
             ->get();
 
         //$locations = Location::orderBy('created_at', 'asc')->groupBy('user_id')->get();
