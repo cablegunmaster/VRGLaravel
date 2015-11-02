@@ -64,16 +64,6 @@
 		function runMap() {
 			featureLayer.eachLayer(function(l) {
 			//map.panTo(l.getLatLng());
-			var temp1 = l.getLatLng();
-			directions.setOrigin(L.latLng(53.218753,6.589532999999989));
-			directions.setDestination(temp1);
-			if (directions.queryable()) {
-				directions.query();
-			}
-			else
-			{
-				console.log("directions not queryable");
-			}
 
 			//console.log('https://api.mapbox.com/v4/directions/mapbox.driving/'+ temp1.lat+','+ temp1.lng +';6.5306433920317,53.247911358103.json?access_token=pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWcwM2NpazQwMmk4dDRreDdpNGd1MXd0In0.JsRAe5r1LWPdBqlhMTOlyQ');
 
@@ -109,6 +99,19 @@ $(document).ready(function()
 	$("#map").css("height", mapheight + "px")
 });
 
+
+function getDirections(originLat, originLong, destLat, destLong)
+{
+	directions.setOrigin(  L.latLng(originLat,originLong));//L.latLng(53.218753,6.589532999999989));
+			directions.setDestination(L.latLng(destLat,destLong));
+			if (directions.queryable()) {
+				directions.query();
+			}
+			else
+			{
+				console.log("directions not queryable");
+			}
+}
 
 function LargeModal_open_meetopdracht(){
 	$('#LargeModalContent').html('\
