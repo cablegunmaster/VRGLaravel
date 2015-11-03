@@ -10,6 +10,11 @@
 |
 */
 
+use Illuminate\Http\Response;
+
+Route::get('/', function () {
+    return (new Response("", "200"))->header('Location', '/brandweer/ ');
+});
 /**
  * Base route is '/brandweer/' ipv '/' online vanwege de mappenstructuur waarin Laravel zich nu bevind.
  */
@@ -68,3 +73,5 @@ Route::get('/brandweer/api/incident/getcurrent','IncidentController@getLatestJSO
 //Get latest task
 Route::get('/brandweer/api/task/getcurrent','TaskController@getLatestZero');
 Route::post('/brandweer/api/task/getcurrent','TaskController@getLatestForTeam');
+
+Route::get('/brandweer/bullshitmal','LocationController@bullshitMal')
