@@ -12,7 +12,7 @@
     },
     "properties": {
         "title": "{{$locations[$i]->title}}",
-        "details": "{{$locations[$i]->details}}",
+        "details": "{{$locations[$i]->description}}",
         "type": "firetruck",
         "icon": {
         "iconUrl": "/img/firetruck.png",
