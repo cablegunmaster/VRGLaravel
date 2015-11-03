@@ -50,10 +50,10 @@ Route::post('/brandweer/instructions', 'InstructionController@store');  // store
  */
 Route::get('/brandweer/meetinstructie/create', 'TaskMeasurementController@create'); // crud form.
 Route::post('/brandweer/meetinstructie/store', 'TaskMeasurementController@store'); // store in db.
+
 /**
  * Api calls.
  */
-
 //Upload a image to the server.
 Route::post('/brandweer/api/observation_upload', 'Api\ApiController@observation_upload');
 Route::get('/brandweer/api/upload_image', 'Api\ApiController@CreateUpload_image');
@@ -61,3 +61,6 @@ Route::get('/brandweer/api/upload_image', 'Api\ApiController@CreateUpload_image'
 //location call. All firetruck call.
 Route::get('/brandweer/api/getlocations', 'Api\LocationController@index');
 Route::get('/brandweer/api/getRoadblocks', 'Api\RoadblockController@index');
+
+//GET INCIDENT INFO 
+Route::get('/brandweer/api/incident/getcurrent','IncidentController@getLatestJSON');
