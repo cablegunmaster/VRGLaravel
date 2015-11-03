@@ -34,7 +34,7 @@ class TaskController extends Controller
 
 	public function getLatestZero()
 	{
-		return $this->getLatest(0);
+		return $this->getLatest(1);
 	}
 
 	public function getLatestForTeam()
@@ -45,7 +45,7 @@ class TaskController extends Controller
 
 	public function getLatestForTeamZeroPlain()
 	{
-		$team_id = 0;
+		$team_id = 1;
 		$task = Task::where('team_id',$team_id)->orderBy('updated_at','asc')->first();
 		if($task == null)
 		{
@@ -67,7 +67,7 @@ class TaskController extends Controller
 
 	public function getLatest($team_id)
 	{
-		$task = Task::where('team_id',$team_id)->orderBy('updated_at','asc')->first();
+		$task = Task::where('team_id',$team_id)->orderBy('updated_at','desc')->first();
 		
 		if($task == null)
 		{
