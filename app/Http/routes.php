@@ -67,4 +67,4 @@ Route::get('/brandweer/api/incident/getcurrent','IncidentController@getLatestJSO
 
 //Get latest task
 Route::get('/brandweer/api/task/getcurrent','TaskController@getLatestZero');
-Route::post('/brandweer/api/task/getcurrent','TaskController@getLatest');
+Route::post('/brandweer/api/task/getcurrent','TaskController@getLatestForTeam');

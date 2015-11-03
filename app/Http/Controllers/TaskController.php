@@ -37,9 +37,24 @@ class TaskController extends Controller
 		return $this->getLatest(0);
 	}
 
+	public function getLatestForTeam()
+	{
+		$team_id = $_POST['team'];
+		return($this->getLatest($team_id));
+	}
+
 	public function getLatest($team_id)
 	{
 		$task = Task::where('team_id',$team_id)->orderBy('updated_at','asc')->first();
+		
+		if($task == null)
+		{
+			$task = array('success' => false, 'message' => "No task found for team ".$team_id);
+		}
+		else
+		{
+			$task["success"] = true;
+		}
 		return json_encode($task);
 	}
 
