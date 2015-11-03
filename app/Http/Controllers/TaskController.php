@@ -32,6 +32,17 @@ class TaskController extends Controller
 		return view('task.preformatted')->with('tasks', $tasks);
 	}
 
+	public function getLatestZero()
+	{
+		return $this->getLatest(0);
+	}
+
+	public function getLatest($team_id)
+	{
+		$task = Task::where('team_id',$team_id)->orderBy('updated_at','asc')->first();
+		return json_encode($task);
+	}
+
 	/**
 	 * Show the form for creating a new resource.
 	 *

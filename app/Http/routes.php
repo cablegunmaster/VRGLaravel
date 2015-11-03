@@ -62,5 +62,9 @@ Route::get('/brandweer/api/upload_image', 'Api\ApiController@CreateUpload_image'
 Route::get('/brandweer/api/getlocations', 'Api\LocationController@index');
 Route::get('/brandweer/api/getRoadblocks', 'Api\RoadblockController@index');
 
-//GET INCIDENT INFO 
+//Incident info API
 Route::get('/brandweer/api/incident/getcurrent','IncidentController@getLatestJSON');
+
+//Get latest task
+Route::get('/brandweer/api/task/getcurrent','TaskController@getLatestZero');
+Route::post('/brandweer/api/task/getcurrent','TaskController@getLatest');
