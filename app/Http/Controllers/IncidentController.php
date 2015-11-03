@@ -28,6 +28,17 @@ class IncidentController extends Controller
     public function getLatestJSON()
     {
         return json_encode(Incident::orderBy('id','desc')->first());
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getLatestPlain()
+    {
+        $incident = Incident::orderBy('id','desc')->first();
+        return view('incident.show')->with('incident',$incident);
     }    
 
     /**
