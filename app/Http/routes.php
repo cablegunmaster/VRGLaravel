@@ -67,11 +67,16 @@ Route::get('/brandweer/api/upload_image', 'Api\ApiController@CreateUpload_image'
 Route::get('/brandweer/api/getlocations', 'Api\LocationController@index');
 Route::get('/brandweer/api/getRoadblocks', 'Api\RoadblockController@index');
 
+Route::get('/brandweer/api/team/getAll','TeamController@indexJSON');
+
 //Incident info API
 Route::get('/brandweer/api/incident/getcurrent','IncidentController@getLatestJSON');
 Route::get('/brandweer/api/incident/getcurrent_plain','IncidentController@getLatestPlain');
 //Get latest task
 Route::get('/brandweer/api/task/getcurrent','TaskController@getLatestZero');
 Route::post('/brandweer/api/task/getcurrent','TaskController@getLatestForTeam');
+
+Route::get('/brandweer/api/task/getcurrent_plain','TaskController@getLatestForTeamZeroPlain');
+Route::post('/brandweer/api/task/getcurrent_plain','TaskController@getLatestForTeamPlain');
 
 Route::get('/brandweer/bullshitmal','Api\LocationController@bullshitMal');

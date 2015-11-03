@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Team;
 
 class TeamController extends Controller
 {
@@ -18,6 +19,18 @@ class TeamController extends Controller
     {
         $users = User::all()->sortBy('team_id');
         return view('user.index')->with('users', $users);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexJSON()
+    {
+        $teams = Team::all()->sortBy('team_id');
+
+        return view('api.GeoJSONTeam')->with('locations',$teams);
     }
 
     /**

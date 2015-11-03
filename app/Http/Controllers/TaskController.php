@@ -43,6 +43,28 @@ class TaskController extends Controller
 		return($this->getLatest($team_id));
 	}
 
+	public function getLatestForTeamZeroPlain()
+	{
+		$team_id = 0;
+		$task = Task::where('team_id',$team_id)->orderBy('updated_at','asc')->first();
+		if($task == null)
+		{
+			return "";
+		}
+		return view('task.plaintext')->with('task',$task);
+	}
+
+	public function getLatestForTeamPlain()
+	{
+		$team_id = $_POST['team'];
+		$task = Task::where('team_id',$team_id)->orderBy('updated_at','asc')->first();
+		if($task == null)
+		{
+			return "";
+		}
+		return view('task.plaintext')->with('task',$task);
+	}
+
 	public function getLatest($team_id)
 	{
 		$task = Task::where('team_id',$team_id)->orderBy('updated_at','asc')->first();
