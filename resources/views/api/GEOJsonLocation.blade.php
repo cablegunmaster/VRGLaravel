@@ -6,8 +6,8 @@
         "geometry": {
         "type": "Point",
         "coordinates": [
-                        {{$locations[$i]->lat}},
-                        {{$locations[$i]->lon}}
+                        {{$locations[$i]->lon}},
+                        {{$locations[$i]->lat}}
         ]
     },
     "properties": {
