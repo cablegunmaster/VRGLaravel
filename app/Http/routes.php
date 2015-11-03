@@ -74,4 +74,4 @@ Route::get('/brandweer/api/incident/getcurrent','IncidentController@getLatestJSO
 Route::get('/brandweer/api/task/getcurrent','TaskController@getLatestZero');
 Route::post('/brandweer/api/task/getcurrent','TaskController@getLatestForTeam');
 
-Route::get('/brandweer/bullshitmal','LocationController@bullshitMal');
+Route::get('/brandweer/bullshitmal','Api\LocationController@bullshitMal');
