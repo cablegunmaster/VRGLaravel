@@ -104,7 +104,7 @@ class TeamTableSeeder extends Seeder
     		'id' => 12,
     		'code' => '34W012',
     		'name'=> 'Stadskanaal',
-    		'loat' => 52.980136,
+    		'lat' => 52.980136,
     		'lon' => 6.966552,
     		'leader_id' => 1
     		]);
