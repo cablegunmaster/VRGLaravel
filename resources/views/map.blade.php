@@ -79,9 +79,6 @@
 				// Once this layer loads, we set a timer to load it again in a few seconds.
 					.on('ready', runMap)
 					.addTo(map);
-				$('#MalModal').leanModal({
-	      dismissible: true, // Modal can be dismissed by clicking outside of the modal
-	      opacity: 0.0})
 
 			roadBlockLayer = L.mapbox.featureLayer().addTo(map);
 
