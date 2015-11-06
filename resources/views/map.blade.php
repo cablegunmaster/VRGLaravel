@@ -43,6 +43,18 @@
 	<div id="MalModal" class="modal bottom-sheet">
 		<div class="modal-content black-text lighten-1">
 			<div class="row">
+				<div class="col s12 m6 l3">
+					Lengte: <input name="length" type="text"/>
+				</div>
+				<div class="col s12 m6 l3">
+					Breedte: <input name="width" type="text"/>
+				</div>
+				<div class="col s12 m6 l3">
+					Windrichting: <input name="bearing" type="text"/>
+				</div>
+				<div class="col s12 m6 l3">
+					Windsnelheid (m/s): <input name="speed" type="text"/>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -51,7 +63,7 @@
 		currentdata = "";
 		'use strict';
 		L.mapbox.accessToken = 'pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWcwM2NpazQwMmk4dDRreDdpNGd1MXd0In0.JsRAe5r1LWPdBqlhMTOlyQ';
-
+		var mal = null;// {location: null, polygon: null};
 		var map = L.mapbox.map('map', 'davidvisscher.nom58j6h').on('ready',function(){
 			L.control.fullscreen().addTo(map);
 			L.control.scale().addTo(map);
@@ -67,6 +79,9 @@
 				// Once this layer loads, we set a timer to load it again in a few seconds.
 					.on('ready', runMap)
 					.addTo(map);
+				$('#MalModal').leanModal({
+	      dismissible: true, // Modal can be dismissed by clicking outside of the modal
+	      opacity: 0.0})
 
 			roadBlockLayer = L.mapbox.featureLayer().addTo(map);
 
@@ -109,7 +124,7 @@
 
 
 
-			function createMal(lat,lng, degrees, length, width, color) {
+			function createMal(lat,lng, degrees, length/* meters */, width /* meters */, color) {
 				var source = new L.latLng(lat,lng);
 				var destination = moveLatLng(source, degrees, length);
 
@@ -147,17 +162,43 @@
 
 				var d = source.distanceTo(destination)
 				if(Math.abs(d - length) > 1) {
-					debugger;
+					console.warn("Distance to projected LatLng deviating more than a meter.");
 				}
 
 				return L.polygon(part1.concat(part2.reverse()	), {color:color});
 			}
-			createMal(53.246881 /* lat */, 6.591272 /* long */, 45/* degrees */, 100 /* m length */,10 /* m width */,'red' /* red */).addTo(map);
 
 			$('#malButton').click(function() {
 					malClickEnabled = true;
 					$('#OpdrachtModal').closeModal();
 					$('#navbar-title-text').html('&nbsp;&nbsp;Mal Plaatsen');
+			});
+			$('#MalModal').change(function() {
+
+				if(mal != null) {
+					var l = $(this).find('[name="length"]').val();
+					var w = $(this).find('[name="width"]').val();
+					var b = $(this).find('[name="bearing"]').val();
+					var s = $(this).find('[name="speed"]').val();
+					try {
+						l = parseInt(l);
+						w = parseInt(w);
+						b = parseInt(b);
+						s = parseInt(s);
+						if(isNaN(l) || isNaN(w) || isNaN(b) || isNaN(s))
+							return;
+					}catch(err){
+						return;
+					}
+
+					var polyUpdate = createMal(mal.location.lat, mal.location.lng, b, l, w, 'red');
+					if(mal.polygon != null) {
+						map.removeLayer(mal.polygon)
+					}
+					mal.polygon = polyUpdate;
+					map.addLayer(mal.polygon);
+				}
+
 			});
 
 			function runMap() {
@@ -337,11 +378,15 @@
 				$.post( "/brandweer/api/roadblock/new", { 'lat': e.latlng.lat, 'lng': e.latlng.lng });
 				ObstructionButton_disable();
 			}else if(malClickEnabled) {
-
-				$('#MalModal').openModal();
-
+				if(mal == null) {
+					mal = { location: e.latlng, polygon:null };
+				}
+				$('#MalModal').openModal({
+	      dismissible: true, // Modal can be dismissed by clicking outside of the modal
+	      opacity: 0.0}	);
 				// on complete:
-				$('#navbar-title-text').html('&nbsp;&nbsp;Meetploeg App');
+				malClickEnabled = false;
+
 				//show modal for distance, angle and width?
 
 			}
