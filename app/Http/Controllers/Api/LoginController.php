@@ -11,7 +11,6 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Input;
 
-
 class LoginController extends Controller
 {
     public function loginRequest() {
@@ -22,7 +21,7 @@ class LoginController extends Controller
             $user = User::where('username', Input::get('username'))->where('password', Input::get('password'))->first();
             if($user != null) {
                 $result['success'] = true;
-                $result['token'] = $user->token;
+                $result['token'] = $user->remember_token;
             }
         }
         return json_encode($result);
