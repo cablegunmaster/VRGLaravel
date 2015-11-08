@@ -39,9 +39,11 @@ class RoadblockController extends Controller
 
     public function loadRoadBlock() {
         //HARDCODED incident_id replace with SESSION later.
-        $pois = PointsOfInterest::where('incident_id', '=', '1')
-        ->Where('poi_type','=','1')->get();
-        return json_encode($pois);
+        $pois = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
+            ->where('pointsofinterest.incident_id', '=', '1')
+            ->where('poi_type.name','obstruction')
+            ->get();
+        return json_decode($pois,true );
     }
 
     public function deleteRoadBlock() {

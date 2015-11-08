@@ -7,7 +7,6 @@ use App\Task;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use DB;
 use stdClass;
 
@@ -106,16 +105,25 @@ class AllDataController extends Controller
 
         /**
          * Get all the roadblocks from incident X.
-         * Needs TYPE to identify which is a roadblock.
+         * Needs TYPE to identify which is a 'obstruction'
          */
-        $roadblocks = PointsOfInterest::where('incident_id', '=', $table[0]->incident_id)->get();
+        $roadblocks = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
+            ->where('pointsofinterest.incident_id', '=', $table[0]->incident_id)
+            ->where('poi_type.name','obstruction')
+            ->get();
 
+        /**
+         * Get all 'clouds' from the database based on incident_id and type is 'mal'
+         */
+        //$mal = PointsOfInterest::where('incident_id', '=', $table[0]->incident_id)->get();
         $locations_JSON =  json_decode(View('api.GEOJsonLocation')->with('locations', $locations),true);
         $roadblock_JSON = json_decode(View('api.GEOJsonRoadblock')->with('roadblocks', $roadblocks),true );
+        $mal_JSON = "";
 
         $geo = new stdClass(); //All GeoJSON obects go in this one! (empty array sort like laravel class).
         $geo->roadblock = $roadblock_JSON;
         $geo->locations = $locations_JSON;
+        $geo->mal = $mal_JSON;
 
         $table[0]->task = $task;
         $table[0]->chat = $chat;

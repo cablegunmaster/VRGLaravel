@@ -17,7 +17,7 @@
         "details": "Bijzonder punt, vermijden",
         "type": "obstruction",
         "icon": {
-        "iconUrl": "/img/obstruction.png",
+        "iconUrl": "/brandweer/img/obstruction.png",
         "iconSize": [35,17],
         "className": "dot"
         }

@@ -18,7 +18,7 @@ class PoiTypeTableSeeder extends Seeder
         ]);
 
         DB::table('Poi_Type')->insert([
-            'name' => 'mallen',
+            'name' => 'mal',
         ]);
 
         DB::table('Poi_Type')->insert([
