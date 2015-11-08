@@ -29,6 +29,7 @@ Route::get('/brandweer/randomadres', 'MapController@random');
 Route::post('/brandweer/api/roadblock/new', 'Api\RoadblockController@newRoadBlock');
 Route::post('/brandweer/api/roadblock/load', 'Api\RoadblockController@loadRoadBlock');
 Route::post('/brandweer/api/roadblock/delete', 'Api\RoadblockController@deleteRoadBlock');
+Route::post('/brandweer/api/login/check', 'Api\LoginController@loginRequest');
 
 
 /**
