@@ -13,9 +13,8 @@ use stdClass;
 class AllDataController extends Controller
 {
     /**
-     * Display the specified resource.
-     *
-     * @param  String  $token
+     * Display All data based on a Token.
+     * @param  String  $token Token from a user from users.remember_token
      * @return \Illuminate\Http\Response
      */
     public function show($token)
@@ -24,16 +23,33 @@ class AllDataController extends Controller
 
         //UserToken -> User -> Incident
         $table = AllDataController::getUserIncident($token);
-        $task = AllDataController::getTask($table[0]->team_id,$table[0]->incident_id); //team_id and incident_id required.
+        $task = AllDataController::getTask($table[0]->team_id, $table[0]->incident_id); //team_id and incident_id required.
 
         //$chat = AllDataController::getChat($table[0]->incident_id);
 
         $mal = AllDataController::getMal($table[0]->incident_id);
         $location = AllDataController::getLocation($table[0]->incident_id);
         $roadblock = AllDataController::getRoadblocks($table[0]->incident_id);
+        $linestring = AllDataController::getLineString($table[0]->incident_id);
 
-        $geo = array_merge_recursive($mal,$location,$roadblock); //merge all arrays together
-        $geo['type'] = "FeatureCollection"; //fix multiple featurecollection.
+        /**
+         * Merge them all in 1 neat array without errors!
+         */
+        $geo = array();
+        if (is_array($mal)) {
+            $geo = array_merge_recursive($geo, $mal);
+        }
+        if (is_array($location)) {
+            $geo = array_merge_recursive($geo, $location);
+        }
+        if (is_array($roadblock)) {
+            $geo = array_merge_recursive($geo, $roadblock);
+        }
+        if (is_array($linestring)) {
+            $geo = array_merge_recursive($geo, $linestring);
+        }
+
+        $geo['type'] = "FeatureCollection"; //fix the multiple definition of featurecollections.
 
         $table[0]->task = $task;
         //$table[0]->chat = $chat;
@@ -104,12 +120,14 @@ class AllDataController extends Controller
             ->orderBy('location.created_at','desc')
             ->get();
 
-        return json_decode(View('api.GEOJsonLocation')->with('locations', $locations),true);
+        return json_decode(View('api.GeoJSONLocation')->with('locations', $locations),true);
     }
 
     /**
      * Get all the roadblocks from incident X.
      * Needs TYPE to identify which is a 'obstruction'
+     * @param $incident_id
+     * @return mixed
      */
     public static function getRoadblocks($incident_id){
         $roadblocks = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
@@ -117,12 +135,14 @@ class AllDataController extends Controller
             ->where('poi_type.name',"=",'obstruction')
             ->get();
 
-        $roadblock_JSON = View('api.GEOJsonRoadblock')->with('roadblocks', $roadblocks)->render();
+        $roadblock_JSON = View('api.GeoJSONRoadblock')->with('roadblocks', $roadblocks)->render();
         return json_decode(AllDataController::removeRN($roadblock_JSON),true); //remove the  /r/n
     }
 
     /**
      * Get all the malls belonging to the current incident.
+     * @param $incident_id
+     * @return mixed
      */
     public static function getMal($incident_id){
         $mal = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
@@ -130,22 +150,27 @@ class AllDataController extends Controller
             ->where('poi_type.name',"=",'mal')
             ->get();
 
-        $mal_JSON = View('api.GEOJSONmal')->with('mal', $mal)->render();
+        $mal_JSON = View('api.GEOJSONMal')->with('mal', $mal)->render();
         return  json_decode(AllDataController::removeRN($mal_JSON),true); //remove the /r/n
     }
 
+    /**
+     * @param $incident_id
+     */
     public static function getChat($incident_id){
         return ;
     }
 
     public static function getLineString($incident_id){
-        $mal = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
+        $LineString = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
             ->where('pointsofinterest.incident_id', '=', $incident_id)
-            ->where('poi_type.name',"=",'rijopdracht')
+            ->where('poi_type.name',"=",'waypoints')
             ->get();
 
-        $mal_JSON = View('api.GEOJSONmal')->with('mal', $mal)->render();
-        return  json_decode(AllDataController::removeRN($mal_JSON),true); //remove the /r/n
+        $LineString = View('api.GeoJSONLineString')->with('linestring', $LineString)->render();
+
+        return  json_decode(AllDataController::removeRN($LineString),true); //remove the /r/n
+        //dd(AllDataController::removeRN($LineString)); //remove the /r/n
     }
 
     /**
