@@ -115,7 +115,11 @@ class AllDataController extends Controller
         /**
          * Get all 'clouds' from the database based on incident_id and type is 'mal'
          */
-        //$mal = PointsOfInterest::where('incident_id', '=', $table[0]->incident_id)->get();
+        $mal = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
+            ->where('pointsofinterest.incident_id', '=', $table[0]->incident_id)
+            ->where('poi_type.name','mal')
+            ->get();
+
         $locations_JSON =  json_decode(View('api.GEOJsonLocation')->with('locations', $locations),true);
         $roadblock_JSON = json_decode(View('api.GEOJsonRoadblock')->with('roadblocks', $roadblocks),true );
         $mal_JSON = "";
