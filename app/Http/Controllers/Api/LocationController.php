@@ -17,14 +17,20 @@ class LocationController extends Controller
      */
     public function index()
     {
-        //TODO only grab the last task thats ACTIVE!
+        //TODO need to test: only grab the last task thats ACTIVE!
+        //TODO rewrite if TOKEN is here.
         $locations = DB::table("location")
-            ->leftJoin('task', 'task.id', '=', 'location.task_id')
-            ->orderBy('location.created_at', 'desc')
-            ->groupBy('user_id')
+            ->select("task.id as tasks_id",
+                "location.*",
+                "task.title",
+                "task.description"
+                )
+            ->leftJoin('users','location.user_id','=', 'users.id')
+            ->leftJoin('task','users.team_id','=','task.team_id')
+            ->groupBy('location.task_id')
+            ->orderBy('location.created_at','desc')
             ->get();
 
-        //$locations = Location::orderBy('created_at', 'asc')->groupBy('user_id')->get();
         return View('api.GEOJsonLocation')->with('locations', $locations);
     }
 

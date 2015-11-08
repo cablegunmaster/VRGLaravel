@@ -11,8 +11,8 @@
         ]
     },
     "properties": {
-        "title": "{{$locations[$i]->title}}",
-        "details": "{{$locations[$i]->description}}",
+        "title": "{{$locations[$i]->title or "Geen opdracht"}}",
+        "details": "{{$locations[$i]->description or "Team heeft geen opdracht."}}",
         "type": "firetruck",
         "icon": {
         "iconUrl": "/img/firetruck.png",

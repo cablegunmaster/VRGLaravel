@@ -20,6 +20,7 @@ class CreateTask extends Migration
             $table->String('title');
             $table->text('description');
             $table->text('data');// voor JSON data mallen,
+            $table->timestamp('end_date')->nullable();
             $table->timestamps();
         });
     }

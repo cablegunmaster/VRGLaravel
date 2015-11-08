@@ -150,6 +150,7 @@ return [
          * http://laravelcollective.com/docs/5.1/html
          */
         Collective\Html\HtmlServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],
 
     /*
