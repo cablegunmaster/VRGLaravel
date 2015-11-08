@@ -21,18 +21,22 @@ class AllDataController extends Controller
     public function show($token)
     {
         $geo = new stdClass(); //All GeoJSON obects go in this one! (empty array sort like laravel class).
-        $chat = null; //TODO implement.
 
         //UserToken -> User -> Incident
         $table = AllDataController::getUserIncident($token);
         $task = AllDataController::getTask($table[0]->team_id,$table[0]->incident_id); //team_id and incident_id required.
 
-        $geo->locations = AllDataController::getLocation($table[0]->incident_id);
-        $geo->roadblock = AllDataController::getRoadblocks($table[0]->incident_id);
-        $geo->mal = AllDataController::getMal($table[0]->incident_id);
+        //$chat = AllDataController::getChat($table[0]->incident_id);
+
+        $mal = AllDataController::getMal($table[0]->incident_id);
+        $location = AllDataController::getLocation($table[0]->incident_id);
+        $roadblock = AllDataController::getRoadblocks($table[0]->incident_id);
+
+        $geo = array_merge_recursive($mal,$location,$roadblock); //merge all arrays together
+        $geo['type'] = "FeatureCollection"; //fix multiple featurecollection.
 
         $table[0]->task = $task;
-        $table[0]->chat = $chat;
+        //$table[0]->chat = $chat;
         $table[0]->geo = $geo;
 
         return $table;
@@ -114,21 +118,34 @@ class AllDataController extends Controller
             ->get();
 
         $roadblock_JSON = View('api.GEOJsonRoadblock')->with('roadblocks', $roadblocks)->render();
-        return json_decode(AllDataController::removeRN($roadblock_JSON),true); //remove the weird /r/n
+        return json_decode(AllDataController::removeRN($roadblock_JSON),true); //remove the  /r/n
     }
 
     /**
      * Get all the malls belonging to the current incident.
      */
     public static function getMal($incident_id){
-
         $mal = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
             ->where('pointsofinterest.incident_id', '=', $incident_id)
-            ->where('poi_type.name','mal','properties')
+            ->where('poi_type.name',"=",'mal')
             ->get();
 
         $mal_JSON = View('api.GEOJSONmal')->with('mal', $mal)->render();
-        return json_decode(AllDataController::removeRN($mal_JSON),true);
+        return  json_decode(AllDataController::removeRN($mal_JSON),true); //remove the /r/n
+    }
+
+    public static function getChat($incident_id){
+        return ;
+    }
+
+    public static function getLineString($incident_id){
+        $mal = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
+            ->where('pointsofinterest.incident_id', '=', $incident_id)
+            ->where('poi_type.name',"=",'rijopdracht')
+            ->get();
+
+        $mal_JSON = View('api.GEOJSONmal')->with('mal', $mal)->render();
+        return  json_decode(AllDataController::removeRN($mal_JSON),true); //remove the /r/n
     }
 
     /**
@@ -136,6 +153,6 @@ class AllDataController extends Controller
      * @return mixed String without /r/n
      */
     public static function removeRN($source){
-        return  preg_replace("@[\\r|\\n|\\t]+@", "", $source); //remove the weird /r/n
+        return  preg_replace("@[\\r|\\n|\\t]+@", "", $source); //remove the  /r/n
     }
 }

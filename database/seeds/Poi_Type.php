@@ -19,12 +19,18 @@ class PoiTypeTableSeeder extends Seeder
                             "icon": {
                             "iconUrl": "/brandweer/img/obstruction.png",
                             "iconSize": [35,17],
-                            "className": "dot"'
+                            "className": "dot"
+                            }'
         ]);
 
         DB::table('Poi_Type')->insert([
             'name' => 'mal',
             'properties'=> '"type": "mal"'
+            //Mal =
+            // "coordinates": [
+//            [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0],
+//            [100.0, 1.0], [100.0, 0.0] ]
+//            ]
         ]);
 
         DB::table('Poi_Type')->insert([
@@ -45,7 +51,8 @@ class PoiTypeTableSeeder extends Seeder
                             "icon": {
                             "iconUrl": "/brandweer/img/meting.png",
                             "iconSize": [35,17],
-                            "className": "dot"'
+                            "className": "dot"
+                            }'
         ]);
 
         DB::table('Poi_Type')->insert([
