@@ -18,6 +18,6 @@ class Poi_Type extends Model
      *
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name','properties'];
 
 }
