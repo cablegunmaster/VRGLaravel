@@ -3,16 +3,15 @@
 @section('content')
 <div class="row noBottomMargin">
 	<div class="col s3 black-text" id="eventList">
-		<br/>
-		<nav>
-			<div class="nav-wrapper">
-				<div class="input-field blue">
-					<input id="search" type="search" required>
-					<label for="search"><i class="material-icons">search</i></label>
-					<i class="material-icons">close</i>
-				</div>
+		<div class="row card-panel">
+			<div class="input-field col s10">
+				<i class="material-icons prefix">search</i>
+				<input id="searchbox" type="text" required>
 			</div>
-		</nav>
+			<div class="col s2">
+				<a class="btn-floating btn-large waves-effect waves-light blue" id="searchbox_button"><i class="material-icons">search</i></a>
+			</div>
+		</div>
 		<a class="waves-effect blue waves-light btn modal-trigger" href="#OpdrachtModal" style="width:100%; margin-top:0.5em" onclick="$('#OpdrachtModal').openModal();">Nieuw</a>
 		<div id = "eventHolder">
 			<h5 class="center-align white-text">Laden...</h5>
@@ -69,6 +68,7 @@
 				.addTo(map);
 
 				roadBlockLayer = L.mapbox.featureLayer().addTo(map);
+				searchFeatureLayer = L.mapbox.featureLayer().addTo(map);
 
 				function runMap() {
 					featureLayer.eachLayer(function(l) {
@@ -280,8 +280,29 @@ function updateRoadBlocks()
 		}
 		// https://www.mapbox.com/mapbox.js/example/v1.0.0/mouse-position/
 
-		//Search Bar Functionality
+		//Searchbox Bar Functionality
 
-		
+		$('#searchbox_button').click(function(){
+			var query = $('#searchbox').val();
+			console.log("searching for" + query);
+
+			$.post('/brandweer/api/geocode/forwardEncode', { 'address': query}, function(result){
+				var jsonObj = JSON.parse(result);
+
+				console.log(jsonObj);
+
+				searchFeatureLayer.clearLayers();
+				searchFeatureLayer.setGeoJSON(jsonObj).addTo(map);
+
+				var layercounter = 0;
+				searchFeatureLayer.eachLayer(function(l) {
+					if(layercounter == 0)
+					{
+						map.panTo(l.getLatLng());
+					}
+					layercounter++;
+				});
+			})
+		});
 	</script>
 	@stop
