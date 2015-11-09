@@ -83,3 +83,7 @@ Route::post('/brandweer/api/task/getcurrent_plain','TaskController@getLatestForT
 Route::get('/brandweer/bullshitmal','Api\LocationController@bullshitMal');
 
 Route::get('/brandweer/api/login/{user}/{password}','Api\LoginController@login');
+
+//Geocoding Routes
+Route::post("/brandweer/api/geocode/forwardEncode",'Api\GeoCodeController@postEncode');
+Route::post("/brandweer/api/geocode/reverseEncode",'Api\GeoCodeController@postReverseEncode');
