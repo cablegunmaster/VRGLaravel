@@ -45,17 +45,17 @@ class LoginController extends Controller
     {
         $token = $_POST['token'];
 
-        if(Auth::attempt(['remember_token' => $token])) {
+        $user = User::where("remember_token", "=", $token)->firstOrFail();
+        if(isset($user->remember_token) && !empty($user->remember_token)) {
             $json = array(
                 'success' => true
             );
             return json_encode($json);
-        }else{
-            $json = array(
-                'succes' => false
-            );
-            return json_encode($json);
         }
+        $json = array(
+            'succes' => false
+        );
+        return json_encode($json);
     }
 
     /**
