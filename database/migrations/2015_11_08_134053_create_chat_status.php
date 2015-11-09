@@ -17,6 +17,7 @@ class CreateChatStatus extends Migration
             $table->integer('chat_id');
             $table->integer('user_id');
             $table->timestamp('receive_date');
+            $table->timestamp('read_date');
             $table->timestamps();
         });
     }
