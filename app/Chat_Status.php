@@ -18,5 +18,5 @@ class Chat_Status extends Model
      *
      * @var array
      */
-    protected $fillable = ['chat_id','user_id','receive_date','created_at','updated_at'];
+    protected $fillable = ['chat_id','user_id','receive_date','read_date','created_at','updated_at'];
 }

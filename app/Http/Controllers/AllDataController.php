@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Chat_Status;
 use App\PointsOfInterest;
 use App\Task;
+use App\Chat;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -24,8 +26,7 @@ class AllDataController extends Controller
         //UserToken -> User -> Incident
         $table = AllDataController::getUserIncident($token);
         $task = AllDataController::getTask($table[0]->team_id, $table[0]->incident_id); //team_id and incident_id required.
-
-        //$chat = AllDataController::getChat($table[0]->incident_id);
+        $chat = AllDataController::getChat($table[0]->incident_id, $table[0]->user_id);
 
         $mal = AllDataController::getMal($table[0]->incident_id);
         $location = AllDataController::getLocation($table[0]->incident_id);
@@ -52,7 +53,7 @@ class AllDataController extends Controller
         $geo['type'] = "FeatureCollection"; //fix the multiple definition of featurecollections.
 
         $table[0]->task = $task;
-        //$table[0]->chat = $chat;
+        $table[0]->chat = $chat;
         $table[0]->geo = $geo;
 
         return $table;
@@ -67,6 +68,7 @@ class AllDataController extends Controller
         $table = DB::table('users')
             ->select('incident.information as incident_name'
                 ,'users.username'
+                ,'users.id as user_id'
                 ,'users.remember_token as token'
                 ,'users.team_id'
                 ,'incident.id as incident_id'
@@ -94,7 +96,7 @@ class AllDataController extends Controller
             ->leftJoin('task_type', 'task.id', '=', 'task_type.id')
             ->where('task.team_id', $team_id)
             ->where('task.incident_id', $incident_id)
-            ->where('task.end_date', '0000-00-00 00:00:00')
+            ->whereNull('task.end_date')
             ->orderBy('task.id','asc')
             ->first();
         return $task;
@@ -157,8 +159,32 @@ class AllDataController extends Controller
     /**
      * @param $incident_id
      */
-    public static function getChat($incident_id){
-        return ;
+    public static function getChat($incident_id, $user_id){
+        $chat_messages = Chat::select(
+            "chat.created_at",
+            "chat.message as message",
+            "chat_status.receive_date",
+            "chat_status.read_date",
+            "users.username",
+            "chat.id"
+            )
+            ->where("incident_id","=", $incident_id)
+            ->leftjoin("chat_status","chat.id","=","chat_status.chat_id")
+            ->leftjoin("users","chat.user_id","=","users.id")
+            ->whereNull('chat_status.receive_date')
+            ->get();
+
+        foreach($chat_messages as $chat){
+            //$chat_status = new Chat_Status();
+            Chat_Status::firstOrCreate([
+                'chat_id'  => $chat->id,
+                'user_id' => $user_id
+            ]);
+            //$chat_status->chat_id = $chat->id;
+            //$chat_status->user_id = $user_id;
+            //$chat_status->save();
+        }
+        return $chat_messages;
     }
 
     public static function getLineString($incident_id){
@@ -170,7 +196,6 @@ class AllDataController extends Controller
         $LineString = View('api.GeoJSONLineString')->with('linestring', $LineString)->render();
 
         return  json_decode(AllDataController::removeRN($LineString),true); //remove the /r/n
-        //dd(AllDataController::removeRN($LineString)); //remove the /r/n
     }
 
     /**

@@ -61,7 +61,10 @@ class RoadblockController extends Controller
     }
 
     public function index(){
-        $roadblocks = PointsOfInterest::where('incident_id', '=', '1')->get(); //HARDCODED incident_id replace with SESSION later.
+        $roadblocks = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
+            ->where('pointsofinterest.incident_id', '=', '1')
+            ->where('poi_type.name','obstruction')
+            ->get(); //HARDCODED incident_id replace with SESSION later.
         return View('api.GEOJsonRoadblock')->with('roadblocks', $roadblocks);
     }
 }
