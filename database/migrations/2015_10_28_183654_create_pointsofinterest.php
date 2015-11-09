@@ -16,8 +16,7 @@ class CreatePointsofinterest extends Migration
             $table->increments('id');
             $table->integer('incident_id');
             $table->integer('task_id');
-            $table->double('lat'); // X coordinate.
-            $table->double('lon'); // Y coordinate.
+            $table->text('feature');
             $table->integer('poi_type')->nullable()->unsigned();
             $table->timestamps();
 

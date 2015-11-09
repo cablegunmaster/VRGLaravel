@@ -70,6 +70,7 @@ Route::get('/brandweer/api/getRoadblocks', 'Api\RoadblockController@index');
 Route::get('/brandweer/api/team/getAll','TeamController@indexJSON');
 
 //Incident info API
+Route::get('/brandweer/api/alldata/{token}','AllDataController@show');
 Route::get('/brandweer/api/incident/getcurrent','IncidentController@getLatestJSON');
 Route::get('/brandweer/api/incident/getcurrent_plain','IncidentController@getLatestPlain');
 //Get latest task
@@ -80,3 +81,5 @@ Route::get('/brandweer/api/task/getcurrent_plain','TaskController@getLatestForTe
 Route::post('/brandweer/api/task/getcurrent_plain','TaskController@getLatestForTeamPlain');
 
 Route::get('/brandweer/bullshitmal','Api\LocationController@bullshitMal');
+
+Route::get('/brandweer/api/login/{user}/{password}','Api\LoginController@login');

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTask extends Migration
+class CreateChat extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,12 @@ class CreateTask extends Migration
      */
     public function up()
     {
-        Schema::create('task', function(Blueprint $table){
+        Schema::create('chat', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('incident_id');
-            $table->integer('task_type_id');
-            $table->integer('team_id');
-            $table->String('title');
-            $table->text('description');
-            $table->text('data');// voor JSON data mallen,
-            $table->timestamp('end_date')->nullable();
+            $table->integer('user_id');
+            $table->text('message');
+            $table->timestamp('saved_at');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreateTask extends Migration
      */
     public function down()
     {
-        Schema::drop('task');
+        Schema::drop('chat');
     }
 }

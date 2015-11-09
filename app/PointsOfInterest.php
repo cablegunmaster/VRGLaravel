@@ -18,6 +18,5 @@ class PointsOfInterest extends Model
      *
      * @var array
      */
-    protected $fillable = ['incident_id', 'task_id','lat','lon','poi_type','created_at','updated_at'];
-
+    protected $fillable = ['incident_id', 'task_id','feature','poi_type','created_at','updated_at'];
 }

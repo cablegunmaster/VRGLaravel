@@ -4,20 +4,19 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Poi_Type extends Model
+class Chat_Status extends Model
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'POI_Type';
+    protected $table = 'chat_status';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name','properties'];
-
+    protected $fillable = ['chat_id','user_id','receive_date','read_date','created_at','updated_at'];
 }

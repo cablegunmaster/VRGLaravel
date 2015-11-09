@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePoiType extends Migration
+class CreateChatStatus extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,12 @@ class CreatePoiType extends Migration
      */
     public function up()
     {
-        Schema::create('POI_Type', function(Blueprint $table){
+        Schema::create('chat_status', function(Blueprint $table) {
             $table->increments('id');
-            $table->String('name', 64)->unique();
-            $table->String('properties');
+            $table->integer('chat_id');
+            $table->integer('user_id');
+            $table->timestamp('receive_date')->nullable();
+            $table->timestamp('read_date')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreatePoiType extends Migration
      */
     public function down()
     {
-        Schema::drop('POI_Type');
+        Schema::drop('chat_status');
     }
 }
