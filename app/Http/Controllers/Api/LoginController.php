@@ -14,7 +14,7 @@ class LoginController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * Login resource is based on the username and password.
      * @return \Illuminate\Http\Response
      */
     public function login($username,$password)
@@ -23,8 +23,7 @@ class LoginController extends Controller
             $user = User::where('username', $username)->first();
             return json_decode('{ "token" : "'.$user->remember_token.'" } ',true);
         }else{
-            return Hash::make('ok');
-            //return json_decode('{ "error" : "je moeder is lelijk" } ',true);
+            return json_decode('{ "error" : "de Username of Wachtwoord is verkeerd ingevoerd." } ',true);
         }
     }
 

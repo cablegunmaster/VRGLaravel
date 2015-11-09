@@ -82,4 +82,5 @@ Route::post('/brandweer/api/task/getcurrent_plain','TaskController@getLatestForT
 
 Route::get('/brandweer/bullshitmal','Api\LocationController@bullshitMal');
 
+//Login controller
 Route::get('/brandweer/api/login/{user}/{password}','Api\LoginController@login');
