@@ -5,7 +5,9 @@
         { "type": "Feature",
             "geometry": {
             "type": "Polygon",
-            {!!  $mal[$i]->feature !!}
+            "coordinates": [
+                {!!  $mal[$i]->feature !!}
+            ]
         },
         "properties": {
             {!!  $mal[$i]->properties !!}

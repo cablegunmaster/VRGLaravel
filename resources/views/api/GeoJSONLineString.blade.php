@@ -5,7 +5,9 @@
         { "type": "Feature",
             "geometry": {
             "type": "LineString",
-            {!!  $linestring[$i]->feature !!}
+            "coordinates": [
+                {!!  $linestring[$i]->feature !!}
+            ]
         },
         "properties": {
         }

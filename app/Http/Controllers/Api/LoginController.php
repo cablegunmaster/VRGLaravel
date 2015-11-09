@@ -17,8 +17,11 @@ class LoginController extends Controller
      * Login resource is based on the username and password.
      * @return \Illuminate\Http\Response
      */
-    public function login($username,$password)
+    public function login()
     {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
         if(Auth::attempt(['username' => $username, 'password' => $password])) {
             $user = User::where('username', $username)->first();
             return json_decode('{ "token" : "'.$user->remember_token.'" } ',true);
