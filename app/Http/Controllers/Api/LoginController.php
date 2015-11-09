@@ -38,13 +38,24 @@ class LoginController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * Test of de token nog bestaat in de username.
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function check()
     {
-        //
+        $token = $_POST['token'];
+
+        if(Auth::attempt(['remember_token' => $token])) {
+            $json = array(
+                'success' => true
+            );
+            return json_encode($json);
+        }else{
+            $json = array(
+                'succes' => false
+            );
+            return json_encode($json);
+        }
     }
 
     /**
