@@ -163,6 +163,7 @@ class AllDataController extends Controller
         $chat_messages = Chat::select(
             "chat.created_at",
             "chat.message as message",
+            "chat.img_path",
             "chat_status.receive_date",
             "chat_status.read_date",
             "users.username",
