@@ -24,9 +24,16 @@ class LoginController extends Controller
 
         if(Auth::attempt(['username' => $username, 'password' => $password])) {
             $user = User::where('username', $username)->first();
-            return json_decode('{ "token" : "'.$user->remember_token.'" } ',true);
+            $json = array(
+              'success' => true,
+                'token' =>$user->remember_token
+            );
+            return json_encode($json);
         }else{
-            return json_decode('{ "error" : "de Username of Wachtwoord is verkeerd ingevoerd." } ',true);
+            $json = array(
+              'succes' => false
+            );
+            return json_encode($json);
         }
     }
 
