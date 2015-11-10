@@ -30,6 +30,29 @@ class GeoCodeController extends Controller
 		return $result;
 	}
 
+	function postEncodeByProximity()
+	{
+		$address = $_POST['address'];
+		$lon = $_POST['lon'];
+		$lat = $_POST['lat'];
+
+		$urlAddress = urlencode($address);
+
+		$url = "http://api.mapbox.com/geocoding/v5/mapbox.places/".$urlAddress.".json?proximity=".$lon.",".$lat."&access_token=pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWZtdHh6a3cwMTg5dGNseDg2cDFsMTZyIn0.bDPO2rgB_lpOypOYt-eOeg";
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+		curl_setopt($ch, CURLOPT_HTTPGET, 1); 
+		if( ! $result = curl_exec($ch)) 
+		{ 
+			trigger_error(curl_error($ch)); 
+		} 
+		curl_close($ch);
+
+		return $result;
+	}
+
 	function postReverseEncode()
 	{
 		$lon = $_POST['lon'];

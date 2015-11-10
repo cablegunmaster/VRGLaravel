@@ -285,10 +285,9 @@ function updateRoadBlocks()
 		$('#searchbox_button').click(function(){
 			var query = $('#searchbox').val();
 			console.log("searching for" + query);
-
-			$.post('/brandweer/api/geocode/forwardEncode', { 'address': query}, function(result){
+			var mapCenter = map.getCenter();
+			$.post('/brandweer/api/geocode/forwardEncodeByProximity', { 'address': query, 'lon': mapCenter.lng.toString(), 'lat': mapCenter.lat.toString()}, function(result){
 				var jsonObj = JSON.parse(result);
-
 				console.log(jsonObj);
 
 				searchFeatureLayer.clearLayers();
