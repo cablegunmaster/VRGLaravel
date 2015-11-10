@@ -67,10 +67,10 @@ class AllDataController extends Controller
     /**
      * FAKE POST request.
      * @return string
-     *
+     */
     public function store(){
 
-        $post = '
+    $post = '
     {
           "token": "HqCaJI9pI0",
           "own_location": {
@@ -85,7 +85,7 @@ class AllDataController extends Controller
                     "lat"  : 51.3045,
                     "long" : 6.0539
                 },
-                "created":"HH-MM-SS",
+                "created":"2015-10-01 12:00:01",
                 "remarks": "opmerking :)",
                 "echo" : "?",
                 "bravos":
@@ -149,7 +149,7 @@ class AllDataController extends Controller
         $post = json_decode($post,true);
         dd($post['chat']);
         return $post;
-    }*/
+    }
 
     /**
      * For incident Table and users Table.
@@ -244,7 +244,7 @@ class AllDataController extends Controller
             ->where('poi_type.name',"=",'mal')
             ->get();
 
-        $mal_JSON = View('api.GEOJSONMal')->with('mal', $mal)->render();
+        $mal_JSON = View('api.GEOJSONmal')->with('mal', $mal)->render();
         return  json_decode(AllDataController::removeRN($mal_JSON),true); //remove the /r/n
     }
 
