@@ -83,17 +83,7 @@
 
 						updateRoadBlocks();
 
-						$.get('/brandweer/task/preformatted', function(data){
-							if(!(data == currentdata))
-							{
-								currentdata = data;
-								$('#eventHolder').html(data)
-								$('.collapsible').collapsible({
-								accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-							});
-								console.log('update')
-							}
-						});
+						getTaskData();
 					}, 4000);
 				}
 			});
@@ -109,8 +99,24 @@ $(document).ready(function()
 	var mapheight = $(window).height() - $("#navbar").height();
 	$("#map").css("height", mapheight + "px")
 	updateRoadBlocks();
+	getTaskData();
 });
 
+
+function getTaskData()
+{
+	$.get('/brandweer/task/preformatted', function(data){
+							if(!(data == currentdata))
+							{
+								currentdata = data;
+								$('#eventHolder').html(data)
+								$('.collapsible').collapsible({
+								accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+							});
+								console.log('update')
+							}
+						});
+}
 
 function getDirections(originLat, originLong, destLat, destLong)
 {
