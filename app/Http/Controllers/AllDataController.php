@@ -22,9 +22,13 @@ class AllDataController extends Controller
     public function show($token)
     {
         $geo = new stdClass(); //All GeoJSON obects go in this one! (empty array sort like laravel class).
-
-        //UserToken -> User -> Incident
+        
         $table = AllDataController::getUserIncident($token);
+        if(!isset($table[0])){
+            return '{ "success": "error" }';
+        }
+
+
         $task = AllDataController::getTask($table[0]->team_id, $table[0]->incident_id); //team_id and incident_id required.
         $chat = AllDataController::getChat($table[0]->incident_id, $table[0]->user_id);
 
