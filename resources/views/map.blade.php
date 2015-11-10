@@ -62,15 +62,11 @@
 			//var directionsRoutesControl = L.mapbox.directions.routesControl('routes', directions).addTo(map);
 			//var directionsInstructionsControl = L.mapbox.directions.instructionsControl('instructions', directions).addTo(map);
 
-			var featureLayer = L.mapbox.featureLayer()
-			.loadURL('/brandweer/randomadres')
 				// Once this layer loads, we set a timer to load it again in a few seconds.
-				.on('ready', runMap)
-				.addTo(map);
 
 				roadBlockLayer = L.mapbox.featureLayer().addTo(map);
 				teamViewFeatureLayer = L.mapbox.featureLayer().addTo(map);
-				searchFeatureLayer = L.mapbox.featureLayer().addTo(map);
+				searchFeatureLayer = L.mapbox.featureLayer().addTo(map).on('ready', runMap);
 
 				function runMap() {
 					featureLayer.eachLayer(function(l) {
@@ -81,7 +77,7 @@
 					//featureLayer.loadURL('https://api.mapbox.com/v4/directions/mapbox.driving/'+ temp1.lat+','+ temp1.lng +';6.5306433920317,53.247911358103.json?access_token=pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWcwM2NpazQwMmk4dDRreDdpNGd1MXd0In0.JsRAe5r1LWPdBqlhMTOlyQ');
 				});
 					window.setTimeout(function() {
-						featureLayer.loadURL('/brandweer/randomadres');
+						//featureLayer.loadURL('/brandweer/randomadres');
 
 						updateRoadBlocks();
 						updateTeamView();
