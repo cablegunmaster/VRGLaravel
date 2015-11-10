@@ -53,7 +53,7 @@ class LoginController extends Controller
             return json_encode($json);
         }
         $json = array(
-            'succes' => false
+            'success' => false
         );
         return json_encode($json);
     }
