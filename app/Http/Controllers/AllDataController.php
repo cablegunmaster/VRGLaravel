@@ -56,8 +56,100 @@ class AllDataController extends Controller
         $table[0]->chat = $chat;
         $table[0]->geo = $geo;
 
-        return $table;
+        $response = response()->json($table[0]);
+        $response->header('Content-Type', 'application/json');
+        $response->header('charset', 'utf-8');
+
+        return $response;
     }
+
+
+    /**
+     * FAKE POST request.
+     * @return string
+     *
+    public function store(){
+
+        $post = '
+    {
+          "token": "HqCaJI9pI0",
+          "own_location": {
+                "lat"  : 52.3045,
+                "long" : 6.0539
+            },
+          "data": [
+          {
+                "task_id": 2,
+                "type": "measurement",
+                "location": {
+                    "lat"  : 51.3045,
+                    "long" : 6.0539
+                },
+                "created":"HH-MM-SS",
+                "remarks": "opmerking :)",
+                "echo" : "?",
+                "bravos":
+                [
+                    {
+                        "bravo":11,
+                        "november": 5,
+                        "charlie": 8,
+                        "tango":"2015-10-01 12:00:01"
+                    },{
+                        "bravo":11,
+                        "november": 5,
+                        "charlie": 8,
+                        "tango":"2012-01-05 01:00:00"
+                    }
+                ]
+          },
+         {
+          "type": "earthquake",
+          "location": {
+                    "lat"  : 51.3045,
+                    "long" : 6.0539
+                },
+          "tango": "2012-01-05 01:00:00",
+          "score_s": 1,
+          "score_g": 2,
+          "score_i": 3,
+          "remarks_s": null,
+          "remarks_g": "veel los glas",
+          "remarks_i": "Wegen kapot"
+         }
+
+        ],
+
+         "chat":
+        [
+                {
+                  "id": null,
+                  "type":"chat",
+                  "message":"Hello world",
+                  "state":null
+                },
+                {
+                    "id": 1,
+                    "type":"task",
+                    "state":"finished"
+                 },
+                 {
+                    "id": 2,
+                    "type":"task",
+                    "state":"received"
+                 },
+                {
+                  "id": 128,
+                  "type":"chat",
+                  "state":"received"
+                }
+        ]
+    }
+';
+        $post = json_decode($post,true);
+        dd($post['chat']);
+        return $post;
+    }*/
 
     /**
      * For incident Table and users Table.
