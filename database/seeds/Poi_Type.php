@@ -13,7 +13,7 @@ class PoiTypeTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('Poi_Type')->insert([
+        DB::table('POI_Type')->insert([
             'name' => 'obstruction',
             'properties' => '"type": "obstruction",
                             "icon": {
@@ -23,29 +23,24 @@ class PoiTypeTableSeeder extends Seeder
                             }'
         ]);
 
-        DB::table('Poi_Type')->insert([
+        DB::table('POI_Type')->insert([
             'name' => 'mal',
             'properties'=> '"type": "mal"'
-            //Mal =
-            // [
-//            [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0],
-//            [100.0, 1.0], [100.0, 0.0] ]
-//            ]
         ]);
 
-        DB::table('Poi_Type')->insert([
+        DB::table('POI_Type')->insert([
             'name' => 'origin',
         ]);
 
-        DB::table('Poi_Type')->insert([
+        DB::table('POI_Type')->insert([
             'name' => 'destination',
         ]);
 
-        DB::table('Poi_Type')->insert([
+        DB::table('POI_Type')->insert([
             'name' => 'waypoints',
         ]);
 
-        DB::table('Poi_Type')->insert([
+        DB::table('POI_Type')->insert([
             'name' => 'meting',
             'properties'=> '"type": "meting",
                             "icon": {
@@ -55,8 +50,8 @@ class PoiTypeTableSeeder extends Seeder
                             }'
         ]);
 
-        DB::table('Poi_Type')->insert([
-            'name' => 'waarneming',
+        DB::table('POI_Type')->insert([
+            'name' => 'waarneming'
         ]);
     }
 }
