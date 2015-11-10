@@ -41,6 +41,10 @@ class PoiTypeTableSeeder extends Seeder
         ]);
 
         DB::table('POI_Type')->insert([
+            'name' => 'earthquake',
+        ]);
+
+        DB::table('POI_Type')->insert([
             'name' => 'meting',
             'properties'=> '"type": "meting",
                             "icon": {
