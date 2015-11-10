@@ -60,12 +60,12 @@
 			<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
 				<li><a class="modal-trigger waves-effect waves-light" href="#LargeModal" onclick="LargeModal_open_teams();">Teams</a></li>
-				<li><a href="#">Geschiedenis</a></li>
+				<li><a href="#">Chat</a></li>
 				<li><a href="#">Instellingen</a></li>
 			</ul>
 			<ul class="side-nav" id="mobile-demo">
 				<li><a class="modal-trigger waves-effect waves-light" href="#LargeModal" onclick="LargeModal_open_teams();">Teams</a></li>
-				<li><a href="#">Geschiedenis</a></li>
+				<li><a href="#">Chat</a></li>
 				<li><a href="#">Instellingen</a></li>
 			</ul>
 		</div>
