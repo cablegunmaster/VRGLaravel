@@ -30,12 +30,12 @@ class LocationController extends Controller
                 )
             ->leftJoin('users','location.user_id','=', 'users.id')
             ->leftJoin('task','users.team_id','=','task.team_id')
-            ->leftJoin('team','users.team_id','=','team.id')
+            ->leftJoin('team','users.id','=','team.leader_id')
             ->groupBy('location.task_id')
             ->orderBy('location.created_at','desc')
             ->get();
-        print_r($locations);
-        //return View('api.GEOJsonLocation')->with('locations', $locations);
+        //print_r($locations);
+        return View('api.GEOJsonLocation')->with('locations', $locations);
     }
 
     public function bullshitMal()
