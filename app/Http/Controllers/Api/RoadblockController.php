@@ -30,8 +30,8 @@ class RoadblockController extends Controller
         $poi->incident_id = '1';//HARDCODED incident_id replace with SESSION later.
         $poi->task_id = '1';//HARDCODED task_id replace with SESSION later.
 
-        $TYPE = Poi_Type::select('id')->where('name','=','obstruction')->first(); //get id from obstruction.
-        $poi->poi_type = $TYPE->id; //ID for obstruction.
+        $type = Poi_Type::select('id')->where('name','=','obstruction')->first(); //get id from obstruction.
+        $poi->poi_type = $type->id; //ID for obstruction.
         $poi->save();
 
         $result['loc'] = $poi->toJson();
@@ -46,14 +46,10 @@ class RoadblockController extends Controller
             ->where('poi_type.name','obstruction')
             ->get();
         return View('api.GEOJsonRoadblock')->with('roadblocks', $pois);
-        //return json_decode($pois,true );
     }
 
     public function deleteRoadBlock() {
         $result = array();
-
-        //$poi = DB::table('pointsofinterest')->where('lat', '=', $_POST['lat'])->where('long', '=', $_POST['lng'])->find();
-
         $poi = PointsOfInterest::find($_POST['id']);
         $poi->delete();
 
