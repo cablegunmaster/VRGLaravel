@@ -86,4 +86,5 @@ Route::get('/brandweer/api/login/{user}/{password}','Api\LoginController@login')
 
 //Geocoding Routes
 Route::post("/brandweer/api/geocode/forwardEncode",'Api\GeoCodeController@postEncode');
+Route::post("/brandweer/api/geocode/forwardEncodeByProximity",'Api\GeoCodeController@postEncodeByProximity');
 Route::post("/brandweer/api/geocode/reverseEncode",'Api\GeoCodeController@postReverseEncode');
