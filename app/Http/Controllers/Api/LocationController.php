@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Location;
+use App\User;
 use DB;
 
 class LocationController extends Controller
@@ -19,23 +20,26 @@ class LocationController extends Controller
     {
         //TODO need to test: only grab the last task thats ACTIVE!
         //TODO rewrite if TOKEN is here.
-        $locations = DB::table("location")
-            ->select("task.id as tasks_id",
-                "location.*",
-                "task.title",
-                "task.description",
-                "team.id as team_id",
-                "team.code as team_code",
-                "team.name as team_name" 
+        $locations = DB::table("users")
+            ->select("team.*",
+                "users.id",
+                "team.name as team_name", 
+                "team.code as team_code"
                 )
-            ->leftJoin('users','location.user_id','=', 'users.id')
-            ->leftJoin('task','users.team_id','=','task.team_id')
             ->leftJoin('team','users.id','=','team.leader_id')
-            ->groupBy('location.task_id')
-            ->orderBy('location.created_at','desc')
             ->get();
         //print_r($locations);
-        return View('api.GEOJsonLocation')->with('locations', $locations);
+        $users = array();
+
+        for($i =0;$i<count($locations);$i++)
+        {
+            $users[$i] = DB::table("location")
+                ->select('location.*','users.*')
+                ->leftJoin('users','users.id','=','location.user_id')
+                ->where('users.id','=', $locations[$i]->leader_id)
+                ->first();
+        }
+        return View('api.GEOJsonLocation')->with('locations', $locations)->with('users',$users);
     }
 
     public function bullshitMal()
