@@ -16,7 +16,7 @@ class CreateIncident extends Migration
             $table->increments('id');
             $table->String('code');
             $table->text('information');
-            $table->dateTime('end_date');
+            $table->dateTime('end_date')->nullable()->default(null);
             $table->timestamps();
         });
     }
