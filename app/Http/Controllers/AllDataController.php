@@ -8,6 +8,7 @@ use App\Measurement;
 use App\PointsOfInterest;
 use App\Task;
 use App\Chat;
+use App\Task_Type;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -75,6 +76,7 @@ class AllDataController extends Controller
      */
     public function store()
     {
+
         if (!isset($_POST['data'])) {
             $post = '
     {
@@ -216,7 +218,12 @@ class AllDataController extends Controller
     }
 
 
-    public static function InsertData($data,$table){
+    /**
+     * @param $data
+     * @param $table
+     * @return mixed
+     */
+    public static function InsertData($data, $table){
         $count = count($data); //count only once.
         for($i = 0; $i < $count; $i++){
 
@@ -243,12 +250,50 @@ class AllDataController extends Controller
                     //Create a measurement.
                     $measurement = new Measurement();
                     $measurement->message = $data[$i]['remarks'];
-                    $measurement->data= json_encode($measurement_data);
+                    $measurement->data = json_encode($measurement_data);
                     $measurement->location_id = $location->id;
                     $measurement->save();
                     break;
                 case "earthquake":
+
+                    $earthquake = array();
+
+                    /**
+                     * Validation block to make sure it doessnt go wrong.
+                     */
+                    if (isset($data[$i]['tango']) && !empty($data[$i]['tango'])) {
+                        $earthquake["tango"] = $data[$i]['tango'];
+                    }
+                    if (isset($data[$i]['score_s']) && !empty($data[$i]['score_s'])) {
+                        $earthquake["score_s"] = $data[$i]['score_s'];
+                    }
+                    if (isset($data[$i]['score_g']) && !empty($data[$i]['score_g'])) {
+                        $earthquake["score_g"] = $data[$i]['score_g'];
+                    }
+                    if (isset($data[$i]['score_i']) && !empty($data[$i]['score_i'])) {
+                        $earthquake["score_i"] = $data[$i]['score_i'];
+                    }
+                    if (isset($data[$i]['remark_g']) && !empty($data[$i]['remark_g'])) {
+                        $earthquake["remark_g"] = $data[$i]['remark_g'];
+                    }
+                    if (isset($data[$i]['remark_i']) && !empty($data[$i]['remark_i'])) {
+                        $earthquake["remark_i"] = $data[$i]['remark_i'];
+                    }
+                    if (isset($data[$i]['remark_s']) && !empty($data[$i]['remark_s'])){
+                        $earthquake["remark_s"] = $data[$i]['remark_s'];
+                    }
+                    
+
+                    $task = new Task();
+                    $task->incident_id = '0'; //Standaard aardbeving incident_ID;
+                    $task_type = Task_Type::select('id')->where("name","=","earthquake")->first();
+                    $task->task_type_id = $task_type->id;
+                    $task->team_id = $table->team_id;
+                    $task->data = json_encode($earthquake);
+                    $task->end_date = $data[$i]['tango'];
+                    $task->save();
                     break;
+
                 case "observation":
                     //Todo implement observation.
                     break;
@@ -260,6 +305,8 @@ class AllDataController extends Controller
         }
         return $data;
     }
+
+
 
     /**
      * For incident Table and users Table.
