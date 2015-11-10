@@ -130,7 +130,33 @@
 				});
 
 			});
-		};	
+		};
+
+		function LargeModal_open_chat(){
+		    $('#LargeModalContent').html('\
+                <h5 class="center-align">Laden...</h5>\
+            	<div class="blue lighten-3 progress">\
+            	    <div class="blue indeterminate"></div>\
+            	</div>');
+            $('#LargeModal').openModal();
+            $('#LargeModalContent').load('/brandweer/chat', function()
+            {
+
+                var links = $('#LargeModalContent').find("a")
+
+            	links.click(function(){
+            	    $('#BottomSheetModalContent').html('\
+            		    <h5 class="center-align">Laden...</h5>\
+            			<div class="blue lighten-3 progress">\
+            			    <div class="blue indeterminate"></div>\
+            			</div>');
+            			$('#BottomSheetModal').openModal();
+            			$('#BottomSheetModalContent').load($(this).attr('href'));
+            			return false;
+           		});
+
+           	});
+		};
 	</script>
 </body>
 </html>
