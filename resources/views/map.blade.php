@@ -101,6 +101,7 @@ $(document).ready(function()
 {
 	var mapheight = $(window).height() - $("#navbar").height();
 	$("#map").css("height", mapheight + "px")
+	updateTeamView();
 	updateRoadBlocks();
 	getTaskData();
 });
@@ -109,11 +110,8 @@ function updateTeamView()
 {
 	$.get('/brandweer/api/getlocations',function(result)
 	{
-		if(result == oldlocations)
+		if(!(result == oldlocations))
 		{
-
-		}
-		else{
 			teamViewFeatureLayer.loadURL('/brandweer/api/getlocations');
 			oldlocations = result;
 		}
