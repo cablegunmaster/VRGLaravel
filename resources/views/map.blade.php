@@ -51,10 +51,14 @@
 	oldlocations = "";
 	'use strict';
 	L.mapbox.accessToken = 'pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWcwM2NpazQwMmk4dDRreDdpNGd1MXd0In0.JsRAe5r1LWPdBqlhMTOlyQ';
-
+	<?php if(!isset($_GET['colour'])){$_GET['colour'] = "default";} ?>
+	@if($_GET['colour'] == "light")
+	var map = L.mapbox.map('map', 'mapbox.streets').on('ready',function(){
+	@else
 	var map = L.mapbox.map('map', 'davidvisscher.nom58j6h').on('ready',function(){
+	@endif
 		L.control.fullscreen().addTo(map);
-
+				map.setView([53.189,6.818],10);
 			//var directions = L.mapbox.directions({units:"metric"});
 			//var directionsLayer = L.mapbox.directions.layer(directions).addTo(map);
 			//var directionsInputControl = L.mapbox.directions.inputControl('inputs', directions).addTo(map);
