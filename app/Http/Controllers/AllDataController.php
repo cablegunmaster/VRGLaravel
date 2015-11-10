@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Chat_Status;
+use App\Location;
+use App\Measurement;
 use App\PointsOfInterest;
 use App\Task;
 use App\Chat;
@@ -22,12 +24,11 @@ class AllDataController extends Controller
     public function show($token)
     {
         $geo = new stdClass(); //All GeoJSON obects go in this one! (empty array sort like laravel class).
-        
+
         $table = AllDataController::getUserIncident($token);
         if(!isset($table[0])){
             return '{ "success": "error" }';
         }
-
 
         $task = AllDataController::getTask($table[0]->team_id, $table[0]->incident_id); //team_id and incident_id required.
         $chat = AllDataController::getChat($table[0]->incident_id, $table[0]->user_id);
@@ -72,11 +73,12 @@ class AllDataController extends Controller
      * FAKE POST request.
      * @return string
      */
-    public function store(){
-
-    $post = '
+    public function store()
     {
-          "token": "HqCaJI9pI0",
+        if (!isset($_POST['data'])) {
+            $post = '
+    {
+          "token": "068c9087a94570e873ea3485f5f8c005",
           "own_location": {
                 "lat"  : 52.3045,
                 "long" : 6.0539
@@ -91,7 +93,9 @@ class AllDataController extends Controller
                 },
                 "created":"2015-10-01 12:00:01",
                 "remarks": "opmerking :)",
-                "echo" : "?",
+                "echo": {
+                     "echo": 2
+                 },
                 "bravos":
                 [
                     {
@@ -120,7 +124,31 @@ class AllDataController extends Controller
           "remarks_s": null,
           "remarks_g": "veel los glas",
           "remarks_i": "Wegen kapot"
-         }
+         },
+         {
+         "type": "observation",
+         "location": {
+                    "lat"  : 51.3045,
+                    "long" : 6.0539
+                },
+         "observation": "Iets van een regel tekst",
+         "image": "PLOATKE"
+         },
+         {
+            "id": 1,
+            "type":"task",
+            "state":"finished"
+         },
+         {
+            "id": 2,
+            "type":"task",
+            "state":"received"
+         },
+        {
+          "id": 128,
+          "type":"chat",
+          "state":"received"
+        }
 
         ],
 
@@ -133,26 +161,104 @@ class AllDataController extends Controller
                   "state":null
                 },
                 {
-                    "id": 1,
-                    "type":"task",
-                    "state":"finished"
-                 },
-                 {
-                    "id": 2,
-                    "type":"task",
-                    "state":"received"
-                 },
-                {
-                  "id": 128,
+                  "id": null,
                   "type":"chat",
-                  "state":"received"
+                  "message":"Hello world",
+                  "state":null
                 }
         ]
     }
 ';
-        $post = json_decode($post,true);
-        dd($post['chat']);
+        } else {
+            $post = $_POST['data'];
+        }
+        $post = json_decode($post, true); //make a array of POST.
+
+        //Push chat function als ID is null.
+        //$post['chat'];
+
+        /**
+         * Insert location command, with the corresponding task as well.
+         */
+        $table = AllDataController::getUserIncident($post['token']);
+        $task = AllDataController::getTask($table->team_id, $table->incident_id);
+        $table->task = $task; //task aan table zetten.
+        if (!isset($post['own_location'])) {
+            AllDataController::insertLocation($table, $post['own_location']); //Sets result in the table.
+        }
+
+        if (!empty($post['data'])) {
+            //Post all data in the controllers.
+            $post['data'] = AllDataController::InsertData($post['data'],$table);
+        }
+
         return $post;
+    }
+
+    /**
+     * Insert the location to be called.
+     * @param $user
+     * @param $own_location
+     */
+    public static function insertLocation($user, $own_location)
+    {
+        $location = new Location();
+        $location->lat = $own_location['lat'];
+        $location->lon = $own_location['long'];
+
+        //check if the TASK has been set, needed for the ID, to prevent errors.
+        if (!empty($user->task) && !empty($user->task[0]->task_id)) {
+            $location->task_id = $user->task[0]->task_id;
+        }
+
+        $location->user_id = $user->user_id;
+        $location->save();
+    }
+
+
+    public static function InsertData($data,$table){
+        $count = count($data); //count only once.
+        for($i = 0; $i < $count; $i++){
+
+            switch ($data[$i]['type']) {
+                case "measurement":
+                    //Create new location.
+                    $location = new Location();
+                    $location->lat = $data[$i]['location']['lat'];
+                    $location->lon = $data[$i]['location']['long'];
+                    $location->task_id = $data[$i]['task_id'];
+                    $location->user_id = $table->user_id;
+                    $location->save();
+
+                    //Update End time of the Task.
+                    $task = Task::find($data[$i]['task_id']); //get only 1 task by id.
+                    $task->end_date = $data[$i]['created']; //created seems like end_date of task.
+                    $task->save();
+
+                    //Merge Echo's and bravo's.
+                    $measurement_data = array();
+                    $measurement_data = array_merge($measurement_data, $data[$i]['echo']);
+                    $measurement_data = array_merge($measurement_data, $data[$i]['bravos']);
+
+                    //Create a measurement.
+                    $measurement = new Measurement();
+                    $measurement->message = $data[$i]['remarks'];
+                    $measurement->data= json_encode($measurement_data);
+                    $measurement->location_id = $location->id;
+                    $measurement->save();
+                    break;
+                case "earthquake":
+                    break;
+                case "observation":
+                    //Todo implement observation.
+                    break;
+                case "task":
+                    break;
+                case "chat":
+                    break;
+            }
+        }
+        return $data;
     }
 
     /**
@@ -171,8 +277,8 @@ class AllDataController extends Controller
             )
             ->where('users.remember_token','=',$token)
             ->leftJoin('incident_users', 'users.id', '=', 'incident_users.user_id')
-            ->leftJoin('incident', 'incident_id', '=', 'incident_users.incident_id')
-            ->get();
+            ->leftJoin('incident', 'incident.id', '=', 'incident_users.incident_id')
+            ->first();
         return $table;
     }
 
@@ -194,7 +300,7 @@ class AllDataController extends Controller
             ->where('task.incident_id', $incident_id)
             ->whereNull('task.end_date')
             ->orderBy('task.id','asc')
-            ->first();
+            ->get();
         return $task;
     }
 

@@ -71,6 +71,7 @@ Route::get('/brandweer/api/team/getAll','TeamController@indexJSON');
 //Incident info API
 Route::get('/brandweer/api/alldata/{token}','AllDataController@show');
 Route::get('/brandweer/api/alldata/','AllDataController@store'); //TODO put on POST.
+Route::post('/brandweer/api/alldata/','AllDataController@store'); //TODO put on POST.
 
 Route::get('/brandweer/api/incident/getcurrent','IncidentController@getLatestJSON');
 Route::get('/brandweer/api/incident/getcurrent_plain','IncidentController@getLatestPlain');
