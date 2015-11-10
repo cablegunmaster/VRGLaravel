@@ -6,18 +6,19 @@
         "geometry": {
         "type": "Point",
         "coordinates": [
-                        {{$locations[$i]->lat}},
-                        {{$locations[$i]->lon}}
+                        {{$locations[$i]->lon}},
+                        {{$locations[$i]->lat}}
         ]
     },
     "properties": {
-        "title": "{{$locations[$i]->title or "Geen opdracht"}}",
+        "title": "Team: {{$locations[$i]->team_code or "Error"}} {{($locations[$i]->title or "Geen opdracht")}}",
         "details": "{{$locations[$i]->description or "Team heeft geen opdracht."}}",
         "type": "firetruck",
+        "marker-color": "{{ "#".substr(hash('sha256',$locations[$i]->team_code),0,6)}}",
         "icon": {
-        "iconUrl": "/brandweer/img/firetruck.png",
-        "iconSize": [35,17],
-        "className": "dot"
+            "iconUrl": "/font/police-24.png",
+            "iconSize": [35,17],
+            "className": "dot"
         }
     }
 @if($i == (count($locations)-1))

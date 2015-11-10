@@ -48,6 +48,7 @@
 
 <script type="text/javascript">
 	currentdata = "";
+	oldlocations = "";
 	'use strict';
 	L.mapbox.accessToken = 'pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWcwM2NpazQwMmk4dDRreDdpNGd1MXd0In0.JsRAe5r1LWPdBqlhMTOlyQ';
 
@@ -68,6 +69,7 @@
 				.addTo(map);
 
 				roadBlockLayer = L.mapbox.featureLayer().addTo(map);
+				teamViewFeatureLayer = L.mapbox.featureLayer().addTo(map);
 				searchFeatureLayer = L.mapbox.featureLayer().addTo(map);
 
 				function runMap() {
@@ -82,7 +84,8 @@
 						featureLayer.loadURL('/brandweer/randomadres');
 
 						updateRoadBlocks();
-
+						updateTeamView();
+						
 						getTaskData();
 					}, 4000);
 				}
@@ -102,6 +105,20 @@ $(document).ready(function()
 	getTaskData();
 });
 
+function updateTeamView()
+{
+	$.get('/brandweer/api/getlocations',function(result)
+	{
+		if(result == oldlocations)
+		{
+
+		}
+		else{
+			teamViewFeatureLayer.loadURL('/brandweer/api/getlocations');
+			oldlocations = result;
+		}
+	});
+}
 
 function getTaskData()
 {
