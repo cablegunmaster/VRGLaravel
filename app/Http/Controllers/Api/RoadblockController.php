@@ -43,7 +43,7 @@ class RoadblockController extends Controller
             ->where('pointsofinterest.incident_id', '=', '1')
             ->where('poi_type.name','obstruction')
             ->get();
-        //return View('api.GEOJsonRoadblock')->with('roadblocks', $roadblocks);
+        return View('api.GEOJsonRoadblock')->with('roadblocks', $pois);
         //return json_decode($pois,true );
     }
 
