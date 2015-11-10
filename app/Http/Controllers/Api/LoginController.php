@@ -14,28 +14,48 @@ class LoginController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * Login resource is based on the username and password.
      * @return \Illuminate\Http\Response
      */
-    public function login($username,$password)
+    public function login()
     {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
         if(Auth::attempt(['username' => $username, 'password' => $password])) {
             $user = User::where('username', $username)->first();
-            return json_decode('{ "token" : "'.$user->remember_token.'" } ',true);
+            $json = array(
+              'success' => true,
+                'token' =>$user->remember_token
+            );
+            return json_encode($json);
         }else{
-            return Hash::make('ok');
-            //return json_decode('{ "error" : "je moeder is lelijk" } ',true);
+            $json = array(
+              'succes' => false
+            );
+            return json_encode($json);
         }
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * Test of de token nog bestaat in de username.
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function check()
     {
-        //
+        $token = $_POST['token'];
+
+        $user = User::where("remember_token", "=", $token)->firstOrFail();
+        if(isset($user->remember_token) && !empty($user->remember_token)) {
+            $json = array(
+                'success' => true
+            );
+            return json_encode($json);
+        }
+        $json = array(
+            'succes' => false
+        );
+        return json_encode($json);
     }
 
     /**

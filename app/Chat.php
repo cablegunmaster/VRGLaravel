@@ -18,5 +18,5 @@ class Chat extends Model
      *
      * @var array
      */
-    protected $fillable = ['incident_id','user_id','message','saved_at','created_at','updated_at'];
+    protected $fillable = ['img_path','incident_id','user_id','message','saved_at','created_at','updated_at'];
 }

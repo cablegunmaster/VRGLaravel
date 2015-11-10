@@ -5,7 +5,9 @@
         { "type": "Feature",
             "geometry": {
             "type": "Point",
-            {!!  $roadblocks[$i]->feature !!}
+            "coordinates": [
+                {!!  $roadblocks[$i]->feature !!}
+            ]
         },
         "properties": {
             {{--"title": "{{$roadblocks[$i]->title}}",--}}

@@ -17,6 +17,7 @@ class CreateChat extends Migration
             $table->integer('incident_id');
             $table->integer('user_id');
             $table->text('message');
+            $table->text('img_path');
             $table->timestamp('saved_at');
             $table->timestamps();
         });
