@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Chat_Status;
 use App\Location;
 use App\Measurement;
+use App\Poi_Type;
 use App\PointsOfInterest;
 use App\Task;
 use App\Chat;
@@ -282,16 +283,23 @@ class AllDataController extends Controller
                     if (isset($data[$i]['remark_s']) && !empty($data[$i]['remark_s'])){
                         $earthquake["remark_s"] = $data[$i]['remark_s'];
                     }
-                    
 
                     $task = new Task();
-                    $task->incident_id = '0'; //Standaard aardbeving incident_ID;
+                    $task->incident_id = 0; //Standaard aardbeving incident_ID;
                     $task_type = Task_Type::select('id')->where("name","=","earthquake")->first();
                     $task->task_type_id = $task_type->id;
                     $task->team_id = $table->team_id;
                     $task->data = json_encode($earthquake);
                     $task->end_date = $data[$i]['tango'];
                     $task->save();
+
+                    $poi = new PointsOfInterest();
+                    $poi->feature = $data[$i]['location']['lat'].",".$data[$i]['location']['long'];
+                    $poi->incident_id = 0;
+                    $poi->task_id = $task->id;
+                    $poi_type = Poi_Type::select('id')->where("name","=", "earthquake")->first();
+                    $poi->poi_type = $poi_type->id;
+                    $poi->save();
                     break;
 
                 case "observation":
