@@ -28,17 +28,17 @@ class AllDataController extends Controller
         $geo = new stdClass(); //All GeoJSON obects go in this one! (empty array sort like laravel class).
 
         $table = AllDataController::getUserIncident($token);
-        if(!isset($table[0])){
+        if(!isset($table)){
             return '{ "success": "error" }';
         }
 
-        $task = AllDataController::getTask($table[0]->team_id, $table[0]->incident_id); //team_id and incident_id required.
-        $chat = AllDataController::getChat($table[0]->incident_id, $table[0]->user_id);
+        $task = AllDataController::getTask($table->team_id, $table->incident_id); //team_id and incident_id required.
+        $chat = AllDataController::getChat($table->incident_id, $table->user_id);
 
-        $mal = AllDataController::getMal($table[0]->incident_id);
-        $location = AllDataController::getLocation($table[0]->incident_id);
-        $roadblock = AllDataController::getRoadblocks($table[0]->incident_id);
-        $linestring = AllDataController::getLineString($table[0]->incident_id);
+        $mal = AllDataController::getMal($table->incident_id);
+        $location = AllDataController::getLocation($table->incident_id);
+        $roadblock = AllDataController::getRoadblocks($table->incident_id);
+        $linestring = AllDataController::getLineString($table->incident_id);
 
         /**
          * Merge them all in 1 neat array without errors!
@@ -59,11 +59,11 @@ class AllDataController extends Controller
 
         $geo['type'] = "FeatureCollection"; //fix the multiple definition of featurecollections.
 
-        $table[0]->task = $task;
-        $table[0]->chat = $chat;
-        $table[0]->geo = $geo;
+        $table->task = $task;
+        $table->chat = $chat;
+        $table->geo = $geo;
 
-        $response = response()->json($table[0]);
+        $response = response()->json($table);
         $response->header('Content-Type', 'application/json');
         $response->header('charset', 'utf-8');
 
@@ -295,7 +295,7 @@ class AllDataController extends Controller
 
                     $poi = new PointsOfInterest();
                     $poi->feature = $data[$i]['location']['lat'].",".$data[$i]['location']['long'];
-                    $poi->incident_id = 0;
+                    $poi->incident_id = 0; //Standaard aardbeving incident_ID
                     $poi->task_id = $task->id;
                     $poi_type = Poi_Type::select('id')->where("name","=", "earthquake")->first();
                     $poi->poi_type = $poi_type->id;
@@ -303,7 +303,26 @@ class AllDataController extends Controller
                     break;
 
                 case "observation":
-                    //Todo implement observation.
+                    //TODO needs a location of the file in the database.
+                    dd($data[$i]);
+
+                    $task = new Task();
+                    $task->incident_id = $table->incident_id;
+                    $task_type = Task_Type::select('id')->where("name","=","observation")->first();
+                    //$task->title = $task->
+                    //$task->description =
+                    $task->task_type_id = $task_type->id;
+                    $task->end_date = date('Y-m-d H:i:s');
+
+                    $task->save();
+
+                    $poi = new PointsOfInterest();
+                    $poi->feature = $data[$i]['location']['lat'].",".$data[$i]['location']['long'];
+                    $poi_type = Poi_Type::select('id')->where("name","=", "observation")->first();
+                    $poi->poi_type = $poi_type->id;
+                    $poi->incident_id = $table->incident_id;
+                    //$poi->task_id =
+                    $poi->save();
                     break;
                 case "task":
                     break;
@@ -389,9 +408,9 @@ class AllDataController extends Controller
      * @return mixed
      */
     public static function getRoadblocks($incident_id){
-        $roadblocks = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
-            ->where('pointsofinterest.incident_id', '=', $incident_id)
-            ->where('poi_type.name',"=",'obstruction')
+        $roadblocks = PointsOfInterest::leftjoin('POI_Type','pointsOfInterest.poi_type','=','POI_Type.id')
+            ->where('pointsOfInterest.incident_id', '=', $incident_id)
+            ->where('POI_Type.name',"=",'obstruction')
             ->get();
 
         $roadblock_JSON = View('api.GeoJSONRoadblock')->with('roadblocks', $roadblocks)->render();
@@ -404,9 +423,9 @@ class AllDataController extends Controller
      * @return mixed
      */
     public static function getMal($incident_id){
-        $mal = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
-            ->where('pointsofinterest.incident_id', '=', $incident_id)
-            ->where('poi_type.name',"=",'mal')
+        $mal = PointsOfInterest::leftjoin('POI_Type','pointsOfInterest.poi_type','=','POI_Type.id')
+            ->where('pointsOfInterest.incident_id', '=', $incident_id)
+            ->where('POI_Type.name',"=",'mal')
             ->get();
 
         $mal_JSON = View('api.GEOJSONmal')->with('mal', $mal)->render();
@@ -446,9 +465,9 @@ class AllDataController extends Controller
     }
 
     public static function getLineString($incident_id){
-        $LineString = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
-            ->where('pointsofinterest.incident_id', '=', $incident_id)
-            ->where('poi_type.name',"=",'waypoints')
+        $LineString = PointsOfInterest::leftjoin('POI_Type','pointsOfInterest.poi_type','=','POI_Type.id')
+            ->where('pointsOfInterest.incident_id', '=', $incident_id)
+            ->where('POI_Type.name',"=",'waypoints')
             ->get();
 
         $LineString = View('api.GeoJSONLineString')->with('linestring', $LineString)->render();
