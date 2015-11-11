@@ -448,7 +448,7 @@ class AllDataController extends Controller
             ->where('poi_type.name',"=",'obstruction')
             ->get();
 
-        $roadblock_JSON = View('api.GeoJSONRoadblock')->with('roadblocks', $roadblocks)->render();
+        $roadblock_JSON = View('api.GEOJsonRoadblock')->with('roadblocks', $roadblocks)->render();
         return json_decode(AllDataController::removeRN($roadblock_JSON),true); //remove the  /r/n
     }
 
