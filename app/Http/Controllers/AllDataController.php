@@ -149,13 +149,7 @@ class AllDataController extends Controller
             "id": 2,
             "type":"task",
             "state":"received"
-         },
-        {
-          "id": 128,
-          "type":"chat",
-          "state":"received"
-        }
-
+         }
         ],
 
          "chat":
@@ -171,6 +165,11 @@ class AllDataController extends Controller
                   "type":"chat",
                   "message":"Hello world",
                   "state":null
+                },
+                {
+                  "id": 128,
+                  "type":"chat",
+                  "state":"received"
                 }
         ]
     }
