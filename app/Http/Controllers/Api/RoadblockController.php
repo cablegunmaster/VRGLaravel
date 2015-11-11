@@ -39,7 +39,7 @@ class RoadblockController extends Controller
 
     public function loadRoadBlock() {
         //HARDCODED incident_id replace with SESSION later.
-        $pois = PointsOfInterest::leftjoin('POI_Type','pointsOfInterest.POI_Type','=','POI_Type.id')
+        $pois = PointsOfInterest::leftjoin('POI_Type','pointsOfInterest.poi_type','=','POI_Type.id')
             ->where('pointsOfInterest.incident_id', '=', '1')
             ->where('POI_Type.name','obstruction')
             ->get();
