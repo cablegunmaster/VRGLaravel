@@ -306,7 +306,7 @@ class AllDataController extends Controller
                     break;
 
                 case "observation":
-                    //TODO needs a location of the file in the database.
+                    //TODO needs a location for the file in the database.
                     $task = new Task();
                     $task->incident_id = $table->incident_id;
                     $task_type = Task_Type::select('id')->where("name","=","observation")->first();
@@ -336,12 +336,13 @@ class AllDataController extends Controller
                         $task_status = new Task_Status();
                         $task_status->task_id = $task->id;
                         $task_status->user_id = $table->user_id;
+                        $task_status->receive_date = date('Y-m-d H:i:s');
                         $task_status->save();
                     }
-                    dd($data[$i]);
 
                     break;
                 case "chat":
+                    dd($data[$i]);
                     break;
             }
         }
