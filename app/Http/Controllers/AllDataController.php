@@ -18,12 +18,7 @@ use stdClass;
 
 class AllDataController extends Controller
 {
-    /**
-     * Display All data based on a Token.
-     * @param  String  $token Token from a user from users.remember_token
-     * @return \Illuminate\Http\Response
-     */
-    public function show($token)
+    public static function show($token)
     {
         $geo = new stdClass(); //All GeoJSON obects go in this one! (empty array sort like laravel class).
 
@@ -62,12 +57,7 @@ class AllDataController extends Controller
         $table->chat = $chat;
         $table->geo = $geo;
 
-        dd($table);
-        $response = response()->json($table);
-        $response->header('Content-Type', 'application/json');
-        $response->header('charset', 'utf-8');
-
-        return $response;
+        return $table;
     }
 
 
@@ -81,7 +71,8 @@ class AllDataController extends Controller
 
         //For debugging reasons only.
         if (empty($post) && $debug) {
-            $post = '
+            //$post = '
+            /**
     {
           "token": "068c9087a94570e873ea3485f5f8c005",
           "own_location": {
@@ -172,7 +163,8 @@ class AllDataController extends Controller
                 }
         ]
     }
-';
+';*/
+            $post = '{"own_location":{"lat":53.2415,"long":6.5296151},"token":"068c9087a94570e873ea3485f5f8c005","data":[],"chat":[]}';
         } else {
             $post = (file_get_contents('php://input')); //Get raw String from a request.
         }
@@ -181,6 +173,7 @@ class AllDataController extends Controller
         /**
          * Insert location command, with the corresponding task as well.
          */
+        $post['token'] = "068c9087a94570e873ea3485f5f8c005";
 
         if(empty($post['token'])){
             return("{ success: false }");
@@ -189,8 +182,11 @@ class AllDataController extends Controller
         $table = AllDataController::getUserIncident($post['token']);
         $task = AllDataController::getTask($table->team_id, $table->incident_id);
         $table->task = $task; //task aan table zetten.
-        if (!isset($post['own_location'])) {
-            AllDataController::insertLocation($table, $post['own_location']); //Sets result in the table.
+        if (array_key_exists('own_location',$post)) {
+
+            $lon = $post['own_location']['long'];
+            $lat = $post['own_location']['lat'];
+            AllDataController::insertLocation($table, $lat,$lon); //Sets result in the table.
         }
 
         if (!empty($post['data'])) {
@@ -198,22 +194,51 @@ class AllDataController extends Controller
             $post['data'] = AllDataController::InsertData($post['data'],$table);
         }
 
+        //Ophalende taak.
+        $table = AllDataController::show($post['token']);
+
+
         if(!empty($post['chat'])){
             $post['chat'] = AllDataController::InsertChat($post['chat'],$table);
         }
 
-        return $post;
+        $table = json_decode(json_encode($table),true); //to make it in JSON
+        array_merge($table,$post);
+        $response = response()->json($table);
+        $response->header('Content-Type', 'application/json');
+        $response->header('charset', 'utf-8');
+        return $response;
     }
 
+    /**
+     * @param $chat
+     * @param $table
+     * @return array
+     */
     public static function InsertChat($chat,$table){
+        $count = count($chat); //count only once.
+        for($i = 0; $i < $count; $i++){
 
-        $message = count($chat); //count only once.
-        for($i = 0; $i < $message; $i++){
-//            if(empty())
-//            Chat_Status::firstOrCreate([
-//                'chat_id'  => $chat->id,
-//                'user_id' => $user_id
-//            ]);
+            if(!isset($chat->id)){
+                $c = new Chat();
+                $c->message = $chat[$i]['message'];
+                $c->message = $chat[$i]['message'];
+                $c->incident_id = $table->incident_id;
+                $c->user_id = $table->user_id;
+                $c->save();
+                $chat[$i]['id'] = $c->id;
+
+                Chat_Status::firstOrCreate([
+                    'chat_id'  => $c->id,
+                    'user_id' =>  $table->user_id,
+                ]);
+                //$c->img_path = $chat[$i]['img_path']; //TODO IMG Uploaden.
+            }
+        }
+
+        $newChat = AllDataController::getChat($table->incident_id,$table->user_id);
+        foreach($newChat as $c) {
+            $chat[] = $c->toJson();
         }
         return $chat;
     }
@@ -221,17 +246,19 @@ class AllDataController extends Controller
     /**
      * Insert the location to be called.
      * @param $user
-     * @param $own_location
+     * @param $lat
+     * @param $long
+     * @internal param $own_location
      */
-    public static function insertLocation($user, $own_location)
+    public static function insertLocation($user, $lat,$long)
     {
         $location = new Location();
-        $location->lat = $own_location['lat'];
-        $location->lon = $own_location['long'];
+        $location->lat = $lat;
+        $location->lon = $long;
 
         //check if the TASK has been set, needed for the ID, to prevent errors.
-        if (!empty($user->task) && !empty($user->task[0]->task_id)) {
-            $location->task_id = $user->task[0]->task_id;
+        if (isset($user->task) && isset($user->task) && !empty($user->task) && !empty($user->task->task_id)) {
+            $location->task_id = $user->task->task_id;
         }
 
         $location->user_id = $user->user_id;
@@ -359,7 +386,6 @@ class AllDataController extends Controller
                         $task_status->receive_date = date('Y-m-d H:i:s');
                         $task_status->save();
                     }
-
                     break;
             }
         }
@@ -411,9 +437,6 @@ class AllDataController extends Controller
         return $task;
     }
 
-    /**
-     * TODO check if this one misses a constriction in its query.
-     */
     public static function getLocation($incident_id){
         /**
          * Get all locations from everyone.
@@ -452,8 +475,8 @@ class AllDataController extends Controller
             ->where('poi_type.name',"=",'obstruction')
             ->get();
 
-        $roadblock_JSON = View('api.GEOJsonRoadblock')->with('roadblocks', $roadblocks)->render();
-        return json_decode(AllDataController::removeRN($roadblock_JSON),true); //remove the  /r/n
+        //$roadblock_JSON = View('api.GEOJsonRoadblock')->with('roadblocks', $roadblocks)->render();
+        return json_decode(AllDataController::removeRN($roadblocks),true); //remove the  /r/n
     }
     /**
      * Get all the malls belonging to the current incident.
@@ -466,8 +489,8 @@ class AllDataController extends Controller
             ->where('poi_type.name',"=",'mal')
             ->get();
 
-        $mal_JSON = View('api.GeoJSONmal')->with('mal', $mal)->render();
-        return  json_decode(AllDataController::removeRN($mal_JSON),true); //remove the /r/n
+        //$mal_JSON = View('api.GeoJSONmal')->with('mal', $mal)->render();
+        return  json_decode(AllDataController::removeRN($mal),true); //remove the /r/n
     }
 
     /**
@@ -490,11 +513,13 @@ class AllDataController extends Controller
             ->whereNull('chat_status.receive_date')
             ->get();
 
+        $chat_json = array();
         foreach($chat_messages as $chat){
             //$chat_status = new Chat_Status();
             Chat_Status::firstOrCreate([
                 'chat_id'  => $chat->id,
-                'user_id' => $user_id
+                'user_id' => $user_id,
+                'receive_date' => date("Y-m-d H:i:s")
             ]);
 
             $chat_json[] = array(
@@ -514,8 +539,7 @@ class AllDataController extends Controller
             ->where('poi_type.name',"=",'waypoints')
             ->get();
 
-        $LineString = View('api.GeoJSONLineString')->with('linestring', $LineString)->render();
-
+        //$LineString = View('api.GeoJSONLineString')->with('linestring', $LineString)->render();
         return  json_decode(AllDataController::removeRN($LineString),true); //remove the /r/n
     }
 
