@@ -233,17 +233,19 @@ class AllDataController extends Controller
             switch ($data[$i]['type']) {
                 case "measurement":
                     //Create new location.
+
+
+                    //Update End time of the Task.
+                    $task = Task::find($data[$i]['task_id']); //get only 1 task by id.
+                    $task->end_date = $data[$i]['created']; //created seems like end_date of task.
+                    $task->save();
+
                     $location = new Location();
                     $location->lat = $data[$i]['location']['lat'];
                     $location->lon = $data[$i]['location']['long'];
                     $location->task_id = $data[$i]['task_id'];
                     $location->user_id = $table->user_id;
                     $location->save();
-
-                    //Update End time of the Task.
-                    $task = Task::find($data[$i]['task_id']); //get only 1 task by id.
-                    //$task->end_date = $data[$i]['created']; //created seems like end_date of task.
-                    $task->save();
 
                     //Merge Echo's and bravo's.
                     $measurement_data = array();
@@ -300,6 +302,7 @@ class AllDataController extends Controller
                     $poi->incident_id = 0; //Standaard aardbeving incident_ID
                     $poi->task_id = $task->id;
                     $poi_type = Poi_Type::select('id')->where("name","=", "earthquake")->first();
+                    dd($poi_type);
                     $poi->poi_type = $poi_type->id;
                     $poi->save();
                     break;
@@ -325,7 +328,6 @@ class AllDataController extends Controller
                     $poi->save();
                     break;
                 case "task":
-
                     $task = Task::find($data[$i]['id']);
                     if($data[$i]['state'] == "finished") {
                         $task->end_date = date('Y-m-d H:i:s');
@@ -339,9 +341,6 @@ class AllDataController extends Controller
                         $task_status->save();
                     }
 
-                    break;
-                case "chat":
-                    dd($data[$i]);
                     break;
             }
         }

@@ -53,5 +53,9 @@ class PoiTypeTableSeeder extends Seeder
         Poi_Type::create([
             'name' => 'observation',
         ]);
+
+        Poi_Type::create([
+            'name' => 'earthquake',
+        ]);
     }
 }
