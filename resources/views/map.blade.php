@@ -110,9 +110,11 @@
 				window.setTimeout(function() {
 						//featureLayer.loadURL('/brandweer/randomadres');
 
+                        console.log("Running MapZooi");
+
 						updateRoadBlocks();
 						updateTeamView();
-						
+						updateChat();
 						getTaskData();
 					}, 4000);
 			}
@@ -176,6 +178,14 @@ function updateTeamView()
 			oldlocations = result;
 		}
 	});
+}
+
+function updateChat()
+{
+    $('#ChatContent').load('/brandweer/chat');
+    		    $.post('/brandweer/chat/message', function(result) {
+    		        $('#ChatFooter').html(result);
+    		    })
 }
 
 function getTaskData()
