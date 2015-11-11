@@ -26,7 +26,6 @@ class AllDataController extends Controller
      */
     public function show($token)
     {
-
         $geo = new stdClass(); //All GeoJSON obects go in this one! (empty array sort like laravel class).
 
         $table = AllDataController::getUserIncident($token);
@@ -69,7 +68,6 @@ class AllDataController extends Controller
         $response->header('Content-Type', 'application/json');
         $response->header('charset', 'utf-8');
 
-        dd($response);
         return $response;
     }
 
@@ -181,9 +179,6 @@ class AllDataController extends Controller
         }
         $post = json_decode($post, true); //make a array of POST.
 
-        //Push chat function als ID is null.
-        //$post['chat'];
-
         /**
          * Insert location command, with the corresponding task as well.
          */
@@ -197,6 +192,10 @@ class AllDataController extends Controller
         if (!empty($post['data'])) {
             //Post all data in the controllers.
             $post['data'] = AllDataController::InsertData($post['data'],$table);
+        }
+
+        if(!empty($post['chat'])){
+            //dd($post);
         }
 
         return $post;
@@ -304,9 +303,9 @@ class AllDataController extends Controller
                     $poi->feature = $data[$i]['location']['lat'].",".$data[$i]['location']['long'];
                     $poi->incident_id = "0"; //Standaard aardbeving incident_ID
                     $poi->task_id = $task->id;
-                    $poi_type = Poi_Type::select('id')->where("name","=", "earthquake")->first();
-                    dd($poi_type);
-                    $poi->poi_type = $poi_type->id;
+                    //$poi_type = Poi_Type::select('id')->where("name","=", "earthquake")->first(); //check if the earthquake does exist.
+                    //dd($poi_type);
+                    //$poi->poi_type = $poi_type->id;
                     $poi->save();
                     break;
 
