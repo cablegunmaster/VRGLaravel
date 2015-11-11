@@ -11,7 +11,6 @@ use App\Task;
 use App\Chat;
 use App\Task_Status;
 use App\Task_Type;
-use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use DB;
@@ -78,7 +77,7 @@ class AllDataController extends Controller
      */
     public function store()
     {
-        $debug = true; //set FALSE on production.
+        $debug = false; //set FALSE on production.
 
         //For debugging reasons only.
         if (empty($post) && $debug) {
@@ -207,9 +206,14 @@ class AllDataController extends Controller
     }
 
     public static function InsertChat($chat,$table){
-        $count = count($chat); //count only once.
-        for($i = 0; $i < $count; $i++){
 
+        $message = count($chat); //count only once.
+        for($i = 0; $i < $message; $i++){
+//            if(empty())
+//            Chat_Status::firstOrCreate([
+//                'chat_id'  => $chat->id,
+//                'user_id' => $user_id
+//            ]);
         }
         return $chat;
     }
@@ -250,7 +254,7 @@ class AllDataController extends Controller
                     //Create new location.
 
                     //Update End time of the Task.
-                    $task = Task::find($data[$i]['task_id']); //get only 1 task by id.
+                    $task = Task::findOrNew($data[$i]['task_id']); //get only 1 task by id.
                     $task->end_date = $data[$i]['created']; //created seems like end_date of task.
                     $task->save();
 
@@ -444,14 +448,13 @@ class AllDataController extends Controller
      */
     public static function getRoadblocks($incident_id){
         $roadblocks = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
-            ->where('pointsOfInterest.incident_id', '=', $incident_id)
+            ->where('pointsofinterest.incident_id', '=', $incident_id)
             ->where('poi_type.name',"=",'obstruction')
             ->get();
 
         $roadblock_JSON = View('api.GEOJsonRoadblock')->with('roadblocks', $roadblocks)->render();
         return json_decode(AllDataController::removeRN($roadblock_JSON),true); //remove the  /r/n
     }
-
     /**
      * Get all the malls belonging to the current incident.
      * @param $incident_id
@@ -469,6 +472,7 @@ class AllDataController extends Controller
 
     /**
      * @param $incident_id
+     * @return array met alle Chat berichten in een json array.
      */
     public static function getChat($incident_id, $user_id){
         $chat_messages = Chat::select(
