@@ -93,7 +93,7 @@
 
 				// Once this layer loads, we set a timer to load it again in a few seconds.
 
-				roadBlockLayer = L.mapbox.featureLayer().addTo(map);
+				POILayer = L.mapbox.featureLayer().addTo(map);
 				teamViewFeatureLayer = L.mapbox.featureLayer().addTo(map);
 				searchFeatureLayer = L.mapbox.featureLayer().addTo(map).on('ready', runMap);
 
@@ -145,16 +145,6 @@
 				var polyUpdate = createMal(mal.location.lat, mal.location.lng, b, l, w, 'red');
 				// API
 				$.post( "/brandweer/api/mal/new", { 'malJSON': polyUpdate.toGeoJSON() });
-
-				L.geoJson(polyUpdate.toGeoJSON(), {
-					style: function (feature) {
-						return {color: feature.properties.color};
-					},
-					onEachFeature: function (feature, layer) {
-						layer.bindPopup(feature.properties.description);
-					}
-				}).addTo(map);
-
 				if(mal.polygon != null) {
 					map.removeLayer(mal.polygon)
 				}
@@ -176,7 +166,7 @@
 			updateTeamView();
 			updateRoadBlocks();
 			getTaskData();
-			loadMal();
+			loadPOI();
 		});
 
 		function updateTeamView()
@@ -283,7 +273,7 @@
 				data: '',
 				dataType: "html",
 				success: function(data) {
-					roadBlockLayer.clearLayers();
+                    POILayer.clearLayers();
 					var i;
 					var json = JSON.parse(data);
 					for (i = 0; i < json.length; i++) {
@@ -304,7 +294,7 @@
 				title: 'Wegversperring',
 				clickable: true,
 				riseOnHover: true
-			}).addTo(roadBlockLayer);
+			}).addTo(POILayer);
 			marker.database_identifier = id;
 			var content = $('<div></div>');
 			content.append(
@@ -319,7 +309,7 @@
 		}
 		function deleteMarker(marker) {
 			// deleteMarker
-			roadBlockLayer.removeLayer(marker);
+            POILayer.removeLayer(marker);
 
 			// API
 			$.post( "/brandweer/api/roadblock/delete", { 'lat': marker.getLatLng().lat, 'lng': marker.getLatLng().lng, "id": marker.database_identifier },function(response){
@@ -333,9 +323,10 @@
 			if(markerClickEnabled)
 			{
 				// addMarker
-				addMarker(e.latlng.lat,  e.latlng.lng);
+				var marker = addMarker(e.latlng.lat,  e.latlng.lng);
 				// API
-				$.post( "/brandweer/api/roadblock/new", { 'lat': e.latlng.lat, 'lng': e.latlng.lng });
+				// $.post( "/brandweer/api/roadblock/new", { 'lat': e.latlng.lat, 'lng': e.latlng.lng });
+                $.post( "/brandweer/api/poi/new", { 'data': marker.toGeoJSON() });
 				ObstructionButton_disable();
 			}
 			else if(malClickEnabled) {
@@ -488,21 +479,25 @@
 
 			return new L.latLng(latitude2, longitude2);
 		}
-		function loadMal() {
-			// load roadBlocks
-			$.ajax({
-				type: "POST",
-				url: '/brandweer/api/mal/load',
-				data: '',
-				dataType: "json",
-				success: function(data) {
-					L.geoJson(data, {}).addTo(map);
-				},
-				error: function() {
-					console.log('roadError occured');
-				}
-			});
-		}
-
+        function loadPOI() {
+            // load roadBlocks
+            $.ajax({
+                type: "POST",
+                url: '/brandweer/api/poi/load',
+                data: '',
+                dataType: "json",
+                success: function(data) {
+                    console.log('loadPOI-Data: ' + data);
+                    for (var i = 0; i < data.poi.length; i++) {
+                        // weird every part is a String but not an object, create a json of everyone then add it to map.
+                        var poi = JSON.parse(data.poi[i]);
+                        L.geoJson(poi, {}).addTo(map);
+                    }
+                },
+                error: function() {
+                    console.log('roadError occured');
+                }
+            });
+        }
 	</script>
 	@stop
