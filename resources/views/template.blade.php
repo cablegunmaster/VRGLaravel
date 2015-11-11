@@ -20,7 +20,7 @@
 			margin: 0px 0px 0px 0px !important;
 		}
 
-		.lowverticalpadding{
+		.lowverticalpadding {
 			padding-top: 5px;
 			padding-bottom: 5px;
 		}
@@ -60,7 +60,7 @@
 			<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
 				<li><a class="modal-trigger waves-effect waves-light" href="#LargeModal" onclick="LargeModal_open_teams();">Teams</a></li>
-				<li><a href="#">Chat</a></li>
+				<li><a class="modal-trigger waves-effect waves-light" href="#ChatModel" onclick="Chatmodal_open_chat();">Chat</a></li>
 				<li><a href="#">Instellingen</a></li>
 			</ul>
 			<ul class="side-nav" id="mobile-demo">
@@ -78,6 +78,15 @@
 		<div class="modal-footer" id="LargeModalFooter">
 			<a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat center">Sluiten</a>
 		</div>
+	</div>
+
+	<div id="ChatModel" class="modal modal-fixed-footer">
+	    <div class="modal-content black-text" id="ChatContent">
+	        <p>Loading</p>
+	    </div>
+	    <div class="modal-footer" id="ChatFooter">
+            <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat center">Sluiten</a>
+       </div>
 	</div>
 
 	<div id="BottomSheetModal" class="modal bottom-sheet">
@@ -128,9 +137,24 @@
 					$('#BottomSheetModalContent').load($(this).attr('href'));
 					return false;
 				});
-
 			});
-		};	
+		};
+
+		function Chatmodal_open_chat(){
+		    $('#ChatContent').html('\
+		        <h5 class="center-align">Laden...</h5>\
+                <div class="blue lighten-3 progress">\
+                    <div class="blue indeterminate"></div>\
+                </div>\
+		    ');
+		    $('#ChatModel').openModal();
+		    $('#ChatContent').load('/brandweer/chat');
+		    $.post('/brandweer/chat/message', function(result) {
+		        $('#ChatFooter').html(result);
+		    })
+		};
+
+
 	</script>
 </body>
 </html>

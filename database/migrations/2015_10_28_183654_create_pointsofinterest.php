@@ -20,7 +20,7 @@ class CreatePointsofinterest extends Migration
             $table->integer('poi_type')->nullable()->unsigned();
             $table->timestamps();
 
-            $table->foreign('poi_type')->references('id')->on('POI_Type');
+            $table->foreign('poi_type')->references('id')->on('poi_type');
         });
     }
 

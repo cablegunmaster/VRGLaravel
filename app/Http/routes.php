@@ -56,6 +56,12 @@ Route::get('/brandweer/meetinstructie/create', 'TaskMeasurementController@create
 Route::post('/brandweer/meetinstructie/store', 'TaskMeasurementController@store'); // store in db.
 
 /**
+ * chat routes
+ */
+Route::get('/brandweer/chat', 'ChatController@index');
+Route::post('/brandweer/chat/message', 'ChatController@create');
+
+/**
  * Api calls.
  */
 //Upload a image to the server.
@@ -94,4 +100,5 @@ Route::post("/brandweer/api/geocode/reverseEncode",'Api\GeoCodeController@postRe
 Route::post('/brandweer/api/login/check', 'Api\LoginController@check');
 Route::post('/brandweer/api/login','Api\LoginController@login');
 // WeatherMap
+Route::post("/brandweer/api/weather/update",'Api\WeatherMapController@updateWeather');
 Route::post("/brandweer/api/weather/get",'Api\WeatherMapController@getWeather');
