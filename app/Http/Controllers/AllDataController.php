@@ -242,7 +242,7 @@ class AllDataController extends Controller
 
                     //Update End time of the Task.
                     $task = Task::find($data[$i]['task_id']); //get only 1 task by id.
-                    $task->end_date = $data[$i]['created']; //created seems like end_date of task.
+                    //$task->end_date = $data[$i]['created']; //created seems like end_date of task.
                     $task->save();
 
                     //Merge Echo's and bravo's.
