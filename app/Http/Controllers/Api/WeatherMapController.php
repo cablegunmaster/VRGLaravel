@@ -13,6 +13,11 @@ class WeatherMapController extends Controller
 {
 	private $APPID = "0dd63aad039cb00d7d28b0d8f7f6f8db";
 
+    /*
+     * getWeather()
+     *
+     * Haalt het weer op, roept updateWeather() op als er nog geen weer bekend is over het incident anders wordt het oude resultaat terug gestuurd.
+     */
     function getWeather() {
         $result = array();
         $result['success'] = false;
@@ -20,9 +25,9 @@ class WeatherMapController extends Controller
         if(Input::has('incidentID')) {
             $incident = Incident::where('id', Input::get('incidentID'))->first();
             if($incident != null) {
-                if ($incident->weather == null) {
+                if ($incident->weather == null) {                               // Er is nog geen weer opgehaald doe dat nu.
                     $updateWeatherResult = $this->updateWeather();
-                    $result = json_decode($updateWeatherResult, true); // Geeft dezelfde velden terug namelijk weather(Array) en success(Boolean).
+                    $result = json_decode($updateWeatherResult, true);          // Geeft dezelfde velden terug namelijk weather(Array) en success(Boolean).
                 } else {
                     $result['weather'] = json_decode($incident->weather, true); // decode de JSON (Hij saved hem als JSON namelijk. Maak er een basic PHP Array
                     $result['success'] = true;
@@ -38,6 +43,11 @@ class WeatherMapController extends Controller
         return json_encode($result);
     }
 
+    /*
+     * getWeather()
+     *
+     * Update het weer bij het incident, hij forceert een update!
+     */
 	function updateWeather()
 	{
         $result = array();
