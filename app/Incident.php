@@ -18,5 +18,5 @@ class Incident extends Model
      *
      * @var array
      */
-    protected $fillable = ['code', 'information', 'end_date','created_at','updated_at'];
+    protected $fillable = ['code', 'information', 'lat','lon', 'weather', 'end_date','created_at','updated_at'];
 }
