@@ -6,6 +6,7 @@ use UserTable\UserTableSeeder;
 use LocationTable\LocationTableSeeder;
 use TeamTable\TeamTableSeeder;
 use PoiTypeTable\PoiTypeTableSeeder;
+use TaskTypeTable\TaskTypeTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(LocationTableSeeder::class);
         $this->call(TeamTableSeeder::class);
         $this->call(PoiTypeTableSeeder::class);
+        $this->call(TaskTypeTableSeeder::class);
 
         Model::reguard(); //reinstate all the guards.
     }

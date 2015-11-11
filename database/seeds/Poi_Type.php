@@ -12,11 +12,12 @@ class PoiTypeTableSeeder extends Seeder
      */
     public function run()
     {
+
         Poi_Type::create([
             'name' => 'obstruction',
             'properties' => '"type": "obstruction",
                             "icon": {
-                            "iconUrl": "/brandweer/img/obstruction.png",
+                            "iconUrl": "http://scrumbag.nl/brandweer/img/obstruction.png",
                             "iconSize": [35,17],
                             "className": "dot"
                             }'
@@ -25,11 +26,6 @@ class PoiTypeTableSeeder extends Seeder
         Poi_Type::create([
             'name' => 'mal',
             'properties'=> '"type": "mal"'
-            //Mal =
-            // "coordinates": [
-//            [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0],
-//            [100.0, 1.0], [100.0, 0.0] ]
-//            ]
         ]);
 
         Poi_Type::create([
@@ -48,14 +44,14 @@ class PoiTypeTableSeeder extends Seeder
             'name' => 'meting',
             'properties'=> '"type": "meting",
                             "icon": {
-                            "iconUrl": "/brandweer/img/meting.png",
+                            "iconUrl": "http://scrumbag.nl/brandweer/img/meting.png",
                             "iconSize": [35,17],
                             "className": "dot"
                             }'
         ]);
 
         Poi_Type::create([
-            'name' => 'waarneming',
+            'name' => 'observation',
         ]);
     }
 }

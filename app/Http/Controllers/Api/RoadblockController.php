@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Location;
+use App\Poi_Type;
 use App\PointsOfInterest;
 use DB;
 
@@ -23,13 +24,14 @@ class RoadblockController extends Controller
         $result = array();
 
         $poi = new PointsOfInterest();
-        $poi->lat = $_POST['lat'];
-        $poi->lon = $_POST['lng'];
+        $poi->feature = $_POST['lat'].",".$_POST['lng'];
 
         //TODO fix the incident ID and the TaskID. Where to get them.
         $poi->incident_id = '1';//HARDCODED incident_id replace with SESSION later.
         $poi->task_id = '1';//HARDCODED task_id replace with SESSION later.
-        $poi->poi_type = '1'; //1 is obstruction.
+
+        $type = Poi_Type::select('id')->where('name','=','obstruction')->first(); //get id from obstruction.
+        $poi->poi_type = $type->id; //ID for obstruction.
         $poi->save();
 
         $result['loc'] = $poi->toJson();
@@ -44,14 +46,10 @@ class RoadblockController extends Controller
             ->where('POI_Type.name','obstruction')
             ->get();
         return View('api.GEOJsonRoadblock')->with('roadblocks', $pois);
-        //return json_decode($pois,true );
     }
 
     public function deleteRoadBlock() {
         $result = array();
-
-        //$poi = DB::table('pointsofinterest')->where('lat', '=', $_POST['lat'])->where('long', '=', $_POST['lng'])->find();
-
         $poi = PointsOfInterest::find($_POST['id']);
         $poi->delete();
 

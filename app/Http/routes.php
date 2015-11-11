@@ -70,6 +70,9 @@ Route::get('/brandweer/api/team/getAll','TeamController@indexJSON');
 
 //Incident info API
 Route::get('/brandweer/api/alldata/{token}','AllDataController@show');
+Route::get('/brandweer/api/alldata/','AllDataController@store'); //TODO put on POST.
+Route::post('/brandweer/api/alldata/','AllDataController@store'); //TODO put on POST.
+
 Route::get('/brandweer/api/incident/getcurrent','IncidentController@getLatestJSON');
 Route::get('/brandweer/api/incident/getcurrent_plain','IncidentController@getLatestPlain');
 //Get latest task
@@ -87,7 +90,7 @@ Route::get('/brandweer/api/login/{user}/{password}','Api\LoginController@login')
 Route::post("/brandweer/api/geocode/forwardEncode",'Api\GeoCodeController@postEncode');
 Route::post("/brandweer/api/geocode/forwardEncodeByProximity",'Api\GeoCodeController@postEncodeByProximity');
 Route::post("/brandweer/api/geocode/reverseEncode",'Api\GeoCodeController@postReverseEncode');
-//Login controller
+//Login controllers
 Route::post('/brandweer/api/login/check', 'Api\LoginController@check');
 Route::post('/brandweer/api/login','Api\LoginController@login');
 // WeatherMap

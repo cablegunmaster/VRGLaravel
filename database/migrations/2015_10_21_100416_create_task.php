@@ -17,10 +17,10 @@ class CreateTask extends Migration
             $table->integer('incident_id');
             $table->integer('task_type_id');
             $table->integer('team_id');
-            $table->String('title');
-            $table->text('description');
+            $table->String('title')->nullable();
+            $table->text('description')->nullable();
             $table->text('data');// voor JSON data mallen,
-            $table->timestamp('end_date')->nullable();
+            $table->timestamp('end_date')->nullable()->default(null);
             $table->timestamps();
         });
     }
