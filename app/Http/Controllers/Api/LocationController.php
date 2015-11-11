@@ -26,8 +26,9 @@ class LocationController extends Controller
                 "team.name as team_name", 
                 "team.code as team_code"
                 )
-            ->leftJoin('team','users.id','=','team.leader_id')
+            ->rightJoin('team','users.id','=','team.leader_id')
             ->get();
+
         //print_r($locations);
         $users = array();
 
@@ -39,6 +40,7 @@ class LocationController extends Controller
                 ->where('users.id','=', $locations[$i]->leader_id)
                 ->first();
         }
+
         return View('api.GEOJsonLocation')->with('locations', $locations)->with('users',$users);
     }
 

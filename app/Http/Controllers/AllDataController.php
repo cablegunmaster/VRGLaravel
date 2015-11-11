@@ -26,6 +26,7 @@ class AllDataController extends Controller
      */
     public function show($token)
     {
+
         $geo = new stdClass(); //All GeoJSON obects go in this one! (empty array sort like laravel class).
 
         $table = AllDataController::getUserIncident($token);
@@ -35,7 +36,6 @@ class AllDataController extends Controller
 
         $task = AllDataController::getTask($table->team_id, $table->incident_id); //team_id and incident_id required.
         $chat = AllDataController::getChat($table->incident_id, $table->user_id);
-
         $mal = AllDataController::getMal($table->incident_id);
         $location = AllDataController::getLocation($table->incident_id);
         $roadblock = AllDataController::getRoadblocks($table->incident_id);
@@ -64,10 +64,12 @@ class AllDataController extends Controller
         $table->chat = $chat;
         $table->geo = $geo;
 
+        dd($table);
         $response = response()->json($table);
         $response->header('Content-Type', 'application/json');
         $response->header('charset', 'utf-8');
 
+        dd($response);
         return $response;
     }
 
@@ -222,6 +224,7 @@ class AllDataController extends Controller
 
 
     /**
+     * INSERT DATA Van Kolom Data.
      * @param $data
      * @param $table
      * @return mixed
@@ -327,7 +330,6 @@ class AllDataController extends Controller
                     $poi->task_id = $task->id;
                     $poi->save();
 
-
                     break;
                 case "task":
                     $task = Task::find($data[$i]['id']);
@@ -343,6 +345,7 @@ class AllDataController extends Controller
                         $task_status->receive_date = date('Y-m-d H:i:s');
                         $task_status->save();
                     }
+
                     break;
             }
         }
@@ -401,20 +404,26 @@ class AllDataController extends Controller
         /**
          * Get all locations from everyone.
          */
-        $locations = DB::table("location")
-            ->select("task.id as tasks_id",
-                "location.*",
-                "task.title",
-                "task.description"
+        //$team = DB::table("team")
+        $locations = DB::table("users")
+            ->select("team.*",
+                "users.id",
+                "team.name as team_name",
+                "team.code as team_code"
             )
-            ->leftJoin('users','location.user_id','=', 'users.id')
-            ->leftJoin('task','users.team_id','=','task.team_id')
-            ->where('task.incident_id', $incident_id)
-            ->groupBy('location.task_id')
-            ->orderBy('location.created_at','desc')
+            ->rightJoin('team','users.id','=','team.leader_id')
             ->get();
+        $users = array();
 
-        return json_decode(View('api.GeoJSONLocation')->with('locations', $locations),true);
+        for($i =0;$i<count($locations);$i++)
+        {
+            $users[$i] = DB::table("location")
+                ->select('location.*','users.*')
+                ->leftJoin('users','users.id','=','location.user_id')
+                ->where('users.id','=', $locations[$i]->leader_id)
+                ->first();
+        }
+        return json_decode(View('api.GEOJsonLocation')->with('locations', $locations)->with('users',$users)->render(),true);
     }
 
     /**
