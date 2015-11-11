@@ -118,150 +118,150 @@
 			}
 		});
 
-			$('#malButton').click(function() {
-				malClickEnabled = true;
-				$('#OpdrachtModal').closeModal();
-				$('#navbar-title-text').html('&nbsp;&nbsp;Mal Plaatsen');
-			});
-			$('#MalModal').change(function() {
+		$('#malButton').click(function() {
+			malClickEnabled = true;
+			$('#OpdrachtModal').closeModal();
+			$('#navbar-title-text').html('&nbsp;&nbsp;Mal Plaatsen');
+		});
+		$('#MalModal').change(function() {
 
-				if(mal != null) {
-					var l = $(this).find('[name="length"]').val();
-					var w = $(this).find('[name="width"]').val();
-					var b = $(this).find('[name="bearing"]').val();
-					var s = $(this).find('[name="speed"]').val();
-					try {
-						l = parseInt(l);
-						w = parseInt(w);
-						b = parseInt(b);
-						s = parseInt(s);
-						if(isNaN(l) || isNaN(w) || isNaN(b) || isNaN(s))
-							return;
-					}catch(err){
+			if(mal != null) {
+				var l = $(this).find('[name="length"]').val();
+				var w = $(this).find('[name="width"]').val();
+				var b = $(this).find('[name="bearing"]').val();
+				var s = $(this).find('[name="speed"]').val();
+				try {
+					l = parseInt(l);
+					w = parseInt(w);
+					b = parseInt(b);
+					s = parseInt(s);
+					if(isNaN(l) || isNaN(w) || isNaN(b) || isNaN(s))
 						return;
-					}
+				}catch(err){
+					return;
+				}
 
-					var polyUpdate = createMal(mal.location.lat, mal.location.lng, b, l, w, 'red');
-					if(mal.polygon != null) {
-						map.removeLayer(mal.polygon)
-					}
-					mal.polygon = polyUpdate;
-					map.addLayer(mal.polygon);
+				var polyUpdate = createMal(mal.location.lat, mal.location.lng, b, l, w, 'red');
+				if(mal.polygon != null) {
+					map.removeLayer(mal.polygon)
+				}
+				mal.polygon = polyUpdate;
+				map.addLayer(mal.polygon);
+			}
+		});
+
+		$(window).resize(function()
+		{
+			var mapheight = $(window).height() - $("#navbar").height();
+			$("#map").css("height", mapheight + "px")
+		});
+
+		$(document).ready(function()
+		{
+			var mapheight = $(window).height() - $("#navbar").height();
+			$("#map").css("height", mapheight + "px")
+			updateTeamView();
+			updateRoadBlocks();
+			getTaskData();
+		});
+
+		function updateTeamView()
+		{
+			$.get('/brandweer/api/getlocations',function(result)
+			{
+				if(!(result == oldlocations))
+				{
+					teamViewFeatureLayer.loadURL('/brandweer/api/getlocations');
+					oldlocations = result;
 				}
 			});
+		}
 
-			$(window).resize(function()
-			{
-				var mapheight = $(window).height() - $("#navbar").height();
-				$("#map").css("height", mapheight + "px")
-			});
-
-			$(document).ready(function()
-			{
-				var mapheight = $(window).height() - $("#navbar").height();
-				$("#map").css("height", mapheight + "px")
-				updateTeamView();
-				updateRoadBlocks();
-				getTaskData();
-			});
-
-			function updateTeamView()
-			{
-				$.get('/brandweer/api/getlocations',function(result)
+		function getTaskData()
+		{
+			$.get('/brandweer/task/preformatted', function(data){
+				if(!(data == currentdata))
 				{
-					if(!(result == oldlocations))
-					{
-						teamViewFeatureLayer.loadURL('/brandweer/api/getlocations');
-						oldlocations = result;
-					}
-				});
-			}
-
-			function getTaskData()
-			{
-				$.get('/brandweer/task/preformatted', function(data){
-					if(!(data == currentdata))
-					{
-						currentdata = data;
-						$('#eventHolder').html(data)
-						$('.collapsible').collapsible({
-											accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion 	style
-										});
-						console.log('update')
-					}
-				});
-			}
-
-			function getDirections(originLat, originLong, destLat, destLong)
-			{
-				directions.setOrigin(  L.latLng(originLat,originLong));//L.latLng(53.218753,6.589532999999989));
-				directions.setDestination(L.latLng(destLat,destLong));
-				if (directions.queryable()) {
-					directions.query();
+					currentdata = data;
+					$('#eventHolder').html(data)
+					$('.collapsible').collapsible({
+										accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion 	style
+									});
+					console.log('update')
 				}
-				else {
-					console.log("directions not queryable");
-				}
+			});
+		}
+
+		function getDirections(originLat, originLong, destLat, destLong)
+		{
+			directions.setOrigin(  L.latLng(originLat,originLong));//L.latLng(53.218753,6.589532999999989));
+			directions.setDestination(L.latLng(destLat,destLong));
+			if (directions.queryable()) {
+				directions.query();
 			}
+			else {
+				console.log("directions not queryable");
+			}
+		}
 
-			function LargeModal_open_meetopdracht(){
-				$('#LargeModalContent').html('\
-					<h5 class="center-align">Laden...</h5>\
-					<div class="blue lighten-3 progress">\
-						<div class="blue indeterminate"></div>\
-					</div>');
-				$('#LargeModal').openModal();
-				$('#LargeModalContent').load('/brandweer/instructions/create', function()
-				{
-
-					var links = $('#LargeModalContent').find("a")
-
-					links.click(function(){
-						$('#BottomSheetModalContent').html('\
-							<h5 class="center-align">Laden...</h5>\
-							<div class="blue lighten-3 progress">\
-								<div class="blue indeterminate"></div>\
-							</div>');
-						$('#BottomSheetModal').openModal();
-						$('#BottomSheetModalContent').load($(this).attr('href'));
-						return false;
-					});
-
-					$('select').material_select();
-
-				});
-			};
-
-			function LargeModal_open_textmessage(){
-				$('#LargeModalContent').html('\
-					<h5 class="center-align">Laden...</h5>\
-					<div class="blue lighten-3 progress">\
-						<div class="blue indeterminate"></div>\
-					</div>');
-				$('#LargeModal').openModal();
-				$('#LargeModalContent').load('/brandweer/meetinstructie/create', function()
-				{
-
-					var links = $('#LargeModalContent').find("a")
-
-					links.click(function(){
-						$('#BottomSheetModalContent').html('\
-							<h5 class="center-align">Laden...</h5>\
-							<div class="blue lighten-3 progress">\
-								<div class="blue indeterminate"></div>\
-							</div>');
-						$('#BottomSheetModal').openModal();
-						$('#BottomSheetModalContent').load($(this).attr('href'));
-						return false;
-					});
-
-					$('select').material_select();
-
-				});
-			};
-
-			function updateRoadBlocks()
+		function LargeModal_open_meetopdracht(){
+			$('#LargeModalContent').html('\
+				<h5 class="center-align">Laden...</h5>\
+				<div class="blue lighten-3 progress">\
+					<div class="blue indeterminate"></div>\
+				</div>');
+			$('#LargeModal').openModal();
+			$('#LargeModalContent').load('/brandweer/instructions/create', function()
 			{
+
+				var links = $('#LargeModalContent').find("a")
+
+				links.click(function(){
+					$('#BottomSheetModalContent').html('\
+						<h5 class="center-align">Laden...</h5>\
+						<div class="blue lighten-3 progress">\
+							<div class="blue indeterminate"></div>\
+						</div>');
+					$('#BottomSheetModal').openModal();
+					$('#BottomSheetModalContent').load($(this).attr('href'));
+					return false;
+				});
+
+				$('select').material_select();
+
+			});
+		};
+
+		function LargeModal_open_textmessage(){
+			$('#LargeModalContent').html('\
+				<h5 class="center-align">Laden...</h5>\
+				<div class="blue lighten-3 progress">\
+					<div class="blue indeterminate"></div>\
+				</div>');
+			$('#LargeModal').openModal();
+			$('#LargeModalContent').load('/brandweer/meetinstructie/create', function()
+			{
+
+				var links = $('#LargeModalContent').find("a")
+
+				links.click(function(){
+					$('#BottomSheetModalContent').html('\
+						<h5 class="center-align">Laden...</h5>\
+						<div class="blue lighten-3 progress">\
+							<div class="blue indeterminate"></div>\
+						</div>');
+					$('#BottomSheetModal').openModal();
+					$('#BottomSheetModalContent').load($(this).attr('href'));
+					return false;
+				});
+
+				$('select').material_select();
+
+			});
+		};
+
+		function updateRoadBlocks()
+		{
 			// load roadBlocks
 			$.ajax({
 				type: "POST",
