@@ -180,6 +180,25 @@
 				return L.polygon(part1.concat(part2.reverse()	), {color:color});
 			}
 
+			function runMap() {
+				featureLayer.eachLayer(function(l) {
+					//map.panTo(l.getLatLng());
+
+					//console.log('https://api.mapbox.com/v4/directions/mapbox.driving/'+ temp1.lat+','+ temp1.lng +';6.5306433920317,53.247911358103.json?access_token=pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWcwM2NpazQwMmk4dDRreDdpNGd1MXd0In0.JsRAe5r1LWPdBqlhMTOlyQ');
+
+					//featureLayer.loadURL('https://api.mapbox.com/v4/directions/mapbox.driving/'+ temp1.lat+','+ temp1.lng +';6.5306433920317,53.247911358103.json?access_token=pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWcwM2NpazQwMmk4dDRreDdpNGd1MXd0In0.JsRAe5r1LWPdBqlhMTOlyQ');
+				});
+				window.setTimeout(function() {
+						//featureLayer.loadURL('/brandweer/randomadres');
+
+						updateRoadBlocks();
+						updateTeamView();
+						
+						getTaskData();
+					}, 4000);
+			}
+		});
+
 			$('#malButton').click(function() {
 				malClickEnabled = true;
 				$('#OpdrachtModal').closeModal();
@@ -212,25 +231,6 @@
 				}
 
 			});
-
-			function runMap() {
-				featureLayer.eachLayer(function(l) {
-					//map.panTo(l.getLatLng());
-
-					//console.log('https://api.mapbox.com/v4/directions/mapbox.driving/'+ temp1.lat+','+ temp1.lng +';6.5306433920317,53.247911358103.json?access_token=pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWcwM2NpazQwMmk4dDRreDdpNGd1MXd0In0.JsRAe5r1LWPdBqlhMTOlyQ');
-
-					//featureLayer.loadURL('https://api.mapbox.com/v4/directions/mapbox.driving/'+ temp1.lat+','+ temp1.lng +';6.5306433920317,53.247911358103.json?access_token=pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWcwM2NpazQwMmk4dDRreDdpNGd1MXd0In0.JsRAe5r1LWPdBqlhMTOlyQ');
-				});
-				window.setTimeout(function() {
-						//featureLayer.loadURL('/brandweer/randomadres');
-
-						updateRoadBlocks();
-						updateTeamView();
-						
-						getTaskData();
-					}, 4000);
-			}
-		});
 
 $(window).resize(function()
 {
