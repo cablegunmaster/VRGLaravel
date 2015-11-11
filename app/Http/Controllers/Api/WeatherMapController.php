@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Incident;
+use App\Weather;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Input;
 use Mockery\Exception;
 
 class WeatherMapController extends Controller
@@ -14,34 +17,47 @@ class WeatherMapController extends Controller
 
 	function getWeather()
 	{
-		$lon = $_POST['lon'];
-		$lat = $_POST['lat'];
-		$url = sprintf("http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&appid=%s", $lat, $lon, $this->APPID);
-
         $result = array();
         $result['success'] = false;
 
-        try {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_HTTPGET, 1);
-            if (!$api_result = curl_exec($ch)) {
-                trigger_error(curl_error($ch));
-            }
-            curl_close($ch);
+        if(Input::has('incidentID')) {
+            $incident = Incident::where('id', Input::get('incidentID'))->first();
+            if($incident != null) {
+                $url = sprintf("http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&appid=%s", $incident->lat, $incident->lat, $this->APPID);
+                try {
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch, CURLOPT_HTTPGET, 1);
+                    if (!$api_result = curl_exec($ch)) {
+                        trigger_error(curl_error($ch));
+                    }
+                    curl_close($ch);
 
-            $array = json_decode($api_result, true);
-            $result['weather'] = array(
-                'type' => $array['weather'][0]['main'],
-                'description' => $array['weather'][0]['description'],
-                'temperature' => (int)((int)$array['main']['temp'] - 273.15), // API returns in kelvin (convert to Celcius)
-                'wind_speed' => (int)$array['wind']['speed'],
-                'wind_degrees' => (int)$array['wind']['deg']);
-            $result['success'] = true;
+                    // Parse the result, create a new JSON with data we would like to store, type (RAIN), temperature (20) and wind speed/direction
+                    $array = json_decode($api_result, true);
+                    $result['weather'] = array(
+                        'type' => $array['weather'][0]['main'],
+                        'description' => $array['weather'][0]['description'],
+                        'temperature' => (int)((int)$array['main']['temp'] - 273.15), // API returns in kelvin (convert to Celcius)
+                        'wind_speed' => (int)$array['wind']['speed'],
+                        'wind_degrees' => (int)$array['wind']['deg']);
+
+                    // Store the result so multiple MP and MPL can use this.
+                    $incident->weather = json_encode($result['weather']);
+                    $incident->save();
+
+                    $result['success'] = true;
+                } catch (Exception $e) {
+                    $result['error'] = "HAS_ERROR";
+                }
+            }
+            else {
+                $result['error'] = "INCIDENT_NOT_FOUND";
+            }
         }
-        catch(Exception $e) {
-            $result['error'] = "HAS_ERROR";
+        else {
+            $result['error'] = "No incidentID";
         }
 		return json_encode($result);
 	}
