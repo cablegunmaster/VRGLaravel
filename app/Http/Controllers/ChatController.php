@@ -16,7 +16,13 @@ class ChatController extends Controller
      */
     public function index()
     {
-        return view('chat.index');
+        //$active = Controller::call('UserController@show', 999);
+            $chat = DB::table('chat')
+            -> where('incident_id', 1)
+            -> leftJoin('users', 'chat.user_id', '=', 'users.id')
+            ->get();
+        dd($chat);
+        return view('chat.index', compact('chat'));
     }
 
     /**
