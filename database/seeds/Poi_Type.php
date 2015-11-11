@@ -55,7 +55,7 @@ class PoiTypeTableSeeder extends Seeder
         ]);
 
         DB::table('POI_Type')->insert([
-            'name' => 'waarneming'
+            'name' => 'observation'
         ]);
     }
 }
