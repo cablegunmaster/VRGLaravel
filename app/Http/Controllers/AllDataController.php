@@ -132,9 +132,9 @@ class AllDataController extends Controller
      * @return mixed
      */
     public static function getRoadblocks($incident_id){
-        $roadblocks = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
-            ->where('pointsofinterest.incident_id', '=', $incident_id)
-            ->where('poi_type.name',"=",'obstruction')
+        $roadblocks = PointsOfInterest::leftjoin('POI_Type','pointsOfInterest.poi_type','=','POI_Type.id')
+            ->where('pointsOfInterest.incident_id', '=', $incident_id)
+            ->where('POI_Type.name',"=",'obstruction')
             ->get();
 
         $roadblock_JSON = View('api.GeoJSONRoadblock')->with('roadblocks', $roadblocks)->render();
@@ -147,9 +147,9 @@ class AllDataController extends Controller
      * @return mixed
      */
     public static function getMal($incident_id){
-        $mal = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
-            ->where('pointsofinterest.incident_id', '=', $incident_id)
-            ->where('poi_type.name',"=",'mal')
+        $mal = PointsOfInterest::leftjoin('POI_Type','pointsOfInterest.poi_type','=','POI_Type.id')
+            ->where('pointsOfInterest.incident_id', '=', $incident_id)
+            ->where('POI_tType.name',"=",'mal')
             ->get();
 
         $mal_JSON = View('api.GEOJSONMal')->with('mal', $mal)->render();
@@ -189,9 +189,9 @@ class AllDataController extends Controller
     }
 
     public static function getLineString($incident_id){
-        $LineString = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
-            ->where('pointsofinterest.incident_id', '=', $incident_id)
-            ->where('poi_type.name',"=",'waypoints')
+        $LineString = PointsOfInterest::leftjoin('POI_Type','pointsOfiInterest.poi_type','=','POI_Type.id')
+            ->where('pointsOfInterest.incident_id', '=', $incident_id)
+            ->where('POI_Type.name',"=",'waypoints')
             ->get();
 
         $LineString = View('api.GeoJSONLineString')->with('linestring', $LineString)->render();
