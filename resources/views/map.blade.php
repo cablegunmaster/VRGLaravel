@@ -148,122 +148,120 @@
 					mal.polygon = polyUpdate;
 					map.addLayer(mal.polygon);
 				}
-
 			});
 
-$(window).resize(function()
-{
-	var mapheight = $(window).height() - $("#navbar").height();
-	$("#map").css("height", mapheight + "px")
-});
+			$(window).resize(function()
+			{
+				var mapheight = $(window).height() - $("#navbar").height();
+				$("#map").css("height", mapheight + "px")
+			});
 
-$(document).ready(function()
-{
-	var mapheight = $(window).height() - $("#navbar").height();
-	$("#map").css("height", mapheight + "px")
-	updateTeamView();
-	updateRoadBlocks();
-	getTaskData();
-});
+			$(document).ready(function()
+			{
+				var mapheight = $(window).height() - $("#navbar").height();
+				$("#map").css("height", mapheight + "px")
+				updateTeamView();
+				updateRoadBlocks();
+				getTaskData();
+			});
 
-function updateTeamView()
-{
-	$.get('/brandweer/api/getlocations',function(result)
-	{
-		if(!(result == oldlocations))
-		{
-			teamViewFeatureLayer.loadURL('/brandweer/api/getlocations');
-			oldlocations = result;
-		}
-	});
-}
+			function updateTeamView()
+			{
+				$.get('/brandweer/api/getlocations',function(result)
+				{
+					if(!(result == oldlocations))
+					{
+						teamViewFeatureLayer.loadURL('/brandweer/api/getlocations');
+						oldlocations = result;
+					}
+				});
+			}
 
-function getTaskData()
-{
-	$.get('/brandweer/task/preformatted', function(data){
-		if(!(data == currentdata))
-		{
-			currentdata = data;
-			$('#eventHolder').html(data)
-			$('.collapsible').collapsible({
-								accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion 	style
-							});
-			console.log('update')
-		}
-	});
-}
+			function getTaskData()
+			{
+				$.get('/brandweer/task/preformatted', function(data){
+					if(!(data == currentdata))
+					{
+						currentdata = data;
+						$('#eventHolder').html(data)
+						$('.collapsible').collapsible({
+											accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion 	style
+										});
+						console.log('update')
+					}
+				});
+			}
 
-function getDirections(originLat, originLong, destLat, destLong)
-{
-			directions.setOrigin(  L.latLng(originLat,originLong));//L.latLng(53.218753,6.589532999999989));
-directions.setDestination(L.latLng(destLat,destLong));
-if (directions.queryable()) {
-	directions.query();
-}
-else
-{
-	console.log("directions not queryable");
-}
-}
+			function getDirections(originLat, originLong, destLat, destLong)
+			{
+				directions.setOrigin(  L.latLng(originLat,originLong));//L.latLng(53.218753,6.589532999999989));
+				directions.setDestination(L.latLng(destLat,destLong));
+				if (directions.queryable()) {
+					directions.query();
+				}
+				else {
+					console.log("directions not queryable");
+				}
+			}
 
-function LargeModal_open_meetopdracht(){
-	$('#LargeModalContent').html('\
-		<h5 class="center-align">Laden...</h5>\
-		<div class="blue lighten-3 progress">\
-			<div class="blue indeterminate"></div>\
-		</div>');
-	$('#LargeModal').openModal();
-	$('#LargeModalContent').load('/brandweer/instructions/create', function()
-	{
+			function LargeModal_open_meetopdracht(){
+				$('#LargeModalContent').html('\
+					<h5 class="center-align">Laden...</h5>\
+					<div class="blue lighten-3 progress">\
+						<div class="blue indeterminate"></div>\
+					</div>');
+				$('#LargeModal').openModal();
+				$('#LargeModalContent').load('/brandweer/instructions/create', function()
+				{
 
-		var links = $('#LargeModalContent').find("a")
+					var links = $('#LargeModalContent').find("a")
 
-		links.click(function(){
-			$('#BottomSheetModalContent').html('\
-				<h5 class="center-align">Laden...</h5>\
-				<div class="blue lighten-3 progress">\
-					<div class="blue indeterminate"></div>\
-				</div>');
-			$('#BottomSheetModal').openModal();
-			$('#BottomSheetModalContent').load($(this).attr('href'));
-			return false;
-		});
+					links.click(function(){
+						$('#BottomSheetModalContent').html('\
+							<h5 class="center-align">Laden...</h5>\
+							<div class="blue lighten-3 progress">\
+								<div class="blue indeterminate"></div>\
+							</div>');
+						$('#BottomSheetModal').openModal();
+						$('#BottomSheetModalContent').load($(this).attr('href'));
+						return false;
+					});
 
-		$('select').material_select();
+					$('select').material_select();
 
-	});
-};
+				});
+			};
 
-function LargeModal_open_textmessage(){
-	$('#LargeModalContent').html('\
-		<h5 class="center-align">Laden...</h5>\
-		<div class="blue lighten-3 progress">\
-			<div class="blue indeterminate"></div>\
-		</div>');
-	$('#LargeModal').openModal();
-	$('#LargeModalContent').load('/brandweer/meetinstructie/create', function()
-	{
+			function LargeModal_open_textmessage(){
+				$('#LargeModalContent').html('\
+					<h5 class="center-align">Laden...</h5>\
+					<div class="blue lighten-3 progress">\
+						<div class="blue indeterminate"></div>\
+					</div>');
+				$('#LargeModal').openModal();
+				$('#LargeModalContent').load('/brandweer/meetinstructie/create', function()
+				{
 
-		var links = $('#LargeModalContent').find("a")
+					var links = $('#LargeModalContent').find("a")
 
-		links.click(function(){
-			$('#BottomSheetModalContent').html('\
-				<h5 class="center-align">Laden...</h5>\
-				<div class="blue lighten-3 progress">\
-					<div class="blue indeterminate"></div>\
-				</div>');
-			$('#BottomSheetModal').openModal();
-			$('#BottomSheetModalContent').load($(this).attr('href'));
-			return false;
-		});
+					links.click(function(){
+						$('#BottomSheetModalContent').html('\
+							<h5 class="center-align">Laden...</h5>\
+							<div class="blue lighten-3 progress">\
+								<div class="blue indeterminate"></div>\
+							</div>');
+						$('#BottomSheetModal').openModal();
+						$('#BottomSheetModalContent').load($(this).attr('href'));
+						return false;
+					});
 
-		$('select').material_select();
+					$('select').material_select();
 
-	});
-};
+				});
+			};
 
-function updateRoadBlocks()
-{
+			function updateRoadBlocks()
+			{
 			// load roadBlocks
 			$.ajax({
 				type: "POST",
@@ -325,18 +323,18 @@ function updateRoadBlocks()
 				// API
 				$.post( "/brandweer/api/roadblock/new", { 'lat': e.latlng.lat, 'lng': e.latlng.lng });
 				ObstructionButton_disable();
-			}else if(malClickEnabled) {
+			}
+			else if(malClickEnabled) {
 				if(mal == null) {
 					mal = { location: e.latlng, polygon:null };
 				}
 				$('#MalModal').openModal({
-	      dismissible: true, // Modal can be dismissed by clicking outside of the modal
-	      opacity: 0.0}	);
+					dismissible: true, // Modal can be dismissed by clicking outside of the modal
+					opacity: 0.0}	);
 				// on complete:
 				malClickEnabled = false;
 
 				//show modal for distance, angle and width?
-
 			}
 		});
 		$( "#enableMarker" ).click(function() {
@@ -398,51 +396,50 @@ function updateRoadBlocks()
 			})
 		});
 
-	function createMal(lat,lng, degrees, length/* meters */, width /* meters */, color) {
-					var source = new L.latLng(lat,lng);
-					var destination = moveLatLng(source, degrees, length);
+		function createMal(lat,lng, degrees, length/* meters */, width /* meters */, color) {
+			var source = new L.latLng(lat,lng);
+			var destination = moveLatLng(source, degrees, length);
 
-					var center = new L.latLng((source.lat + destination.lat)/2, (source.lng + destination.lng)/2);
+			var center = new L.latLng((source.lat + destination.lat)/2, (source.lng + destination.lng)/2);
 
-					var part1 = new Array();
-					var part2 = new Array();
+			var part1 = new Array();
+			var part2 = new Array();
 
-				/*points.push(source);
-				points.push(moveLatLng(center, degrees-90,width/2));
-				points.push(destination);
-				points.push(moveLatLng(center, degrees+90,width/2));*/
+			/*points.push(source);
+			points.push(moveLatLng(center, degrees-90,width/2));
+			points.push(destination);
+			points.push(moveLatLng(center, degrees+90,width/2));*/
 
+			part1.push(source);
 
-				part1.push(source);
+			var sPoint = moveLatLng(source, degrees, length*0.05);
+			part1.push(moveLatLng(sPoint, degrees+90, width/4));
+			part2.push(moveLatLng(sPoint, degrees-90, width/4));
+			//points.push(moveLatLng(center, degrees+90,width/2));
 
-				var sPoint = moveLatLng(source, degrees, length*0.05);
-				part1.push(moveLatLng(sPoint, degrees+90, width/4));
-				part2.push(moveLatLng(sPoint, degrees-90, width/4));
-				//points.push(moveLatLng(center, degrees+90,width/2));
+			sPoint = moveLatLng(source, degrees, length*0.2);
+			part1.push(moveLatLng(sPoint, degrees+90, width/2));
+			part2.push(moveLatLng(sPoint, degrees-90, width/2));
 
-				sPoint = moveLatLng(source, degrees, length*0.2);
-				part1.push(moveLatLng(sPoint, degrees+90, width/2));
-				part2.push(moveLatLng(sPoint, degrees-90, width/2));
+			sPoint = moveLatLng(source, degrees, length*0.8);
+			part1.push(moveLatLng(sPoint, degrees+90, width/2));
+			part2.push(moveLatLng(sPoint, degrees-90, width/2));
 
-				sPoint = moveLatLng(source, degrees, length*0.8);
-				part1.push(moveLatLng(sPoint, degrees+90, width/2));
-				part2.push(moveLatLng(sPoint, degrees-90, width/2));
+			sPoint = moveLatLng(source, degrees, length*0.95);
+			part1.push(moveLatLng(sPoint, degrees+90, width/4));
+			part2.push(moveLatLng(sPoint, degrees-90, width/4));
 
-				sPoint = moveLatLng(source, degrees, length*0.95);
-				part1.push(moveLatLng(sPoint, degrees+90, width/4));
-				part2.push(moveLatLng(sPoint, degrees-90, width/4));
+			part2.push(destination);
 
-				part2.push(destination);
-
-				var d = source.distanceTo(destination)
-				if(Math.abs(d - length) > 1) {
-					console.warn("Distance to projected LatLng deviating more than a meter.");
-				}
-
-				return L.polygon(part1.concat(part2.reverse()	), {color:color});
+			var d = source.distanceTo(destination)
+			if(Math.abs(d - length) > 1) {
+				console.warn("Distance to projected LatLng deviating more than a meter.");
 			}
 
-			function moveLatLng(latLng, degrees, distance) {
+			return L.polygon(part1.concat(part2.reverse()	), {color:color});
+		}
+
+		function moveLatLng(latLng, degrees, distance) {
 			/*	angle = Math.PI/180 * (degrees + 90); // now 0 degrees is North/Up
 				north = Math.sin(angle) * distance;
    			east = Math.cos(angle) * distance;
@@ -475,7 +472,7 @@ function updateRoadBlocks()
 				   //$tab[0] = $lat2;
 				  // $tab[1] = $long2;
 
-				  return new L.latLng(latitude2, longitude2);
-				}
+			return new L.latLng(latitude2, longitude2);
+		}
 	</script>
 	@stop
