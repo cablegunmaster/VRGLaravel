@@ -12,7 +12,7 @@ class CreatePoiType extends Migration
      */
     public function up()
     {
-        Schema::create('POI_Type', function(Blueprint $table){
+        Schema::create('poi_type', function(Blueprint $table){
             $table->increments('id');
             $table->String('name', 64)->unique();
             $table->String('properties');
@@ -27,6 +27,6 @@ class CreatePoiType extends Migration
      */
     public function down()
     {
-        Schema::drop('POI_Type');
+        Schema::drop('poi_type');
     }
 }

@@ -303,9 +303,8 @@ class AllDataController extends Controller
                     $poi->feature = $data[$i]['location']['lat'].",".$data[$i]['location']['long'];
                     $poi->incident_id = "0"; //Standaard aardbeving incident_ID
                     $poi->task_id = $task->id;
-                    //$poi_type = Poi_Type::select('id')->where("name","=", "earthquake")->first(); //check if the earthquake does exist.
-                    //dd($poi_type);
-                    //$poi->poi_type = $poi_type->id;
+                    $poi_type = Poi_Type::select('id')->where("name","=", "earthquake")->first(); //check if the earthquake does exist.
+                    $poi->poi_type = $poi_type->id;
                     $poi->save();
                     break;
 
@@ -432,9 +431,9 @@ class AllDataController extends Controller
      * @return mixed
      */
     public static function getRoadblocks($incident_id){
-        $roadblocks = PointsOfInterest::leftjoin('POI_Type','pointsOfInterest.poi_type','=','POI_Type.id')
+        $roadblocks = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
             ->where('pointsOfInterest.incident_id', '=', $incident_id)
-            ->where('POI_Type.name',"=",'obstruction')
+            ->where('poi_type.name',"=",'obstruction')
             ->get();
 
         $roadblock_JSON = View('api.GeoJSONRoadblock')->with('roadblocks', $roadblocks)->render();
@@ -447,9 +446,9 @@ class AllDataController extends Controller
      * @return mixed
      */
     public static function getMal($incident_id){
-        $mal = PointsOfInterest::leftjoin('POI_Type','pointsOfInterest.poi_type','=','POI_Type.id')
-            ->where('pointsOfInterest.incident_id', '=', $incident_id)
-            ->where('POI_Type.name',"=",'mal')
+        $mal = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
+            ->where('pointsofinterest.incident_id', '=', $incident_id)
+            ->where('poi_type.name',"=",'mal')
             ->get();
 
         $mal_JSON = View('api.GEOJSONmal')->with('mal', $mal)->render();
@@ -489,9 +488,9 @@ class AllDataController extends Controller
     }
 
     public static function getLineString($incident_id){
-        $LineString = PointsOfInterest::leftjoin('POI_Type','pointsOfInterest.poi_type','=','POI_Type.id')
-            ->where('pointsOfInterest.incident_id', '=', $incident_id)
-            ->where('POI_Type.name',"=",'waypoints')
+        $LineString = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
+            ->where('pointsofinterest.incident_id', '=', $incident_id)
+            ->where('poi_type.name',"=",'waypoints')
             ->get();
 
         $LineString = View('api.GeoJSONLineString')->with('linestring', $LineString)->render();
