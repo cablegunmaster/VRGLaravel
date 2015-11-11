@@ -492,8 +492,16 @@ class AllDataController extends Controller
                 'chat_id'  => $chat->id,
                 'user_id' => $user_id
             ]);
+
+            $chat_json[] = array(
+                'id' => $chat->id,
+                'message' => $chat->message,
+                'img_path' => $chat->img_path,
+                'username' => $chat->username,
+                'created_at' => $chat->create_at
+            );
         }
-        return $chat_messages;
+        return $chat_json;
     }
 
     public static function getLineString($incident_id){
