@@ -487,5 +487,14 @@ function updateRoadBlocks()
 
 				  return new L.latLng(latitude2, longitude2);
 				}
+
+		function sendChat()
+		{
+			$.post("/brandweer/chat/sendMessage",{'message':$('#chat_message').val()}, function(result)
+			{
+				console.log("Message Sent");
+				updateChat();
+			});
+		}
 	</script>
 	@stop
