@@ -182,6 +182,11 @@ class AllDataController extends Controller
         /**
          * Insert location command, with the corresponding task as well.
          */
+
+        if(empty($post['token'])){
+            return("{ success: false }");
+        }
+
         $table = AllDataController::getUserIncident($post['token']);
         $task = AllDataController::getTask($table->team_id, $table->incident_id);
         $table->task = $task; //task aan table zetten.
@@ -195,10 +200,18 @@ class AllDataController extends Controller
         }
 
         if(!empty($post['chat'])){
-            //dd($post);
+            $post['chat'] = AllDataController::InsertChat($post['chat'],$table);
         }
 
         return $post;
+    }
+
+    public static function InsertChat($chat,$table){
+        $count = count($chat); //count only once.
+        for($i = 0; $i < $count; $i++){
+
+        }
+        return $chat;
     }
 
     /**
@@ -235,7 +248,6 @@ class AllDataController extends Controller
             switch ($data[$i]['type']) {
                 case "measurement":
                     //Create new location.
-
 
                     //Update End time of the Task.
                     $task = Task::find($data[$i]['task_id']); //get only 1 task by id.
@@ -451,7 +463,7 @@ class AllDataController extends Controller
             ->where('poi_type.name',"=",'mal')
             ->get();
 
-        $mal_JSON = View('api.GEOJSONmal')->with('mal', $mal)->render();
+        $mal_JSON = View('api.GeoJSONmal')->with('mal', $mal)->render();
         return  json_decode(AllDataController::removeRN($mal_JSON),true); //remove the /r/n
     }
 
@@ -480,9 +492,6 @@ class AllDataController extends Controller
                 'chat_id'  => $chat->id,
                 'user_id' => $user_id
             ]);
-            //$chat_status->chat_id = $chat->id;
-            //$chat_status->user_id = $user_id;
-            //$chat_status->save();
         }
         return $chat_messages;
     }
