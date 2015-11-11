@@ -481,11 +481,7 @@ class AllDataController extends Controller
     }
 
     public static function getLineString($incident_id){
-<<<<<<< HEAD
         $LineString = PointsOfInterest::leftjoin('POI_Type','pointsOfInterest.poi_type','=','POI_Type.id')
-=======
-        $LineString = PointsOfInterest::leftjoin('POI_Type','pointsOfiInterest.poi_type','=','POI_Type.id')
->>>>>>> dev
             ->where('pointsOfInterest.incident_id', '=', $incident_id)
             ->where('POI_Type.name',"=",'waypoints')
             ->get();
