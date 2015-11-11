@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use DB;
 use App\Http\Requests;
+use App\User;
 use App\Http\Controllers\Controller;
 
 class ChatController extends Controller
@@ -16,13 +17,13 @@ class ChatController extends Controller
      */
     public function index()
     {
-        //$active = Controller::call('UserController@show', 999);
-            $chat = DB::table('chat')
+        $mpl = User::find(99999);
+        $chat = DB::table('chat')
             -> where('incident_id', 1)
             -> leftJoin('users', 'chat.user_id', '=', 'users.id')
             ->get();
-        dd($chat);
-        return view('chat.index', compact('chat'));
+        //dd($chat);
+        return view('chat.index', compact('chat', 'mpl'));
     }
 
     /**
