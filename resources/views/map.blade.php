@@ -98,87 +98,6 @@
 				searchFeatureLayer = L.mapbox.featureLayer().addTo(map).on('ready', runMap);
 
 			var earthRadius = 6378140; //constant
-			function moveLatLng(latLng, degrees, distance) {
-			/*	angle = Math.PI/180 * (degrees + 90); // now 0 degrees is North/Up
-				north = Math.sin(angle) * distance;
-   			east = Math.cos(angle) * distance;
-
-    		newLat = latLng.lat + (north / earthRadius) * 180 / Math.PI;
-   			newLng = latLng.lng + (east / (earthRadius * Math.cos(newLat * 180 / Math.PI))) * 180 / Math.PI;
-   			return new L.latLng(newLat, newLng);*/
-
-
-						var radius = 6378140; //meters
-						var M_PI = Math.PI;
-				    //# Degree to Radian
-				    var lat = latLng.lat * (M_PI/180);
-				    var lng = latLng.lng * (M_PI/180);
-				    var brng = degrees * (M_PI/180);
-				    var d = distance;
-
-				    latitude2 = Math.asin( Math.sin(lat)* Math.cos(d/radius) +  Math.cos(lat)* Math.sin(d/radius)* Math.cos(brng));
-				    longitude2 = lng +  Math.atan2( Math.sin(brng)* Math.sin(d/radius)* Math.cos(lat), Math.cos(d/radius)- Math.sin(lat)* Math.sin(latitude2));
-
-				//    # back to degrees
-				latitude2 = latitude2 * (180/M_PI);
-				longitude2 = longitude2 * (180/M_PI);
-
-				  //  # 6 decimal for Leaflet and other system compatibility
-				  // $lat2 = round ($latitude2,6);
-				   //$long2 = round ($longitude2,6);
-
-				   // Push in array and get back
-				   //$tab[0] = $lat2;
-				  // $tab[1] = $long2;
-
-				  return new L.latLng(latitude2, longitude2);
-				}
-
-
-
-				function createMal(lat,lng, degrees, length/* meters */, width /* meters */, color) {
-					var source = new L.latLng(lat,lng);
-					var destination = moveLatLng(source, degrees, length);
-
-					var center = new L.latLng((source.lat + destination.lat)/2, (source.lng + destination.lng)/2);
-
-					var part1 = new Array();
-					var part2 = new Array();
-
-				/*points.push(source);
-				points.push(moveLatLng(center, degrees-90,width/2));
-				points.push(destination);
-				points.push(moveLatLng(center, degrees+90,width/2));*/
-
-
-				part1.push(source);
-
-				var sPoint = moveLatLng(source, degrees, length*0.05);
-				part1.push(moveLatLng(sPoint, degrees+90, width/4));
-				part2.push(moveLatLng(sPoint, degrees-90, width/4));
-				//points.push(moveLatLng(center, degrees+90,width/2));
-
-				sPoint = moveLatLng(source, degrees, length*0.2);
-				part1.push(moveLatLng(sPoint, degrees+90, width/2));
-				part2.push(moveLatLng(sPoint, degrees-90, width/2));
-
-				sPoint = moveLatLng(source, degrees, length*0.8);
-				part1.push(moveLatLng(sPoint, degrees+90, width/2));
-				part2.push(moveLatLng(sPoint, degrees-90, width/2));
-
-				sPoint = moveLatLng(source, degrees, length*0.95);
-				part1.push(moveLatLng(sPoint, degrees+90, width/4));
-				part2.push(moveLatLng(sPoint, degrees-90, width/4));
-
-				part2.push(destination);
-
-				var d = source.distanceTo(destination)
-				if(Math.abs(d - length) > 1) {
-					console.warn("Distance to projected LatLng deviating more than a meter.");
-				}
-
-				return L.polygon(part1.concat(part2.reverse()	), {color:color});
-			}
 
 			function runMap() {
 				featureLayer.eachLayer(function(l) {
@@ -478,5 +397,85 @@ function updateRoadBlocks()
 				});
 			})
 		});
+
+	function createMal(lat,lng, degrees, length/* meters */, width /* meters */, color) {
+					var source = new L.latLng(lat,lng);
+					var destination = moveLatLng(source, degrees, length);
+
+					var center = new L.latLng((source.lat + destination.lat)/2, (source.lng + destination.lng)/2);
+
+					var part1 = new Array();
+					var part2 = new Array();
+
+				/*points.push(source);
+				points.push(moveLatLng(center, degrees-90,width/2));
+				points.push(destination);
+				points.push(moveLatLng(center, degrees+90,width/2));*/
+
+
+				part1.push(source);
+
+				var sPoint = moveLatLng(source, degrees, length*0.05);
+				part1.push(moveLatLng(sPoint, degrees+90, width/4));
+				part2.push(moveLatLng(sPoint, degrees-90, width/4));
+				//points.push(moveLatLng(center, degrees+90,width/2));
+
+				sPoint = moveLatLng(source, degrees, length*0.2);
+				part1.push(moveLatLng(sPoint, degrees+90, width/2));
+				part2.push(moveLatLng(sPoint, degrees-90, width/2));
+
+				sPoint = moveLatLng(source, degrees, length*0.8);
+				part1.push(moveLatLng(sPoint, degrees+90, width/2));
+				part2.push(moveLatLng(sPoint, degrees-90, width/2));
+
+				sPoint = moveLatLng(source, degrees, length*0.95);
+				part1.push(moveLatLng(sPoint, degrees+90, width/4));
+				part2.push(moveLatLng(sPoint, degrees-90, width/4));
+
+				part2.push(destination);
+
+				var d = source.distanceTo(destination)
+				if(Math.abs(d - length) > 1) {
+					console.warn("Distance to projected LatLng deviating more than a meter.");
+				}
+
+				return L.polygon(part1.concat(part2.reverse()	), {color:color});
+			}
+
+			function moveLatLng(latLng, degrees, distance) {
+			/*	angle = Math.PI/180 * (degrees + 90); // now 0 degrees is North/Up
+				north = Math.sin(angle) * distance;
+   			east = Math.cos(angle) * distance;
+
+    		newLat = latLng.lat + (north / earthRadius) * 180 / Math.PI;
+   			newLng = latLng.lng + (east / (earthRadius * Math.cos(newLat * 180 / Math.PI))) * 180 / Math.PI;
+   			return new L.latLng(newLat, newLng);*/
+
+
+						var radius = 6378140; //meters
+						var M_PI = Math.PI;
+				    //# Degree to Radian
+				    var lat = latLng.lat * (M_PI/180);
+				    var lng = latLng.lng * (M_PI/180);
+				    var brng = degrees * (M_PI/180);
+				    var d = distance;
+
+				    latitude2 = Math.asin( Math.sin(lat)* Math.cos(d/radius) +  Math.cos(lat)* Math.sin(d/radius)* Math.cos(brng));
+				    longitude2 = lng +  Math.atan2( Math.sin(brng)* Math.sin(d/radius)* Math.cos(lat), Math.cos(d/radius)- Math.sin(lat)* Math.sin(latitude2));
+
+				//    # back to degrees
+				latitude2 = latitude2 * (180/M_PI);
+				longitude2 = longitude2 * (180/M_PI);
+
+				  //  # 6 decimal for Leaflet and other system compatibility
+				  // $lat2 = round ($latitude2,6);
+				   //$long2 = round ($longitude2,6);
+
+				   // Push in array and get back
+				   //$tab[0] = $lat2;
+				  // $tab[1] = $long2;
+
+				  return new L.latLng(latitude2, longitude2);
+				}
 	</script>
 	@stop
