@@ -141,7 +141,17 @@
 		};
 
 		function Chatmodal_open_chat(){
+		    $('#ChatContent').html('\
+		        <h5 class="center-align">Laden...</h5>\
+                <div class="blue lighten-3 progress">\
+                    <div class="blue indeterminate"></div>\
+                </div>\
+		    ');
 		    $('#ChatModel').openModal();
+		    $('#ChatContent').load('/brandweer/chat');
+		    $.post('/brandweer/chat/message', function(result) {
+		        $('#ChatFooter').html(result);
+		    })
 		};
 
 

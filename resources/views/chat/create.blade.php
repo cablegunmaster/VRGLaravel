@@ -1,5 +1,5 @@
 {!! Form::open(array('url' => 'brandweer/chat/store','method' => 'post', 'id' => 'send_chat_message')) !!}
-<div class="input-field col s12">
+<div class="input-field col s12" id="message" name="message">
     <button class="btn waves-effect blue" type="submit" name="action" style="float: right; ">
         send <i class="material-icons right">send</i>
     </button>

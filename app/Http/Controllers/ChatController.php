@@ -22,7 +22,7 @@ class ChatController extends Controller
             -> where('incident_id', 1)
             -> leftJoin('users', 'chat.user_id', '=', 'users.id')
             ->get();
-        //dd($chat);
+        /*dd($chat);*/
         return view('chat.index', compact('chat', 'mpl'));
     }
 
@@ -44,7 +44,15 @@ class ChatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        /*$input = $request->all();
+
+        $chat = new Chat();
+        $chat->user_id = 99999;
+        $chat->incident_id = 1;
+        $chat->message = $input['message'];
+
+        $chat->save();*/
+
     }
 
     /**
