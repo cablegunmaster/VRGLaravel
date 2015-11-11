@@ -41,9 +41,9 @@ class RoadblockController extends Controller
 
     public function loadRoadBlock() {
         //HARDCODED incident_id replace with SESSION later.
-        $pois = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
-            ->where('pointsofinterest.incident_id', '=', '1')
-            ->where('poi_type.name','obstruction')
+        $pois = PointsOfInterest::leftjoin('POI_Type','pointsOfInterest.poi_type','=','POI_Type.id')
+            ->where('pointsOfInterest.incident_id', '=', '1')
+            ->where('POI_Type.name','obstruction')
             ->get();
         return View('api.GEOJsonRoadblock')->with('roadblocks', $pois);
     }
@@ -59,9 +59,9 @@ class RoadblockController extends Controller
     }
 
     public function index(){
-        $roadblocks = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
-            ->where('pointsofinterest.incident_id', '=', '1')
-            ->where('poi_type.name','obstruction')
+        $roadblocks = PointsOfInterest::leftjoin('POI_Type','pointsOfInterest.poi_type','=','POI_Type.id')
+            ->where('pointsOfInterest.incident_id', '=', '1')
+            ->where('POI_Type.name','obstruction')
             ->get(); //HARDCODED incident_id replace with SESSION later.
         return View('api.GEOJsonRoadblock')->with('roadblocks', $roadblocks);
     }
