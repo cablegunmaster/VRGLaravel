@@ -12,7 +12,7 @@ class CreatePointsofinterest extends Migration
      */
     public function up()
     {
-        Schema::create('pointsOfInterest', function(Blueprint $table) {
+        Schema::create('pointsofinterest', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('incident_id');
             $table->integer('task_id');
@@ -20,7 +20,7 @@ class CreatePointsofinterest extends Migration
             $table->integer('poi_type')->nullable()->unsigned();
             $table->timestamps();
 
-            $table->foreign('poi_type')->references('id')->on('POI_Type');
+            $table->foreign('poi_type')->references('id')->on('poi_type');
         });
     }
 
@@ -32,7 +32,7 @@ class CreatePointsofinterest extends Migration
      */
     public function down()
     {
-        Schema::drop('pointsOfInterest', function(Blueprint $table) {
+        Schema::drop('pointsofinterest', function(Blueprint $table) {
             $table->dropForeign('pointsofinterest_poi_type_foreign');
         });
     }

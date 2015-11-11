@@ -15,7 +15,7 @@ class CreateMeasurement extends Migration
         Schema::create('measurement', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('location_id');
-            $table->text('message');
+            $table->text('message')->nullable();
             $table->text('data');
             $table->String('file', 256);
             $table->timestamps();

@@ -4,20 +4,19 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Poi_Type extends Model
+class Weather extends Model
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'poi_type';
+    protected $table = 'weather';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name','properties'];
-
+    protected $fillable = ['name','created_at','updated_at'];
 }

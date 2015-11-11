@@ -18,7 +18,7 @@ class Task extends Model
      *
      * @var array
      */
-    protected $fillable = ['incident_id', 'team_id', 'task_type_id','title', 'description', 'data',
+    protected $fillable = ['incident_id', 'team_id', 'task_type_id','title', 'description', 'data','end_date',
         'dest_lat','dest_lon','dest_text','created_at','updated_at'];
 
 }

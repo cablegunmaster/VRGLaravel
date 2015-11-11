@@ -13,10 +13,10 @@ class CreateTaskStatus extends Migration
     public function up()
     {
         Schema::create('task_status', function (Blueprint $table){
+           $table->increments('id');
            $table->integer('task_id');
            $table->integer('user_id');
-           $table->dateTime('receive_date');
-           $table->primary(array('task_id', 'user_id'));
+           $table->timestamp('receive_date');
            $table->timestamps();
         });
     }

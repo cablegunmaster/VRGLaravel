@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTaskType extends Migration
+class AddWeatherToIncident extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,8 @@ class CreateTaskType extends Migration
      */
     public function up()
     {
-        Schema::create('task_type', function(Blueprint $table){
-           $table->increments('id');
-           $table->String('name', 64)->unique();
-           $table->timestamps();
+        Schema::table('incident', function (Blueprint $table) {
+            $table->json('weather');
         });
     }
 
@@ -26,6 +24,8 @@ class CreateTaskType extends Migration
      */
     public function down()
     {
-        Schema::drop('task_type');
+        Schema::table('incident', function (Blueprint $table) {
+            $table->dropColumn('weather');
+        });
     }
 }

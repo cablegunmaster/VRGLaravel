@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Seeder;
 use App\Poi_Type;
-use DB;
 
 class PoiTypeTableSeeder extends Seeder
 {
@@ -13,50 +12,50 @@ class PoiTypeTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('Poi_Type')->insert([
+
+        Poi_Type::create([
             'name' => 'obstruction',
             'properties' => '"type": "obstruction",
                             "icon": {
-                            "iconUrl": "/brandweer/img/obstruction.png",
+                            "iconUrl": "http://scrumbag.nl/brandweer/img/obstruction.png",
                             "iconSize": [35,17],
                             "className": "dot"
                             }'
         ]);
 
-        DB::table('Poi_Type')->insert([
+        Poi_Type::create([
             'name' => 'mal',
             'properties'=> '"type": "mal"'
-            //Mal =
-            // "coordinates": [
-//            [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0],
-//            [100.0, 1.0], [100.0, 0.0] ]
-//            ]
         ]);
 
-        DB::table('Poi_Type')->insert([
+        Poi_Type::create([
             'name' => 'origin',
         ]);
 
-        DB::table('Poi_Type')->insert([
+        Poi_Type::create([
             'name' => 'destination',
         ]);
 
-        DB::table('Poi_Type')->insert([
+        Poi_Type::create([
             'name' => 'waypoints',
         ]);
 
-        DB::table('Poi_Type')->insert([
+        Poi_Type::create([
             'name' => 'meting',
             'properties'=> '"type": "meting",
                             "icon": {
-                            "iconUrl": "/brandweer/img/meting.png",
+                            "iconUrl": "http://scrumbag.nl/brandweer/img/meting.png",
                             "iconSize": [35,17],
                             "className": "dot"
                             }'
         ]);
 
-        DB::table('Poi_Type')->insert([
-            'name' => 'waarneming',
+        Poi_Type::create([
+            'name' => 'observation',
+        ]);
+
+        Poi_Type::create([
+            'name' => 'earthquake',
         ]);
     }
 }
