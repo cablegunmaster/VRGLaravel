@@ -9,6 +9,7 @@ use App\Poi_Type;
 use App\PointsOfInterest;
 use App\Task;
 use App\Chat;
+use App\Task_Status;
 use App\Task_Type;
 use Illuminate\Http\Request;
 
@@ -77,8 +78,13 @@ class AllDataController extends Controller
      */
     public function store()
     {
+        $debug = true; //set FALSE on production.
 
-        if (!isset($_POST['data'])) {
+        $post = (file_get_contents('php://input')); //Get raw String from a request.
+        $post = json_decode($post, true);
+
+        //For debugging reasons only.
+        if (empty($post) && $debug) {
             $post = '
     {
           "token": "068c9087a94570e873ea3485f5f8c005",
@@ -304,16 +310,14 @@ class AllDataController extends Controller
 
                 case "observation":
                     //TODO needs a location of the file in the database.
-                    dd($data[$i]);
-
                     $task = new Task();
                     $task->incident_id = $table->incident_id;
                     $task_type = Task_Type::select('id')->where("name","=","observation")->first();
-                    //$task->title = $task->
-                    //$task->description =
+                    $task->title = $data[$i]['observation'];
+                    $task->description = $data[$i]['observation'];
+                    //TODO put this image somewhere -> Fancy a place! $data[$i]->image;
                     $task->task_type_id = $task_type->id;
                     $task->end_date = date('Y-m-d H:i:s');
-
                     $task->save();
 
                     $poi = new PointsOfInterest();
@@ -321,10 +325,24 @@ class AllDataController extends Controller
                     $poi_type = Poi_Type::select('id')->where("name","=", "observation")->first();
                     $poi->poi_type = $poi_type->id;
                     $poi->incident_id = $table->incident_id;
-                    //$poi->task_id =
+                    $poi->task_id = $task->id;
                     $poi->save();
                     break;
                 case "task":
+
+                    $task = Task::find($data[$i]['id']);
+                    if($data[$i]['state'] == "finished") {
+                        $task->end_date = date('Y-m-d H:i:s');
+                        $task->save();
+                    }
+                    if($data[$i]['state'] == "received") {
+                        $task_status = new Task_Status();
+                        $task_status->task_id = $task->id;
+                        $task_status->user_id = $table->user_id;
+                        $task_status->save();
+                    }
+                    dd($data[$i]);
+
                     break;
                 case "chat":
                     break;
