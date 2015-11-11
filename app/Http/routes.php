@@ -90,3 +90,5 @@ Route::post("/brandweer/api/geocode/reverseEncode",'Api\GeoCodeController@postRe
 //Login controller
 Route::post('/brandweer/api/login/check', 'Api\LoginController@check');
 Route::post('/brandweer/api/login','Api\LoginController@login');
+// WeatherMap
+Route::post("/brandweer/api/weather/get",'Api\WeatherMapController@getWeather');
