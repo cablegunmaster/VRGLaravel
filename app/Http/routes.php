@@ -59,7 +59,7 @@ Route::post('/brandweer/meetinstructie/store', 'TaskMeasurementController@store'
  * chat routes
  */
 Route::get('/brandweer/chat', 'ChatController@index');
-Route::post('/brandweer/chat/massage', 'ChatController@create');
+Route::post('/brandweer/chat/message', 'ChatController@create');
 
 /**
  * Api calls.
