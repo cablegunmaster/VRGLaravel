@@ -35,7 +35,6 @@ class AllDataController extends Controller
 
         $task = AllDataController::getTask($table->team_id, $table->incident_id); //team_id and incident_id required.
         $chat = AllDataController::getChat($table->incident_id, $table->user_id);
-
         $mal = AllDataController::getMal($table->incident_id);
         $location = AllDataController::getLocation($table->incident_id);
         $roadblock = AllDataController::getRoadblocks($table->incident_id);
@@ -64,6 +63,7 @@ class AllDataController extends Controller
         $table->chat = $chat;
         $table->geo = $geo;
 
+        dd($table);
         $response = response()->json($table);
         $response->header('Content-Type', 'application/json');
         $response->header('charset', 'utf-8');
@@ -179,9 +179,6 @@ class AllDataController extends Controller
         }
         $post = json_decode($post, true); //make a array of POST.
 
-        //Push chat function als ID is null.
-        //$post['chat'];
-
         /**
          * Insert location command, with the corresponding task as well.
          */
@@ -195,6 +192,10 @@ class AllDataController extends Controller
         if (!empty($post['data'])) {
             //Post all data in the controllers.
             $post['data'] = AllDataController::InsertData($post['data'],$table);
+        }
+
+        if(!empty($post['chat'])){
+            //dd($post);
         }
 
         return $post;
@@ -222,6 +223,7 @@ class AllDataController extends Controller
 
 
     /**
+     * INSERT DATA Van Kolom Data.
      * @param $data
      * @param $table
      * @return mixed
@@ -233,17 +235,19 @@ class AllDataController extends Controller
             switch ($data[$i]['type']) {
                 case "measurement":
                     //Create new location.
+
+
+                    //Update End time of the Task.
+                    $task = Task::find($data[$i]['task_id']); //get only 1 task by id.
+                    $task->end_date = $data[$i]['created']; //created seems like end_date of task.
+                    $task->save();
+
                     $location = new Location();
                     $location->lat = $data[$i]['location']['lat'];
                     $location->lon = $data[$i]['location']['long'];
                     $location->task_id = $data[$i]['task_id'];
                     $location->user_id = $table->user_id;
                     $location->save();
-
-                    //Update End time of the Task.
-                    $task = Task::find($data[$i]['task_id']); //get only 1 task by id.
-                    $task->end_date = $data[$i]['created']; //created seems like end_date of task.
-                    $task->save();
 
                     //Merge Echo's and bravo's.
                     $measurement_data = array();
@@ -285,9 +289,7 @@ class AllDataController extends Controller
                     if (isset($data[$i]['remark_s']) && !empty($data[$i]['remark_s'])){
                         $earthquake["remark_s"] = $data[$i]['remark_s'];
                     }
-
-
-
+                    
                     $task = new Task();
                     $task->incident_id = "0"; //Standaard aardbeving incident_ID;
                     $task_type = Task_Type::select('id')->where("name","=","earthquake")->first();
@@ -301,8 +303,9 @@ class AllDataController extends Controller
                     $poi->feature = $data[$i]['location']['lat'].",".$data[$i]['location']['long'];
                     $poi->incident_id = "0"; //Standaard aardbeving incident_ID
                     $poi->task_id = $task->id;
-                    $poi_type = Poi_Type::select('id')->where("name","=", "earthquake")->first();
-                    $poi->poi_type = $poi_type->id;
+                    //$poi_type = Poi_Type::select('id')->where("name","=", "earthquake")->first(); //check if the earthquake does exist.
+                    //dd($poi_type);
+                    //$poi->poi_type = $poi_type->id;
                     $poi->save();
                     break;
 
@@ -326,11 +329,8 @@ class AllDataController extends Controller
                     $poi->task_id = $task->id;
                     $poi->save();
 
-
                     break;
                 case "task":
-
-
                     $task = Task::find($data[$i]['id']);
                     if($data[$i]['state'] == "finished") {
                         $task->end_date = date('Y-m-d H:i:s');
@@ -344,9 +344,7 @@ class AllDataController extends Controller
                         $task_status->receive_date = date('Y-m-d H:i:s');
                         $task_status->save();
                     }
-                    break;
-                case "chat":
-                    dd($data[$i]);
+
                     break;
             }
         }
@@ -405,20 +403,26 @@ class AllDataController extends Controller
         /**
          * Get all locations from everyone.
          */
-        $locations = DB::table("location")
-            ->select("task.id as tasks_id",
-                "location.*",
-                "task.title",
-                "task.description"
+        //$team = DB::table("team")
+        $locations = DB::table("users")
+            ->select("team.*",
+                "users.id",
+                "team.name as team_name",
+                "team.code as team_code"
             )
-            ->leftJoin('users','location.user_id','=', 'users.id')
-            ->leftJoin('task','users.team_id','=','task.team_id')
-            ->where('task.incident_id', $incident_id)
-            ->groupBy('location.task_id')
-            ->orderBy('location.created_at','desc')
+            ->rightJoin('team','users.id','=','team.leader_id')
             ->get();
+        $users = array();
 
-        return json_decode(View('api.GeoJSONLocation')->with('locations', $locations),true);
+        for($i =0;$i<count($locations);$i++)
+        {
+            $users[$i] = DB::table("location")
+                ->select('location.*','users.*')
+                ->leftJoin('users','users.id','=','location.user_id')
+                ->where('users.id','=', $locations[$i]->leader_id)
+                ->first();
+        }
+        return json_decode(View('api.GEOJsonLocation')->with('locations', $locations)->with('users',$users)->render(),true);
     }
 
     /**
