@@ -13,8 +13,8 @@ class AddLonLatToIncident extends Migration
     public function up()
     {
         Schema::table('incident', function (Blueprint $table) {
-            $table->double('weather');
-            $table->double('weather');
+            $table->double('lat');
+            $table->double('lon');
         });
     }
 
@@ -26,8 +26,8 @@ class AddLonLatToIncident extends Migration
     public function down()
     {
         Schema::table('incident', function (Blueprint $table) {
-            $table->dropColumn('weather');
-            $table->dropColumn('weather');
+            $table->dropColumn('lat');
+            $table->dropColumn('lon');
         });
     }
 }
