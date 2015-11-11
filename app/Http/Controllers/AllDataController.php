@@ -73,97 +73,97 @@ class AllDataController extends Controller
         if (empty($post) && $debug) {
             //$post = '
             /**
-    {
-          "token": "068c9087a94570e873ea3485f5f8c005",
-          "own_location": {
-                "lat"  : 52.3045,
-                "long" : 6.0539
+            {
+            "token": "068c9087a94570e873ea3485f5f8c005",
+            "own_location": {
+            "lat"  : 52.3045,
+            "long" : 6.0539
             },
-          "data": [
-          {
-                "task_id": 2,
-                "type": "measurement",
-                "location": {
-                    "lat"  : 51.3045,
-                    "long" : 6.0539
-                },
-                "created":"2015-10-01 12:00:01",
-                "remarks": "opmerking :)",
-                "echo": {
-                     "echo": 2
-                 },
-                "bravos":
-                [
-                    {
-                        "bravo":11,
-                        "november": 5,
-                        "charlie": 8,
-                        "tango":"2015-10-01 12:00:01"
-                    },{
-                        "bravo":11,
-                        "november": 5,
-                        "charlie": 8,
-                        "tango":"2012-01-05 01:00:00"
-                    }
-                ]
-          },
-         {
-          "type": "earthquake",
-          "location": {
-                    "lat"  : 51.3045,
-                    "long" : 6.0539
-                },
-          "tango": "2012-01-05 01:00:00",
-          "score_s": 1,
-          "score_g": 2,
-          "score_i": 3,
-          "remarks_s": null,
-          "remarks_g": "veel los glas",
-          "remarks_i": "Wegen kapot"
-         },
-         {
-         "type": "observation",
-         "location": {
-                    "lat"  : 51.3045,
-                    "long" : 6.0539
-                },
-         "observation": "Iets van een regel tekst",
-         "image": "PLOATKE"
-         },
-         {
+            "data": [
+            {
+            "task_id": 2,
+            "type": "measurement",
+            "location": {
+            "lat"  : 51.3045,
+            "long" : 6.0539
+            },
+            "created":"2015-10-01 12:00:01",
+            "remarks": "opmerking :)",
+            "echo": {
+            "echo": 2
+            },
+            "bravos":
+            [
+            {
+            "bravo":11,
+            "november": 5,
+            "charlie": 8,
+            "tango":"2015-10-01 12:00:01"
+            },{
+            "bravo":11,
+            "november": 5,
+            "charlie": 8,
+            "tango":"2012-01-05 01:00:00"
+            }
+            ]
+            },
+            {
+            "type": "earthquake",
+            "location": {
+            "lat"  : 51.3045,
+            "long" : 6.0539
+            },
+            "tango": "2012-01-05 01:00:00",
+            "score_s": 1,
+            "score_g": 2,
+            "score_i": 3,
+            "remarks_s": null,
+            "remarks_g": "veel los glas",
+            "remarks_i": "Wegen kapot"
+            },
+            {
+            "type": "observation",
+            "location": {
+            "lat"  : 51.3045,
+            "long" : 6.0539
+            },
+            "observation": "Iets van een regel tekst",
+            "image": "PLOATKE"
+            },
+            {
             "id": 1,
             "type":"task",
             "state":"finished"
-         },
-         {
+            },
+            {
             "id": 2,
             "type":"task",
             "state":"received"
-         }
-        ],
+            }
+            ],
 
-         "chat":
-        [
-                {
-                  "id": null,
-                  "type":"chat",
-                  "message":"Hello world",
-                  "state":null
-                },
-                {
-                  "id": null,
-                  "type":"chat",
-                  "message":"Hello world",
-                  "state":null
-                },
-                {
-                  "id": 128,
-                  "type":"chat",
-                  "state":"received"
-                }
-        ]
-    }
-';*/
+            "chat":
+            [
+            {
+            "id": null,
+            "type":"chat",
+            "message":"Hello world",
+            "state":null
+            },
+            {
+            "id": null,
+            "type":"chat",
+            "message":"Hello world",
+            "state":null
+            },
+            {
+            "id": 128,
+            "type":"chat",
+            "state":"received"
+            }
+            ]
+            }
+            ';*/
             $post = '{"own_location":{"lat":53.2415,"long":6.5296151},"token":"068c9087a94570e873ea3485f5f8c005","data":[],"chat":[]}';
         } else {
             $post = (file_get_contents('php://input')); //Get raw String from a request.
@@ -201,9 +201,11 @@ class AllDataController extends Controller
         if(!empty($post['chat'])){
             $post['chat'] = AllDataController::InsertChat($post['chat'],$table);
         }
-
         $table = json_decode(json_encode($table),true); //to make it in JSON
-        array_merge($table,$post);
+        $chats = array_merge($table['chat'], $post['chat']); // save this here because array_merge messed up.
+        $table = array_merge($table,$post);
+        $table['chat'] = $chats;
+
         $response = response()->json($table);
         $response->header('Content-Type', 'application/json');
         $response->header('charset', 'utf-8');
@@ -238,7 +240,7 @@ class AllDataController extends Controller
 
         $newChat = AllDataController::getChat($table->incident_id,$table->user_id);
         foreach($newChat as $c) {
-            $chat[] = $c->toJson();
+            $chat[] = $c;
         }
         return $chat;
     }
@@ -332,7 +334,7 @@ class AllDataController extends Controller
                     if (isset($data[$i]['remark_s']) && !empty($data[$i]['remark_s'])){
                         $earthquake["remark_s"] = $data[$i]['remark_s'];
                     }
-                    
+
                     $task = new Task();
                     $task->incident_id = "0"; //Standaard aardbeving incident_ID;
                     $task_type = Task_Type::select('id')->where("name","=","earthquake")->first();
@@ -506,16 +508,16 @@ class AllDataController extends Controller
             "chat_status.read_date",
             "users.username",
             "chat.id"
-            )
+        )
             ->where("incident_id","=", $incident_id)
             ->leftjoin("chat_status","chat.id","=","chat_status.chat_id")
-            ->leftjoin("users","chat.user_id","=","users.id")
+            ->leftjoin("users","chat.user_id","=", "users.id")
             ->whereNull('chat_status.receive_date')
+            ->where('users.id', "<>", $user_id)
             ->get();
 
         $chat_json = array();
         foreach($chat_messages as $chat){
-            //$chat_status = new Chat_Status();
             Chat_Status::firstOrCreate([
                 'chat_id'  => $chat->id,
                 'user_id' => $user_id,
