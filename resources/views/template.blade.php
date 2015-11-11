@@ -20,7 +20,7 @@
 			margin: 0px 0px 0px 0px !important;
 		}
 
-		.lowverticalpadding{
+		.lowverticalpadding {
 			padding-top: 5px;
 			padding-bottom: 5px;
 		}
