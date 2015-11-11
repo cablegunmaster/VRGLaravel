@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Seeder;
 use App\Poi_Type;
-use DB;
 
 class PoiTypeTableSeeder extends Seeder
 {
@@ -13,7 +12,8 @@ class PoiTypeTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('POI_Type')->insert([
+
+        Poi_Type::create([
             'name' => 'obstruction',
             'properties' => '"type": "obstruction",
                             "icon": {
@@ -23,28 +23,24 @@ class PoiTypeTableSeeder extends Seeder
                             }'
         ]);
 
-        DB::table('POI_Type')->insert([
+        Poi_Type::create([
             'name' => 'mal',
             'properties'=> '"type": "mal"'
         ]);
 
-        DB::table('POI_Type')->insert([
+        Poi_Type::create([
             'name' => 'origin',
         ]);
 
-        DB::table('POI_Type')->insert([
+        Poi_Type::create([
             'name' => 'destination',
         ]);
 
-        DB::table('POI_Type')->insert([
+        Poi_Type::create([
             'name' => 'waypoints',
         ]);
 
-        DB::table('POI_Type')->insert([
-            'name' => 'earthquake',
-        ]);
-
-        DB::table('POI_Type')->insert([
+        Poi_Type::create([
             'name' => 'meting',
             'properties'=> '"type": "meting",
                             "icon": {
@@ -54,8 +50,8 @@ class PoiTypeTableSeeder extends Seeder
                             }'
         ]);
 
-        DB::table('POI_Type')->insert([
-            'name' => 'observation'
+        Poi_Type::create([
+            'name' => 'observation',
         ]);
     }
 }
