@@ -12,7 +12,7 @@ class AddTaskToMeasurement extends Migration
      */
     public function up()
     {
-        Schema::table(',measurement', function (Blueprint $table) {
+        Schema::table('measurement', function (Blueprint $table) {
             $table->integer('task_id');;
         });
     }
