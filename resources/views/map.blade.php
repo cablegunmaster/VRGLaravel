@@ -107,6 +107,7 @@
 
 					//featureLayer.loadURL('https://api.mapbox.com/v4/directions/mapbox.driving/'+ temp1.lat+','+ temp1.lng +';6.5306433920317,53.247911358103.json?access_token=pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWcwM2NpazQwMmk4dDRreDdpNGd1MXd0In0.JsRAe5r1LWPdBqlhMTOlyQ');
 				});
+				// loadMal();
 				window.setTimeout(function() {
 						//featureLayer.loadURL('/brandweer/randomadres');
 
@@ -142,6 +143,18 @@
 				}
 
 				var polyUpdate = createMal(mal.location.lat, mal.location.lng, b, l, w, 'red');
+				// API
+				$.post( "/brandweer/api/mal/new", { 'malJSON': polyUpdate.toGeoJSON() });
+
+				L.geoJson(polyUpdate.toGeoJSON(), {
+					style: function (feature) {
+						return {color: feature.properties.color};
+					},
+					onEachFeature: function (feature, layer) {
+						layer.bindPopup(feature.properties.description);
+					}
+				}).addTo(map);
+
 				if(mal.polygon != null) {
 					map.removeLayer(mal.polygon)
 				}
@@ -163,6 +176,7 @@
 			updateTeamView();
 			updateRoadBlocks();
 			getTaskData();
+			loadMal();
 		});
 
 		function updateTeamView()
@@ -474,5 +488,21 @@
 
 			return new L.latLng(latitude2, longitude2);
 		}
+		function loadMal() {
+			// load roadBlocks
+			$.ajax({
+				type: "POST",
+				url: '/brandweer/api/mal/load',
+				data: '',
+				dataType: "json",
+				success: function(data) {
+					L.geoJson(data, {}).addTo(map);
+				},
+				error: function() {
+					console.log('roadError occured');
+				}
+			});
+		}
+
 	</script>
 	@stop
