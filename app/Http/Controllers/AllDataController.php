@@ -444,7 +444,7 @@ class AllDataController extends Controller
      */
     public static function getRoadblocks($incident_id){
         $roadblocks = PointsOfInterest::leftjoin('poi_type','pointsofinterest.poi_type','=','poi_type.id')
-            ->where('pointsOfInterest.incident_id', '=', $incident_id)
+            ->where('pointsofinterest.incident_id', '=', $incident_id)
             ->where('poi_type.name',"=",'obstruction')
             ->get();
 
