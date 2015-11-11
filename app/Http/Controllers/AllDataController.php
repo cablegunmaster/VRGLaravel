@@ -79,7 +79,6 @@ class AllDataController extends Controller
     public function store()
     {
         $debug = true; //set FALSE on production.
-        $post = (file_get_contents('php://input')); //Get raw String from a request.
 
         //For debugging reasons only.
         if (empty($post) && $debug) {
@@ -177,7 +176,7 @@ class AllDataController extends Controller
     }
 ';
         } else {
-            $post = $_POST['data'];
+            $post = (file_get_contents('php://input')); //Get raw String from a request.
         }
         $post = json_decode($post, true); //make a array of POST.
 
