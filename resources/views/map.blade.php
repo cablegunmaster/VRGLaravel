@@ -184,7 +184,7 @@ function updateChat()
 {
     $('#ChatContent').load('/brandweer/chat');
     		    $.post('/brandweer/chat/message', function(result) {
-    		        $('#ChatFooter').html(result);
+    		        //$('#ChatFooter').html(result);
     		    })
 }
 
@@ -494,6 +494,7 @@ function updateRoadBlocks()
 			{
 				console.log("Message Sent");
 				updateChat();
+				$('#chat_message').val("");
 			});
 		}
 	</script>
