@@ -491,11 +491,17 @@
                     for (var i = 0; i < data.poi.length; i++) {
                         // weird every part is a String but not an object, create a json of everyone then add it to map.
                         var poi = JSON.parse(data.poi[i]);
-                        L.geoJson(poi, {}).addTo(map);
+                        // L.geoJson(poi, {}).addTo(map); this does not handle properties -_-
+                        // FIX for bad implementation (dirty but works)
+                        if(poi.geometry.type == "Point")    // Marker
+                            addMarker(poi.geometry.coordinates[1], poi.geometry.coordinates[0], poi.properties.id);
+                        else
+                            console.log("Type Not supported: " + poi.geometry.type)
+                        // debugger;
                     }
                 },
                 error: function() {
-                    console.log('roadError occured');
+                    console.log('POIError occured');
                 }
             });
         }

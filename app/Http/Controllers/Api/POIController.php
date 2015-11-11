@@ -24,7 +24,9 @@ class POIController extends Controller
         $POIs = PointsOfInterest::all();
         foreach ($POIs as $poi) {
             if($poi->feature != null && $this->isJson($poi->feature)) {
-                $result['poi'][] = $poi->feature;   // simply add to array;p
+                $array = json_decode($poi->feature, true);
+                $array['properties']['id'] = $poi->id;  // add internal ID to GeoJSON props
+                $result['poi'][] = json_encode($array);   // simply add to array;p
             }
         }
         $result['success'] = true;
@@ -34,9 +36,17 @@ class POIController extends Controller
         $result = array();
         $result['success'] = false;
         if(Input::has('data')) {
+            // since the input is missing some properties do that magic here.
+            $data = Input::get('data');
+            $data['properties'] = array(
+                "title"=> "Wegversperring"
+            );
+            $data['geometry']['coordinates'][0] = doubleval($data['geometry']['coordinates'][0]);
+            $data['geometry']['coordinates'][1] = doubleval($data['geometry']['coordinates'][1]);
             $poi = new PointsOfInterest();
-            $poi->feature = json_encode(Input::get('data'));
+            $poi->feature = json_encode($data);
             $poi->save();
+            $result['data'] = $data;
             $result['success'] = true;
         }
         else {
