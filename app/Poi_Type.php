@@ -11,7 +11,7 @@ class Poi_Type extends Model
      *
      * @var string
      */
-    protected $table = 'POI_Type';
+    protected $table = 'poi_type';
 
     /**
      * The attributes that are mass assignable.
