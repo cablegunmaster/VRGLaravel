@@ -13,14 +13,15 @@ class TaskTypeTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('task_type')->insert([
+        Task_Type::create([
             'name' => 'observation'
         ]);
 
-        DB::table('task_type')->insert([
+        Task_Type::create([
             'name' => 'earthquake'
         ]);
-        DB::table('task_type')->insert([
+
+        Task_Type::create([
             'name' => 'measurement'
         ]);
     }

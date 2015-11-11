@@ -11,7 +11,7 @@ class Incident_User extends Model
      *
      * @var string
      */
-    protected $table = 'incident_user';
+    protected $table = 'incident_users';
 
     /**
      * The attributes that are mass assignable.

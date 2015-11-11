@@ -287,9 +287,9 @@ class AllDataController extends Controller
                     if (isset($data[$i]['remark_s']) && !empty($data[$i]['remark_s'])){
                         $earthquake["remark_s"] = $data[$i]['remark_s'];
                     }
-
+                    
                     $task = new Task();
-                    $task->incident_id = 0; //Standaard aardbeving incident_ID;
+                    $task->incident_id = "0"; //Standaard aardbeving incident_ID;
                     $task_type = Task_Type::select('id')->where("name","=","earthquake")->first();
                     $task->task_type_id = $task_type->id;
                     $task->team_id = $table->team_id;
@@ -299,7 +299,7 @@ class AllDataController extends Controller
 
                     $poi = new PointsOfInterest();
                     $poi->feature = $data[$i]['location']['lat'].",".$data[$i]['location']['long'];
-                    $poi->incident_id = 0; //Standaard aardbeving incident_ID
+                    $poi->incident_id = "0"; //Standaard aardbeving incident_ID
                     $poi->task_id = $task->id;
                     $poi_type = Poi_Type::select('id')->where("name","=", "earthquake")->first();
                     dd($poi_type);
@@ -326,6 +326,8 @@ class AllDataController extends Controller
                     $poi->incident_id = $table->incident_id;
                     $poi->task_id = $task->id;
                     $poi->save();
+
+
                     break;
                 case "task":
                     $task = Task::find($data[$i]['id']);
@@ -333,6 +335,7 @@ class AllDataController extends Controller
                         $task->end_date = date('Y-m-d H:i:s');
                         $task->save();
                     }
+
                     if($data[$i]['state'] == "received") {
                         $task_status = new Task_Status();
                         $task_status->task_id = $task->id;
@@ -340,7 +343,6 @@ class AllDataController extends Controller
                         $task_status->receive_date = date('Y-m-d H:i:s');
                         $task_status->save();
                     }
-
                     break;
             }
         }
