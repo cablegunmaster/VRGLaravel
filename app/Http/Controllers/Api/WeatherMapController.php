@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Incident;
-use App\Weather;
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\User;
 use Input;
 use Mockery\Exception;
 
@@ -15,7 +13,32 @@ class WeatherMapController extends Controller
 {
 	private $APPID = "0dd63aad039cb00d7d28b0d8f7f6f8db";
 
-	function getWeather()
+    function getWeather() {
+        $result = array();
+        $result['success'] = false;
+
+        if(Input::has('incidentID')) {
+            $incident = Incident::where('id', Input::get('incidentID'))->first();
+            if($incident != null) {
+                if ($incident->weather == null) {
+                    $updateWeatherResult = $this->updateWeather();
+                    $result = json_decode($updateWeatherResult, true); // Geeft dezelfde velden terug namelijk weather(Array) en success(Boolean).
+                } else {
+                    $result['weather'] = json_decode($incident->weather, true); // decode de JSON (Hij saved hem als JSON namelijk. Maak er een basic PHP Array
+                    $result['success'] = true;
+                }
+            }
+            else {
+                $result['error'] = "INCIDENT_NOT_FOUND";
+            }
+        }
+        else {
+            $result['error'] = "No incidentID";
+        }
+        return json_encode($result);
+    }
+
+	function updateWeather()
 	{
         $result = array();
         $result['success'] = false;
@@ -23,7 +46,7 @@ class WeatherMapController extends Controller
         if(Input::has('incidentID')) {
             $incident = Incident::where('id', Input::get('incidentID'))->first();
             if($incident != null) {
-                $url = sprintf("http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&appid=%s", $incident->lat, $incident->lat, $this->APPID);
+                $url = sprintf("http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&appid=%s&lang=nl&units=metric", $incident->lat, $incident->lon, $this->APPID);
                 try {
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $url);
@@ -39,7 +62,8 @@ class WeatherMapController extends Controller
                     $result['weather'] = array(
                         'type' => $array['weather'][0]['main'],
                         'description' => $array['weather'][0]['description'],
-                        'temperature' => (int)((int)$array['main']['temp'] - 273.15), // API returns in kelvin (convert to Celcius)
+                        // 'temperature' => (int)((int)$array['main']['temp'] - 273.15), // API returns in kelvin (convert to Celcius)
+                        'temperature' => (int)$array['main']['temp'],
                         'wind_speed' => (int)$array['wind']['speed'],
                         'wind_degrees' => (int)$array['wind']['deg']);
 
