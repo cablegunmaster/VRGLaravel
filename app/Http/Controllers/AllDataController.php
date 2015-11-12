@@ -181,6 +181,9 @@ class AllDataController extends Controller
 
         $table = AllDataController::getUserIncident($post['token']);
         $task = AllDataController::getTask($table->team_id, $table->incident_id);
+        if(array_key_exists('data', $task)) {
+            $task->data = json_encode($task->data);
+        }
         $table->task = $task; //task aan table zetten.
         if (array_key_exists('own_location',$post)) {
 
@@ -295,15 +298,17 @@ class AllDataController extends Controller
                     $location->save();
 
                     //Merge Echo's and bravo's.
-                    $measurement_data = array();
-                    $measurement_data = array_merge($measurement_data, $data[$i]['echo']);
-                    $measurement_data = array_merge($measurement_data, $data[$i]['bravos']);
+                    $measurement_data = array(
+                        'echo' => $data[$i]['echo'],
+                        'bravos' => $data[$i]['bravos']
+                    );
 
                     //Create a measurement.
                     $measurement = new Measurement();
                     $measurement->message = $data[$i]['remarks'];
                     $measurement->data = json_encode($measurement_data);
                     $measurement->location_id = $location->id;
+                    $measurement->task_id = $data[$i]['task_id'];
                     $measurement->save();
                     break;
                 case "earthquake":
@@ -430,12 +435,19 @@ class AllDataController extends Controller
             'task.data as data',
             'task.title as title',
             'task.description as remarks')
-            ->leftJoin('task_type', 'task.id', '=', 'task_type.id')
+            ->leftJoin('task_type', 'task.task_type_id', '=', 'task_type.id')
             ->where('task.team_id', $team_id)
             ->where('task.incident_id', $incident_id)
             ->whereNull('task.end_date')
             ->orderBy('task.id','asc')
             ->get();
+
+        $i = count($task);
+        while(--$i > -1) {
+            if($task[$i]->data != null) {
+                $task[$i]->data = json_decode($task[$i]->data);
+            }
+        }
         return $task;
     }
 
