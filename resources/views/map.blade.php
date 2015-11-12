@@ -179,7 +179,7 @@ function updateChat()
 {
     $('#ChatContent').load('/brandweer/chat');
     		    $.post('/brandweer/chat/message', function(result) {
-    		        $('#ChatFooter').html(result);
+    		        //$('#ChatFooter').html(result);
     		    })
 }
 
@@ -482,5 +482,15 @@ function updateRoadBlocks()
 
 				  return new L.latLng(latitude2, longitude2);
 				}
+
+		function sendChat()
+		{
+			$.post("/brandweer/chat/sendMessage",{'message':$('#chat_message').val()}, function(result)
+			{
+				console.log("Message Sent");
+				updateChat();
+				$('#chat_message').val("");
+			});
+		}
 	</script>
 	@stop
