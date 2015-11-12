@@ -93,13 +93,21 @@
 
 				// Once this layer loads, we set a timer to load it again in a few seconds.
 
-				roadBlockLayer = L.mapbox.featureLayer().addTo(map);
+				POILayer = L.mapbox.featureLayer().addTo(map);
 				teamViewFeatureLayer = L.mapbox.featureLayer().addTo(map);
 				searchFeatureLayer = L.mapbox.featureLayer().addTo(map).on('ready', runMap);
 
 			var earthRadius = 6378140; //constant
 
 			function runMap() {
+				featureLayer.eachLayer(function(l) {
+					//map.panTo(l.getLatLng());
+
+					//console.log('https://api.mapbox.com/v4/directions/mapbox.driving/'+ temp1.lat+','+ temp1.lng +';6.5306433920317,53.247911358103.json?access_token=pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWcwM2NpazQwMmk4dDRreDdpNGd1MXd0In0.JsRAe5r1LWPdBqlhMTOlyQ');
+
+					//featureLayer.loadURL('https://api.mapbox.com/v4/directions/mapbox.driving/'+ temp1.lat+','+ temp1.lng +';6.5306433920317,53.247911358103.json?access_token=pk.eyJ1IjoiZGF2aWR2aXNzY2hlciIsImEiOiJjaWcwM2NpazQwMmk4dDRreDdpNGd1MXd0In0.JsRAe5r1LWPdBqlhMTOlyQ');
+				});
+				// loadMal();
 				window.setTimeout(function() {
 						//featureLayer.loadURL('/brandweer/randomadres');
 
@@ -115,65 +123,67 @@
 			runMap();
 		});
 
-			$('#malButton').click(function() {
-				malClickEnabled = true;
-				$('#OpdrachtModal').closeModal();
-				$('#navbar-title-text').html('&nbsp;&nbsp;Mal Plaatsen');
-			});
-			$('#MalModal').change(function() {
+		$('#malButton').click(function() {
+			malClickEnabled = true;
+			$('#OpdrachtModal').closeModal();
+			$('#navbar-title-text').html('&nbsp;&nbsp;Mal Plaatsen');
+		});
+		$('#MalModal').change(function() {
 
-				if(mal != null) {
-					var l = $(this).find('[name="length"]').val();
-					var w = $(this).find('[name="width"]').val();
-					var b = $(this).find('[name="bearing"]').val();
-					var s = $(this).find('[name="speed"]').val();
-					try {
-						l = parseInt(l);
-						w = parseInt(w);
-						b = parseInt(b);
-						s = parseInt(s);
-						if(isNaN(l) || isNaN(w) || isNaN(b) || isNaN(s))
-							return;
-					}catch(err){
+			if(mal != null) {
+				var l = $(this).find('[name="length"]').val();
+				var w = $(this).find('[name="width"]').val();
+				var b = $(this).find('[name="bearing"]').val();
+				var s = $(this).find('[name="speed"]').val();
+				try {
+					l = parseInt(l);
+					w = parseInt(w);
+					b = parseInt(b);
+					s = parseInt(s);
+					if(isNaN(l) || isNaN(w) || isNaN(b) || isNaN(s))
 						return;
-					}
-
-					var polyUpdate = createMal(mal.location.lat, mal.location.lng, b, l, w, 'red');
-					if(mal.polygon != null) {
-						map.removeLayer(mal.polygon)
-					}
-					mal.polygon = polyUpdate;
-					map.addLayer(mal.polygon);
+				}catch(err){
+					return;
 				}
 
-			});
+				var polyUpdate = createMal(mal.location.lat, mal.location.lng, b, l, w, 'red');
+				// API
+				$.post( "/brandweer/api/mal/new", { 'malJSON': polyUpdate.toGeoJSON() });
+				if(mal.polygon != null) {
+					map.removeLayer(mal.polygon)
+				}
+				mal.polygon = polyUpdate;
+				map.addLayer(mal.polygon);
+			}
+		});
 
-$(window).resize(function()
-{
-	var mapheight = $(window).height() - $("#navbar").height();
-	$("#map").css("height", mapheight + "px")
-});
-
-$(document).ready(function()
-{
-	var mapheight = $(window).height() - $("#navbar").height();
-	$("#map").css("height", mapheight + "px")
-	updateTeamView();
-	updateRoadBlocks();
-	getTaskData();
-});
-
-function updateTeamView()
-{
-	$.get('/brandweer/api/getlocations',function(result)
-	{
-		if(!(result == oldlocations))
+		$(window).resize(function()
 		{
-			teamViewFeatureLayer.loadURL('/brandweer/api/getlocations');
-			oldlocations = result;
+			var mapheight = $(window).height() - $("#navbar").height();
+			$("#map").css("height", mapheight + "px")
+		});
+
+		$(document).ready(function()
+		{
+			var mapheight = $(window).height() - $("#navbar").height();
+			$("#map").css("height", mapheight + "px")
+			updateTeamView();
+			updateRoadBlocks();
+			getTaskData();
+			loadPOI();
+		});
+
+		function updateTeamView()
+		{
+			$.get('/brandweer/api/getlocations',function(result)
+			{
+				if(!(result == oldlocations))
+				{
+					teamViewFeatureLayer.loadURL('/brandweer/api/getlocations');
+					oldlocations = result;
+				}
+			});
 		}
-	});
-}
 
 function updateChat()
 {
@@ -183,92 +193,92 @@ function updateChat()
     		    })
 }
 
-function getTaskData()
-{
-	$.get('/brandweer/task/preformatted', function(data){
-		if(!(data == currentdata))
+		function getTaskData()
 		{
-			currentdata = data;
-			$('#eventHolder').html(data)
-			$('.collapsible').collapsible({
-								accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion 	style
-							});
-			console.log('update')
+		{
+			$.get('/brandweer/task/preformatted', function(data){
+				if(!(data == currentdata))
+				{
+					currentdata = data;
+					$('#eventHolder').html(data)
+					$('.collapsible').collapsible({
+										accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion 	style
+									});
+					console.log('update')
+				}
+			});
 		}
-	});
-}
 
-function getDirections(originLat, originLong, destLat, destLong)
-{
+		function getDirections(originLat, originLong, destLat, destLong)
+		{
 			directions.setOrigin(  L.latLng(originLat,originLong));//L.latLng(53.218753,6.589532999999989));
-directions.setDestination(L.latLng(destLat,destLong));
-if (directions.queryable()) {
-	directions.query();
-}
-else
-{
-	console.log("directions not queryable");
-}
-}
+			directions.setDestination(L.latLng(destLat,destLong));
+			if (directions.queryable()) {
+				directions.query();
+			}
+			else {
+				console.log("directions not queryable");
+			}
+		}
 
-function LargeModal_open_meetopdracht(){
-	$('#LargeModalContent').html('\
-		<h5 class="center-align">Laden...</h5>\
-		<div class="blue lighten-3 progress">\
-			<div class="blue indeterminate"></div>\
-		</div>');
-	$('#LargeModal').openModal();
-	$('#LargeModalContent').load('/brandweer/instructions/create', function()
-	{
-
-		var links = $('#LargeModalContent').find("a")
-
-		links.click(function(){
-			$('#BottomSheetModalContent').html('\
+		function LargeModal_open_meetopdracht(){
+			$('#LargeModalContent').html('\
 				<h5 class="center-align">Laden...</h5>\
 				<div class="blue lighten-3 progress">\
 					<div class="blue indeterminate"></div>\
 				</div>');
-			$('#BottomSheetModal').openModal();
-			$('#BottomSheetModalContent').load($(this).attr('href'));
-			return false;
-		});
+			$('#LargeModal').openModal();
+			$('#LargeModalContent').load('/brandweer/instructions/create', function()
+			{
 
-		$('select').material_select();
+				var links = $('#LargeModalContent').find("a")
 
-	});
-};
+				links.click(function(){
+					$('#BottomSheetModalContent').html('\
+						<h5 class="center-align">Laden...</h5>\
+						<div class="blue lighten-3 progress">\
+							<div class="blue indeterminate"></div>\
+						</div>');
+					$('#BottomSheetModal').openModal();
+					$('#BottomSheetModalContent').load($(this).attr('href'));
+					return false;
+				});
 
-function LargeModal_open_textmessage(){
-	$('#LargeModalContent').html('\
-		<h5 class="center-align">Laden...</h5>\
-		<div class="blue lighten-3 progress">\
-			<div class="blue indeterminate"></div>\
-		</div>');
-	$('#LargeModal').openModal();
-	$('#LargeModalContent').load('/brandweer/meetinstructie/create', function()
-	{
+				$('select').material_select();
 
-		var links = $('#LargeModalContent').find("a")
+			});
+		};
 
-		links.click(function(){
-			$('#BottomSheetModalContent').html('\
+		function LargeModal_open_textmessage(){
+			$('#LargeModalContent').html('\
 				<h5 class="center-align">Laden...</h5>\
 				<div class="blue lighten-3 progress">\
 					<div class="blue indeterminate"></div>\
 				</div>');
-			$('#BottomSheetModal').openModal();
-			$('#BottomSheetModalContent').load($(this).attr('href'));
-			return false;
-		});
+			$('#LargeModal').openModal();
+			$('#LargeModalContent').load('/brandweer/meetinstructie/create', function()
+			{
 
-		$('select').material_select();
+				var links = $('#LargeModalContent').find("a")
 
-	});
-};
+				links.click(function(){
+					$('#BottomSheetModalContent').html('\
+						<h5 class="center-align">Laden...</h5>\
+						<div class="blue lighten-3 progress">\
+							<div class="blue indeterminate"></div>\
+						</div>');
+					$('#BottomSheetModal').openModal();
+					$('#BottomSheetModalContent').load($(this).attr('href'));
+					return false;
+				});
 
-function updateRoadBlocks()
-{
+				$('select').material_select();
+
+			});
+		};
+
+		function updateRoadBlocks()
+		{
 			// load roadBlocks
 			$.ajax({
 				type: "POST",
@@ -276,7 +286,7 @@ function updateRoadBlocks()
 				data: '',
 				dataType: "html",
 				success: function(data) {
-					roadBlockLayer.clearLayers();
+                    POILayer.clearLayers();
 					var i;
 					var json = JSON.parse(data);
 					for (i = 0; i < json.length; i++) {
@@ -297,7 +307,7 @@ function updateRoadBlocks()
 				title: 'Wegversperring',
 				clickable: true,
 				riseOnHover: true
-			}).addTo(roadBlockLayer);
+			}).addTo(POILayer);
 			marker.database_identifier = id;
 			var content = $('<div></div>');
 			content.append(
@@ -312,7 +322,7 @@ function updateRoadBlocks()
 		}
 		function deleteMarker(marker) {
 			// deleteMarker
-			roadBlockLayer.removeLayer(marker);
+            POILayer.removeLayer(marker);
 
 			// API
 			$.post( "/brandweer/api/roadblock/delete", { 'lat': marker.getLatLng().lat, 'lng': marker.getLatLng().lng, "id": marker.database_identifier },function(response){
@@ -326,22 +336,23 @@ function updateRoadBlocks()
 			if(markerClickEnabled)
 			{
 				// addMarker
-				addMarker(e.latlng.lat,  e.latlng.lng);
+				var marker = addMarker(e.latlng.lat,  e.latlng.lng);
 				// API
-				$.post( "/brandweer/api/roadblock/new", { 'lat': e.latlng.lat, 'lng': e.latlng.lng });
+				// $.post( "/brandweer/api/roadblock/new", { 'lat': e.latlng.lat, 'lng': e.latlng.lng });
+                $.post( "/brandweer/api/poi/new", { 'data': marker.toGeoJSON() });
 				ObstructionButton_disable();
-			}else if(malClickEnabled) {
+			}
+			else if(malClickEnabled) {
 				if(mal == null) {
 					mal = { location: e.latlng, polygon:null };
 				}
 				$('#MalModal').openModal({
-	      dismissible: true, // Modal can be dismissed by clicking outside of the modal
-	      opacity: 0.0}	);
+					dismissible: true, // Modal can be dismissed by clicking outside of the modal
+					opacity: 0.0}	);
 				// on complete:
 				malClickEnabled = false;
 
 				//show modal for distance, angle and width?
-
 			}
 		});
 		$( "#enableMarker" ).click(function() {
@@ -403,51 +414,50 @@ function updateRoadBlocks()
 			})
 		});
 
-	function createMal(lat,lng, degrees, length/* meters */, width /* meters */, color) {
-					var source = new L.latLng(lat,lng);
-					var destination = moveLatLng(source, degrees, length);
+		function createMal(lat,lng, degrees, length/* meters */, width /* meters */, color) {
+			var source = new L.latLng(lat,lng);
+			var destination = moveLatLng(source, degrees, length);
 
-					var center = new L.latLng((source.lat + destination.lat)/2, (source.lng + destination.lng)/2);
+			var center = new L.latLng((source.lat + destination.lat)/2, (source.lng + destination.lng)/2);
 
-					var part1 = new Array();
-					var part2 = new Array();
+			var part1 = new Array();
+			var part2 = new Array();
 
-				/*points.push(source);
-				points.push(moveLatLng(center, degrees-90,width/2));
-				points.push(destination);
-				points.push(moveLatLng(center, degrees+90,width/2));*/
+			/*points.push(source);
+			points.push(moveLatLng(center, degrees-90,width/2));
+			points.push(destination);
+			points.push(moveLatLng(center, degrees+90,width/2));*/
 
+			part1.push(source);
 
-				part1.push(source);
+			var sPoint = moveLatLng(source, degrees, length*0.05);
+			part1.push(moveLatLng(sPoint, degrees+90, width/4));
+			part2.push(moveLatLng(sPoint, degrees-90, width/4));
+			//points.push(moveLatLng(center, degrees+90,width/2));
 
-				var sPoint = moveLatLng(source, degrees, length*0.05);
-				part1.push(moveLatLng(sPoint, degrees+90, width/4));
-				part2.push(moveLatLng(sPoint, degrees-90, width/4));
-				//points.push(moveLatLng(center, degrees+90,width/2));
+			sPoint = moveLatLng(source, degrees, length*0.2);
+			part1.push(moveLatLng(sPoint, degrees+90, width/2));
+			part2.push(moveLatLng(sPoint, degrees-90, width/2));
 
-				sPoint = moveLatLng(source, degrees, length*0.2);
-				part1.push(moveLatLng(sPoint, degrees+90, width/2));
-				part2.push(moveLatLng(sPoint, degrees-90, width/2));
+			sPoint = moveLatLng(source, degrees, length*0.8);
+			part1.push(moveLatLng(sPoint, degrees+90, width/2));
+			part2.push(moveLatLng(sPoint, degrees-90, width/2));
 
-				sPoint = moveLatLng(source, degrees, length*0.8);
-				part1.push(moveLatLng(sPoint, degrees+90, width/2));
-				part2.push(moveLatLng(sPoint, degrees-90, width/2));
+			sPoint = moveLatLng(source, degrees, length*0.95);
+			part1.push(moveLatLng(sPoint, degrees+90, width/4));
+			part2.push(moveLatLng(sPoint, degrees-90, width/4));
 
-				sPoint = moveLatLng(source, degrees, length*0.95);
-				part1.push(moveLatLng(sPoint, degrees+90, width/4));
-				part2.push(moveLatLng(sPoint, degrees-90, width/4));
+			part2.push(destination);
 
-				part2.push(destination);
-
-				var d = source.distanceTo(destination)
-				if(Math.abs(d - length) > 1) {
-					console.warn("Distance to projected LatLng deviating more than a meter.");
-				}
-
-				return L.polygon(part1.concat(part2.reverse()	), {color:color});
+			var d = source.distanceTo(destination)
+			if(Math.abs(d - length) > 1) {
+				console.warn("Distance to projected LatLng deviating more than a meter.");
 			}
 
-			function moveLatLng(latLng, degrees, distance) {
+			return L.polygon(part1.concat(part2.reverse()	), {color:color});
+		}
+
+		function moveLatLng(latLng, degrees, distance) {
 			/*	angle = Math.PI/180 * (degrees + 90); // now 0 degrees is North/Up
 				north = Math.sin(angle) * distance;
    			east = Math.cos(angle) * distance;
@@ -465,8 +475,8 @@ function updateRoadBlocks()
 				    var brng = degrees * (M_PI/180);
 				    var d = distance;
 
-				    latitude2 = Math.asin( Math.sin(lat)* Math.cos(d/radius) +  Math.cos(lat)* Math.sin(d/radius)* Math.cos(brng));
-				    longitude2 = lng +  Math.atan2( Math.sin(brng)* Math.sin(d/radius)* Math.cos(lat), Math.cos(d/radius)- Math.sin(lat)* Math.sin(latitude2));
+				    var latitude2 = Math.asin( Math.sin(lat)* Math.cos(d/radius) +  Math.cos(lat)* Math.sin(d/radius)* Math.cos(brng));
+				    var longitude2 = lng +  Math.atan2( Math.sin(brng)* Math.sin(d/radius)* Math.cos(lat), Math.cos(d/radius)- Math.sin(lat)* Math.sin(latitude2));
 
 				//    # back to degrees
 				latitude2 = latitude2 * (180/M_PI);
@@ -480,7 +490,35 @@ function updateRoadBlocks()
 				   //$tab[0] = $lat2;
 				  // $tab[1] = $long2;
 
-				  return new L.latLng(latitude2, longitude2);
-				}
+			return new L.latLng(latitude2, longitude2);
+		}
+        function loadPOI() {
+            // load roadBlocks
+            $.ajax({
+                type: "POST",
+                url: '/brandweer/api/poi/load',
+                data: '',
+                dataType: "json",
+                success: function(data) {
+                    console.log('loadPOI-Data: ' + data);
+                    for (var i = 0; i < data.poi.length; i++) {
+                        // weird every part is a String but not an object, create a json of everyone then add it to map.
+                        var poi = JSON.parse(data.poi[i]);
+                        // L.geoJson(poi, {}).addTo(map); this does not handle properties -_-
+                        // FIX for bad implementation (dirty but works)
+                        if(poi.geometry.type == "Point")    // Marker
+                            addMarker(poi.geometry.coordinates[1], poi.geometry.coordinates[0], poi.properties.id);
+                        else {
+                            console.log("Type Not supported: " + poi.geometry.type)
+							L.geoJson(poi, {}).addTo(POILayer);
+						}
+                        // debugger;
+                    }
+                },
+                error: function() {
+                    console.log('POIError occured');
+                }
+            });
+        }
 	</script>
 	@stop

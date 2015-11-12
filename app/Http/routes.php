@@ -102,3 +102,9 @@ Route::post('/brandweer/api/login','Api\LoginController@login');
 // WeatherMap
 Route::post("/brandweer/api/weather/update",'Api\WeatherMapController@updateWeather');
 Route::post("/brandweer/api/weather/get",'Api\WeatherMapController@getWeather');
+// POI
+Route::post("/brandweer/api/poi/load",'Api\POIController@getPOIs');
+Route::post("/brandweer/api/poi/new",'Api\POIController@newPOI');
+// Malsaver
+Route::post("/brandweer/api/mal/new",'Api\MalController@newMal');
+Route::post("/brandweer/api/mal/load",'Api\MalController@loadMal');
