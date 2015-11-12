@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\User;
 use App\Http\Controllers\Controller;
 use App\Chat;
+use Carbon\Carbon;
 
 class ChatController extends Controller
 {
@@ -51,6 +52,8 @@ class ChatController extends Controller
             $chat->user_id = 99999;
             $chat->incident_id = 1;
             $chat->message = $_POST['message'];
+
+            $chat->created_at = Carbon::now()->toDateTimeString();
 
             $chat->save();
         }
