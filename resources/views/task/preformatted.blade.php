@@ -10,21 +10,7 @@
 				{{ $task->title }}
 			</div>
 			<div class="collapsible-body white black-text">
-				<p>{{ $task->description}}
-				    <div id="container" style="margin-left: 35px">
-				    Benodigdheden:
-				        <div id="bravoData" style="margin-left: 10px; margin-top: -20px;">
-                            <br/>
-                        	<?php $data = json_decode($task->data); ?>
-                            Bravos: {{$data->buisnummer}}
-                        </div>
-                        <div id="items"  style="margin-left: 10px;">
-                            @foreach($data->items as $item)
-                                {{ $item }}
-                            @endforeach
-            	        </div>
-				    </div>
-                </p>
+				<p>{{ $task->description}} </p>
 			</div>	
 		</li>
 		@endforeach
