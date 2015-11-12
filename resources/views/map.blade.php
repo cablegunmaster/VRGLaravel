@@ -495,8 +495,10 @@
                         // FIX for bad implementation (dirty but works)
                         if(poi.geometry.type == "Point")    // Marker
                             addMarker(poi.geometry.coordinates[1], poi.geometry.coordinates[0], poi.properties.id);
-                        else
+                        else {
                             console.log("Type Not supported: " + poi.geometry.type)
+							L.geoJson(poi, {}).addTo(POILayer);
+						}
                         // debugger;
                     }
                 },
