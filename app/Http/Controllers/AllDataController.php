@@ -56,7 +56,6 @@ class AllDataController extends Controller
         $table->task = $task;
         $table->chat = $chat;
         $table->geo = $geo;
-
         return $table;
     }
 
@@ -434,6 +433,7 @@ class AllDataController extends Controller
             'task_type.name as type',
             'task.data as data',
             'task.title as title',
+            'task.created_at as created_at',
             'task.description as remarks')
             ->leftJoin('task_type', 'task.task_type_id', '=', 'task_type.id')
             ->where('task.team_id', $team_id)
@@ -441,13 +441,13 @@ class AllDataController extends Controller
             ->whereNull('task.end_date')
             ->orderBy('task.id','asc')
             ->get();
-
         $i = count($task);
         while(--$i > -1) {
             if($task[$i]->data != null) {
                 $task[$i]->data = json_decode($task[$i]->data);
             }
         }
+
         return $task;
     }
 
