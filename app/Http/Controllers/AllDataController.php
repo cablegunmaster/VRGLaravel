@@ -204,6 +204,8 @@ class AllDataController extends Controller
             $post['chat'] = AllDataController::InsertChat($post['chat'],$table);
         }
         $table = json_decode(json_encode($table),true); //to make it in JSON
+        if(!array_key_exists('chat',$table)) $table['chat'] = array();
+        if(!array_key_exists('chat',$post)) $post['chat'] = array();
         $chats = array_merge($table['chat'], $post['chat']); // save this here because array_merge messed up.
         $table = array_merge($table,$post);
         $table['chat'] = $chats;
